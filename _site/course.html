@@ -1,0 +1,2364 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Skill Buddy | Course</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="flow.css">
+
+    <style>
+        .course-top { margin-bottom: 20px; }
+
+        /* ✅ RESPONSIVE LAYOUT */
+        .course-info {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 20px;
+            align-items: flex-start;
+        }
+        .course-info > div:first-child {
+            flex: 1 1 300px;
+            min-width: 0;
+        }
+        .course-info h2 {
+            font-size: clamp(18px, 3.5vw, 28px);
+            line-height: 1.25;
+            margin: 8px 0;
+            word-break: break-word;
+        }
+        .course-info p { color: var(--muted); }
+
+        .progress-box {
+            flex: 0 0 220px;
+            min-width: 0;
+        }
+        .progress-line { height: 9px; background: #e9edf5; border-radius: 20px; overflow: hidden; }
+        .progress-line i { display: block; height: 100%; background: linear-gradient(90deg, #635bff, #14b8a6); transition: width .3s ease; }
+
+        /* ✅ SKILL SWITCHER */
+        .skill-switcher {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid var(--border);
+            flex-wrap: wrap;
+        }
+        .skill-switcher label {
+            font-size: 13px;
+            color: var(--muted);
+            font-weight: 700;
+        }
+        .skill-switcher select {
+            padding: 8px 14px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: white;
+            font-size: 14px;
+            font-family: inherit;
+            cursor: pointer;
+            outline: none;
+            color: var(--text);
+            min-width: 180px;
+            max-width: 100%;
+        }
+        .skill-switcher select:hover,
+        .skill-switcher select:focus { border-color: var(--primary); }
+
+        .course-layout { display: grid; grid-template-columns: 280px 1fr; gap: 20px; }
+        .module-nav { display: flex; flex-direction: column; gap: 8px; }
+        .module-nav button {
+            width: 100%;
+            border: 0;
+            background: transparent;
+            padding: 13px;
+            border-radius: 10px;
+            text-align: left;
+            cursor: pointer;
+            color: var(--text);
+            font-weight: 600;
+            word-break: break-word;
+        }
+        .module-nav button:hover { background: #f3f4ff; }
+        .module-nav button.active { background: #eef2ff; color: #4f46e5; }
+        .module-nav button.completed { color: #15803d; }
+
+        /* ✅ LESSON CONTENT — responsive */
+        .lesson-content {
+            line-height: 1.7;
+            max-width: 100%;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+        }
+        .lesson-content h2 {
+            font-size: clamp(17px, 3.2vw, 24px);
+            line-height: 1.3;
+            margin-top: 10px;
+            word-break: break-word;
+        }
+        .lesson-content h3 {
+            font-size: clamp(15px, 2.8vw, 19px);
+            line-height: 1.35;
+            margin-top: 22px;
+            word-break: break-word;
+        }
+        .lesson-content p,
+        .lesson-content li {
+            font-size: clamp(13px, 2.5vw, 15px);
+            color: var(--muted);
+            word-break: break-word;
+        }
+        .lesson-content img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* ✅ CODE BLOCKS — stop horizontal page overflow */
+        .code-box {
+            background: #111827;
+            color: #e5e7eb;
+            padding: 14px 16px;
+            border-radius: 12px;
+            overflow-x: auto;
+            max-width: 100%;
+            box-sizing: border-box;
+            font-family: Consolas, monospace;
+            font-size: clamp(11px, 2.3vw, 13px);
+            line-height: 1.55;
+            white-space: pre;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .practice-box {
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            padding: 14px 16px;
+            border-radius: 12px;
+            margin-top: 18px;
+            word-break: break-word;
+        }
+        .practice-box h3 { margin-top: 0; }
+
+        /* ✅ BUTTONS — wrap and stack on mobile */
+        .lesson-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+        }
+        .lesson-actions .btn-flow {
+            flex: 1 1 auto;
+            min-width: 120px;
+            white-space: nowrap;
+        }
+
+        /* ✅ MOBILE BREAKPOINT */
+        @media (max-width: 850px) {
+            .course-layout { grid-template-columns: 1fr; }
+            .course-info { flex-direction: column; align-items: stretch; }
+            .progress-box { flex: 1 1 auto; width: 100%; }
+            .lesson-actions .btn-flow { flex: 1 1 100%; }
+        }
+
+        @media (max-width: 480px) {
+            .skill-switcher { flex-direction: column; align-items: flex-start; }
+            .skill-switcher select { width: 100%; }
+            .code-box { font-size: 11px; padding: 10px 12px; }
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="flow-nav">
+    <a href="index.html" class="flow-brand">
+        <span class="flow-mark">SB</span>
+        <span>Skill<span>Buddy</span></span>
+    </a>
+    <div class="flow-user">
+        <span class="flow-avatar" id="userAvatar">SB</span>
+        <div>
+            <b id="userName">Learner</b>
+            <small>Student / Learner</small>
+        </div>
+        <button class="btn btn-soft-flow btn-flow" id="logoutBtn">Logout</button>
+    </div>
+</header>
+
+<main class="flow-main">
+    <div class="flow-wrap">
+
+        <div class="flow-hero">
+            <span class="flow-kicker">Step 3 • Course Content</span>
+            <h1 id="pageHeading">Learn with Skill Buddy</h1>
+            <p>Learn through structured content, examples, practice and questions.</p>
+        </div>
+
+        <div class="flow-progress-wrapper">
+            <div class="flow-progress">
+                <div class="flow-step active"><div class="flow-step-number">1</div><span>Skills</span></div>
+                <div class="flow-line active"></div>
+                <div class="flow-step active"><div class="flow-step-number">2</div><span>Buddy</span></div>
+                <div class="flow-line active"></div>
+                <div class="flow-step active"><div class="flow-step-number">3</div><span>Course</span></div>
+                <div class="flow-line"></div>
+                <div class="flow-step"><div class="flow-step-number">4</div><span>Assessment</span></div>
+            </div>
+        </div>
+
+        <section class="flow-card course-top">
+
+            <!-- ✅ SKILL SWITCHER -->
+            <div class="skill-switcher">
+                <label for="skillPicker">Your Learning Skill:</label>
+                <select id="skillPicker" onchange="switchSkill(this.value)"></select>
+            </div>
+
+            <div class="course-info">
+                <div>
+                    <span class="tag" id="skillTag">Java</span>
+                    <h2 id="courseTitle">Java Programming</h2>
+                    <p>Mentor: <b id="mentorName">Skill Buddy Mentor</b></p>
+                </div>
+                <div class="progress-box">
+                    <b>Course Progress <span id="progressText">0%</span></b>
+                    <div class="progress-line" style="margin-top:8px">
+                        <i id="progressBar" style="width:0%"></i>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="course-layout">
+            <aside class="flow-card">
+                <div class="flow-card-header">
+                    <div>
+                        <h3>Course Modules</h3>
+                        <p>Select a topic to learn</p>
+                    </div>
+                </div>
+                <div class="module-nav" id="moduleNav"></div>
+            </aside>
+            <section class="flow-card">
+                <div id="lessonContent"></div>
+            </section>
+        </div>
+    </div>
+</main>
+
+<script>
+
+    /* =====================================================
+       AUTH HELPERS
+    ===================================================== */
+
+    function getToken() {
+        return localStorage.getItem("skillBuddyToken");
+    }
+
+    function authHeaders() {
+        return {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + getToken()
+        };
+    }
+
+    /* AUTH GUARD */
+    (function requireLogin() {
+        const u = localStorage.getItem("skillBuddyUser");
+        if (!u || !getToken()) {
+            window.location.href = "/index.html";
+        }
+    })();
+
+
+    /* =====================================================
+       STORAGE HELPERS
+    ===================================================== */
+
+    function getData(key, fallback) {
+        try {
+            const value = localStorage.getItem(key);
+            if (value === null) return fallback;
+            return JSON.parse(value);
+        } catch (error) {
+            return fallback;
+        }
+    }
+
+    function saveData(key, value) {
+        localStorage.setItem(key, JSON.stringify(value));
+    }
+
+    /* =====================================================
+       USER
+    ===================================================== */
+
+    const user = getData("skillBuddyUser", null);
+    const userName = user?.name || user?.username || "Learner";
+
+    document.getElementById("userName").textContent = userName;
+    document.getElementById("userAvatar").textContent = getInitials(userName);
+
+    function getInitials(name) {
+        return name.split(" ").map(x => x[0]).join("").substring(0, 2).toUpperCase();
+    }
+
+    /* =====================================================
+       CURRENT LEARNING SKILL
+    ===================================================== */
+
+    let learningSkills = getData("skillBuddyLearnSkills", []);
+    if (!learningSkills.length) learningSkills = getData("skillBuddySkills", []);
+    if (!learningSkills.length) learningSkills = ["Java"];
+
+    let currentSkill = localStorage.getItem("skillBuddyCurrentLearningSkill");
+    if (!currentSkill || !learningSkills.includes(currentSkill)) {
+        currentSkill = learningSkills[0];
+        localStorage.setItem("skillBuddyCurrentLearningSkill", currentSkill);
+    }
+
+    /* =====================================================
+       MENTOR
+    ===================================================== */
+
+    const mentor = getData("skillBuddyMentor", {});
+    document.getElementById("mentorName").textContent = mentor.name || "Skill Buddy Mentor";
+
+    /* =====================================================
+       COURSE DATA
+    ===================================================== */
+
+    const courseData = {
+
+        "Java": {
+            title: "Java Programming",
+            description: "Learn Java from fundamentals to practical programming.",
+            modules: [
+                { title: "Java Basics", topics: ["Introduction to Java", "Variables & Data Types", "Operators", "Input & Output"] },
+                { title: "OOP Concepts", topics: ["Classes & Objects", "Constructors", "Inheritance", "Polymorphism", "Abstraction", "Encapsulation"] },
+                { title: "Collections", topics: ["ArrayList", "LinkedList", "HashSet", "HashMap"] },
+                { title: "Exception Handling", topics: ["try-catch", "finally", "throw & throws", "Custom Exceptions"] },
+                { title: "Practice Project", topics: ["Java Console Project", "Project Structure", "Final Practice"] }
+            ]
+        },
+
+        "Python": {
+            title: "Python Programming",
+            description: "Learn Python from basics to practical coding.",
+            modules: [
+                { title: "Python Basics", topics: ["Introduction to Python", "Variables", "Data Types", "Input & Output"] },
+                { title: "Control Flow", topics: ["if-else", "Loops", "break & continue", "Functions"] },
+                { title: "Data Structures", topics: ["Lists", "Tuples", "Sets", "Dictionaries"] },
+                { title: "OOP in Python", topics: ["Classes", "Objects", "Inheritance", "Polymorphism"] },
+                { title: "Python Practice", topics: ["Mini Project", "Coding Practice", "Final Practice"] }
+            ]
+        },
+
+        "JavaScript": {
+            title: "JavaScript Programming",
+            description: "Learn JavaScript for modern web development.",
+            modules: [
+                { title: "JavaScript Basics", topics: ["Variables", "Data Types", "Operators", "Functions"] },
+                { title: "DOM", topics: ["DOM Basics", "Selectors", "Events", "Dynamic HTML"] },
+                { title: "Arrays & Objects", topics: ["Arrays", "Objects", "Array Methods"] },
+                { title: "Modern JavaScript", topics: ["Arrow Functions", "Destructuring", "Spread Operator", "Promises"] },
+                { title: "Practice", topics: ["Mini Project", "DOM Project", "Final Practice"] }
+            ]
+        },
+
+        "SQL": {
+            title: "SQL & Database",
+            description: "Learn SQL queries and database fundamentals.",
+            modules: [
+                { title: "SQL Basics", topics: ["Database Introduction", "Tables", "SELECT", "WHERE"] },
+                { title: "SQL Queries", topics: ["ORDER BY", "GROUP BY", "HAVING", "Aggregate Functions"] },
+                { title: "Joins", topics: ["INNER JOIN", "LEFT JOIN", "RIGHT JOIN"] },
+                { title: "Database Design", topics: ["Primary Key", "Foreign Key", "Normalization"] },
+                { title: "SQL Practice", topics: ["Query Practice", "Database Project"] }
+            ]
+        },
+
+        "Data Structures": {
+            title: "Data Structures & Algorithms",
+            description: "Learn data structures and problem-solving techniques.",
+            modules: [
+                { title: "Arrays", topics: ["Array", "Array Traversal", "Array Insert", "Array Delete", "Array Search", "Array Reverse"] },
+                { title: "Searching", topics: ["Searching", "Linear Search", "Binary Search"] },
+                { title: "Sorting", topics: ["Sorting", "Bubble Sort", "Selection Sort", "Insertion Sort", "Merge Sort", "Quick Sort"] },
+                { title: "Algorithms Practice", topics: ["Practice Problems"] }
+            ]
+        },
+
+        "Machine Learning": {
+            title: "Machine Learning",
+            description: "Learn Machine Learning from fundamentals to practical model building.",
+            modules: [
+                { title: "ML Foundations", topics: ["What is Machine Learning?", "AI vs ML vs Deep Learning", "Types of Machine Learning", "Machine Learning Workflow", "Dataset, Features and Labels"] },
+                { title: "Python for ML", topics: ["NumPy", "Pandas", "Matplotlib", "Reading Dataset"] },
+                { title: "Data Preprocessing", topics: ["Data Cleaning", "Missing Values"] },
+                { title: "Supervised Learning", topics: ["Linear Regression", "Logistic Regression", "Decision Tree", "Random Forest"] },
+                { title: "Unsupervised Learning", topics: ["What is Unsupervised Learning?", "K-Means Clustering"] },
+                { title: "Model Evaluation", topics: ["Confusion Matrix", "Accuracy", "Overfitting and Underfitting"] },
+                { title: "ML Project", topics: ["House Price Prediction", "Final ML Project"] }
+            ]
+        },
+
+        "Spring Boot": {
+            title: "Spring Boot",
+            description: "Build backend applications and REST APIs using Spring Boot.",
+            modules: [
+                { title: "Spring Basics", topics: ["Spring Introduction", "Spring Boot Setup", "Dependency Injection", "IoC", "Spring Beans"] },
+                { title: "Building APIs", topics: ["REST API", "Controllers", "Services", "Repositories"] },
+                { title: "Database Layer", topics: ["MySQL Integration", "JPA", "Hibernate"] },
+                { title: "Security", topics: ["Authentication"] }
+            ]
+        },
+
+        "React": {
+            title: "React",
+            description: "Build modern interactive web applications with React.",
+            modules: [
+                { title: "React Basics", topics: ["React Introduction", "Components", "Props", "State"] },
+                { title: "Handling User Input", topics: ["Event Handling", "Conditional Rendering", "Lists and Keys", "Forms"] },
+                { title: "Hooks & Routing", topics: ["useEffect", "React Router"] }
+            ]
+        },
+
+        "Web Development": {
+            title: "Web Development",
+            description: "Learn HTML, CSS and JavaScript to build modern websites.",
+            modules: [
+                { title: "HTML", topics: ["HTML Basics", "HTML Forms"] },
+                { title: "CSS", topics: ["CSS Basics", "Flexbox", "Grid", "Responsive Design"] },
+                { title: "JavaScript", topics: ["JavaScript Basics", "DOM", "Events", "Fetch API"] },
+                { title: "Projects", topics: ["Projects"] }
+            ]
+        },
+
+        "Data Science": {
+            title: "Data Science",
+            description: "Learn data analysis, visualization and data science concepts.",
+            modules: [
+                { title: "Data Science Basics", topics: ["Introduction to Data Science", "Python for Data Science"] },
+                { title: "Data Tools", topics: ["NumPy", "Pandas", "Data Cleaning", "Data Visualization"] },
+                { title: "Analysis", topics: ["Statistics", "Exploratory Data Analysis"] },
+                { title: "Projects", topics: ["Machine Learning Basics", "Projects"] }
+            ]
+        },
+
+        "Android": {
+            title: "Android Development",
+            description: "Build Android apps from scratch using Java/Kotlin.",
+            modules: [
+                { title: "Android Basics", topics: ["Android Introduction", "Android Studio", "Layouts"] },
+                { title: "App Building", topics: ["Activities", "Intents", "RecyclerView"] },
+                { title: "Project", topics: ["Android Project"] }
+            ]
+        }
+
+    };
+
+    /* Fallback if a skill is not defined */
+    if (!courseData[currentSkill]) {
+        courseData[currentSkill] = {
+            title: currentSkill + " Course",
+            description: "Learn " + currentSkill + " through structured lessons and practice.",
+            modules: [
+                { title: currentSkill + " Basics", topics: ["Introduction", "Fundamentals", "Core Concepts", "Practice"] },
+                { title: "Intermediate Concepts", topics: ["Important Concepts", "Examples", "Practice Questions"] },
+                { title: "Advanced Concepts", topics: ["Advanced Topics", "Practical Examples", "Practice"] },
+                { title: "Project", topics: ["Project Introduction", "Implementation", "Final Practice"] }
+            ]
+        };
+    }
+
+    const course = courseData[currentSkill];
+
+    document.getElementById("skillTag").textContent = currentSkill;
+    document.getElementById("courseTitle").textContent = course.title;
+    document.getElementById("pageHeading").textContent = "Learn " + currentSkill;
+
+    /* =====================================================
+       FLATTEN TOPICS
+    ===================================================== */
+
+    const lessons = [];
+    course.modules.forEach((module, moduleIndex) => {
+        module.topics.forEach(topic => {
+            lessons.push({ moduleIndex, module: module.title, topic });
+        });
+    });
+
+    /* =====================================================
+       PROGRESS STORAGE — backend se load
+    ===================================================== */
+
+    const progressKey = "skillBuddyProgress_" + currentSkill;
+
+    let completed = [];
+    let currentIndex = 0;
+
+    async function loadProgress() {
+        try {
+            const res = await fetch("/api/progress/" + encodeURIComponent(currentSkill), {
+                headers: authHeaders()
+            });
+            if (res.ok) {
+                const data = await res.json();
+                if (data && Array.isArray(data.completedLessons)) {
+                    completed = data.completedLessons;
+                }
+            }
+        } catch (e) {
+            console.warn("Could not load progress:", e);
+        }
+    }
+
+    /* =====================================================
+       MODULE NAVIGATION
+    ===================================================== */
+
+    const moduleNav = document.getElementById("moduleNav");
+
+    function renderModules() {
+        moduleNav.innerHTML = "";
+
+        course.modules.forEach((module, moduleIndex) => {
+            const wrapper = document.createElement("div");
+
+            const heading = document.createElement("button");
+            heading.textContent = `${moduleIndex + 1}. ${module.title}`;
+            heading.className = "module-heading";
+            wrapper.appendChild(heading);
+
+            module.topics.forEach(topic => {
+                const lessonIndex = lessons.findIndex(
+                    lesson => lesson.topic === topic && lesson.moduleIndex === moduleIndex
+                );
+
+                const button = document.createElement("button");
+                button.style.fontSize = "12px";
+                button.style.paddingLeft = "24px";
+                button.textContent = (completed.includes(lessonIndex) ? "✓ " : "") + topic;
+
+                if (lessonIndex === currentIndex) button.classList.add("active");
+                if (completed.includes(lessonIndex)) button.classList.add("completed");
+
+                button.onclick = function () {
+                    currentIndex = lessonIndex;
+                    render();
+                };
+
+                wrapper.appendChild(button);
+            });
+
+            moduleNav.appendChild(wrapper);
+        });
+    }
+
+    /* =====================================================
+       LESSON CONTENT ROUTER
+    ===================================================== */
+
+    const lessonContent = document.getElementById("lessonContent");
+
+    function renderLesson() {
+        const lesson = lessons[currentIndex];
+        if (!lesson) return;
+
+        const completedStatus = completed.includes(currentIndex);
+
+        let content = "";
+
+        switch (currentSkill) {
+            case "Java": content = getJavaContent(lesson.topic); break;
+            case "Python": content = getPythonContent(lesson.topic); break;
+            case "Data Structures": content = getDSAContent(lesson.topic); break;
+            case "Machine Learning": content = getMLContent(lesson.topic); break;
+            case "JavaScript": content = getJavaScriptContent(lesson.topic); break;
+            case "SQL": content = getSQLContent(lesson.topic); break;
+            case "Spring Boot": content = getSpringBootContent(lesson.topic); break;
+            case "React": content = getReactContent(lesson.topic); break;
+            case "Web Development": content = getWebDevContent(lesson.topic); break;
+            case "Data Science": content = getDataScienceContent(lesson.topic); break;
+            case "Android": content = getAndroidContent(lesson.topic); break;
+            default: content = getGenericContent(lesson.topic);
+        }
+
+        lessonContent.innerHTML = `
+        <span class="tag">${escapeHtml(lesson.module)}</span>
+        <h2>${escapeHtml(lesson.topic)}</h2>
+        ${content}
+
+        <div class="practice-box">
+            <h3>📝 Practice</h3>
+            <p>Explain the concept in your own words and write one small example.</p>
+            <p><b>Question:</b> What is the main purpose of ${escapeHtml(lesson.topic)}?</p>
+        </div>
+
+        <div class="lesson-actions">
+            <button class="btn-flow btn-soft-flow" onclick="previousLesson()" ${currentIndex === 0 ? "disabled" : ""}>← Previous</button>
+            <button class="btn-flow btn-primary-flow" onclick="toggleComplete()">
+                ${completedStatus ? "✓ Completed" : "✓ Mark Complete"}
+            </button>
+            <button class="btn-flow btn-primary-flow" onclick="nextLesson()">
+                ${currentIndex === lessons.length - 1 ? "Go to Assessment →" : "Next →"}
+            </button>
+        </div>
+    `;
+    }
+
+    /* =====================================================
+       JAVA CONTENT
+    ===================================================== */
+
+    function getJavaContent(topic) {
+        const data = {
+            "Introduction to Java": `
+            <h3>What is Java?</h3>
+            <p>Java is a high-level, object-oriented programming language developed by Sun Microsystems (now Oracle). It's used for backend development, enterprise apps, Android and much more.</p>
+            <p>Java follows <b>Write Once, Run Anywhere (WORA)</b> — compiled bytecode runs on any JVM.</p>
+            <h3>How Java Executes</h3>
+            <ol>
+                <li>Write <code>.java</code> source code</li>
+                <li>javac compiles it to <code>.class</code> bytecode</li>
+                <li>JVM executes bytecode</li>
+            </ol>
+            <h3>Your First Program</h3>
+            <pre class="code-box">public class Main {
+    public static void main(String[] args) {
+        System.out.println("Hello Java");
+    }
+}</pre>
+            <h3>JDK vs JRE vs JVM</h3>
+            <ul>
+                <li><b>JDK</b> — develop Java apps</li>
+                <li><b>JRE</b> — run Java apps</li>
+                <li><b>JVM</b> — executes bytecode</li>
+            </ul>
+        `,
+            "Variables & Data Types": `
+            <h3>Variables</h3>
+            <p>A variable is a named memory location that stores a value.</p>
+            <pre class="code-box">int age = 20;
+double salary = 25000.50;
+char grade = 'A';
+boolean student = true;
+String name = "Gaurav";</pre>
+            <h3>Primitive Types</h3>
+            <ul>
+                <li>byte, short, int, long</li>
+                <li>float, double</li>
+                <li>char</li>
+                <li>boolean</li>
+            </ul>
+            <p><b>String</b> is a class, not a primitive.</p>
+        `,
+            "Operators": `
+            <h3>Operators</h3>
+            <ul>
+                <li>Arithmetic: + - * / %</li>
+                <li>Relational: &lt; &gt; &lt;= &gt;= == !=</li>
+                <li>Logical: && || !</li>
+                <li>Assignment: = += -= *=</li>
+                <li>Unary: ++ --</li>
+                <li>Ternary: condition ? a : b</li>
+            </ul>
+            <pre class="code-box">int a = 10, b = 5;
+System.out.println(a + b);   // 15
+System.out.println(a % b);   // 0
+System.out.println(a > b);   // true</pre>
+        `,
+            "Input & Output": `
+            <h3>Output</h3>
+            <pre class="code-box">System.out.print("Hello ");
+System.out.println("Java");</pre>
+            <h3>Input with Scanner</h3>
+            <pre class="code-box">import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter age: ");
+        int age = sc.nextInt();
+        System.out.println("Age is " + age);
+        sc.close();
+    }
+}</pre>
+        `,
+            "Classes & Objects": `
+            <h3>Class & Object</h3>
+            <p>A class is a blueprint. An object is an instance created using <code>new</code>.</p>
+            <pre class="code-box">class Student {
+    String name;
+    int age;
+
+    void display() {
+        System.out.println(name + " " + age);
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Student s = new Student();
+        s.name = "Gaurav";
+        s.age = 20;
+        s.display();
+    }
+}</pre>
+        `,
+            "Constructors": `
+            <h3>Constructor</h3>
+            <p>Runs when an object is created. Same name as the class, no return type.</p>
+            <pre class="code-box">class Student {
+    String name;
+    int age;
+
+    Student(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+}
+
+Student s = new Student("Gaurav", 20);</pre>
+            <h3>Types</h3>
+            <ul>
+                <li>Default</li>
+                <li>Parameterized</li>
+                <li>Overloaded</li>
+            </ul>
+        `,
+            "Inheritance": `
+            <h3>Inheritance</h3>
+            <p>One class acquires properties of another using <b>extends</b>.</p>
+            <pre class="code-box">class Animal {
+    void eat() { System.out.println("Eating"); }
+}
+
+class Dog extends Animal {
+    void bark() { System.out.println("Barking"); }
+}
+
+Dog d = new Dog();
+d.eat();
+d.bark();</pre>
+        `,
+            "Polymorphism": `
+            <h3>Polymorphism</h3>
+            <p>Same name, different behavior. Runtime via overriding.</p>
+            <pre class="code-box">class Animal {
+    void sound() { System.out.println("Sound"); }
+}
+
+class Dog extends Animal {
+    @Override
+    void sound() { System.out.println("Bark"); }
+}
+
+Animal a = new Dog();
+a.sound();   // Bark</pre>
+        `,
+            "Abstraction": `
+            <h3>Abstraction</h3>
+            <p>Hide implementation, show only what's important.</p>
+            <pre class="code-box">abstract class Animal {
+    abstract void sound();
+
+    void eat() { System.out.println("Eating"); }
+}
+
+class Dog extends Animal {
+    void sound() { System.out.println("Bark"); }
+}</pre>
+        `,
+            "Encapsulation": `
+            <h3>Encapsulation</h3>
+            <p>Private fields + public getters/setters.</p>
+            <pre class="code-box">class Student {
+    private String name;
+
+    public void setName(String name) { this.name = name; }
+    public String getName() { return name; }
+}</pre>
+        `,
+            "ArrayList": `
+            <h3>ArrayList</h3>
+            <p>Resizable array from Java Collections.</p>
+            <pre class="code-box">import java.util.ArrayList;
+
+ArrayList&lt;String&gt; names = new ArrayList&lt;&gt;();
+names.add("Java");
+names.add("Python");
+System.out.println(names.get(0));</pre>
+        `,
+            "LinkedList": `
+            <h3>LinkedList</h3>
+            <p>Node-based list. Fast insert/delete, slow random access.</p>
+            <pre class="code-box">import java.util.LinkedList;
+
+LinkedList&lt;Integer&gt; list = new LinkedList&lt;&gt;();
+list.add(10);
+list.addFirst(5);
+list.addLast(20);</pre>
+        `,
+            "HashSet": `
+            <h3>HashSet</h3>
+            <p>Unique elements, no duplicates.</p>
+            <pre class="code-box">import java.util.HashSet;
+
+HashSet&lt;String&gt; skills = new HashSet&lt;&gt;();
+skills.add("Java");
+skills.add("Java"); // ignored
+System.out.println(skills.size()); // 1</pre>
+        `,
+            "HashMap": `
+            <h3>HashMap</h3>
+            <p>Key-value pairs.</p>
+            <pre class="code-box">import java.util.HashMap;
+
+HashMap&lt;Integer, String&gt; students = new HashMap&lt;&gt;();
+students.put(101, "Gaurav");
+System.out.println(students.get(101));</pre>
+        `,
+            "try-catch": `
+            <h3>try-catch</h3>
+            <pre class="code-box">try {
+    int x = 10 / 0;
+} catch (ArithmeticException e) {
+    System.out.println("Cannot divide by zero");
+}</pre>
+        `,
+            "finally": `
+            <h3>finally</h3>
+            <p>Runs whether or not an exception occurs.</p>
+            <pre class="code-box">try {
+    // risky
+} catch (Exception e) {
+    // handle
+} finally {
+    System.out.println("Cleanup");
+}</pre>
+        `,
+            "throw & throws": `
+            <h3>throw vs throws</h3>
+            <pre class="code-box">if (age &lt; 18) {
+    throw new IllegalArgumentException("Too young");
+}
+
+void readFile() throws IOException {
+    // ...
+}</pre>
+        `,
+            "Custom Exceptions": `
+            <h3>Custom Exception</h3>
+            <pre class="code-box">class InsufficientBalanceException extends Exception {
+    InsufficientBalanceException(String msg) { super(msg); }
+}</pre>
+        `,
+            "Java Console Project": `
+            <h3>Student Management System</h3>
+            <p>Build a console app with add/view/search/delete features using ArrayList and Scanner.</p>
+            <pre class="code-box">class Student {
+    int id; String name; double marks;
+    Student(int id, String name, double marks) {
+        this.id = id; this.name = name; this.marks = marks;
+    }
+}</pre>
+        `,
+            "Project Structure": `
+            <h3>Project Layout</h3>
+            <pre class="code-box">StudentManagementSystem/
+├── Main.java
+├── Student.java
+├── StudentService.java
+└── README.md</pre>
+            <p>Separate models, services and the entry point.</p>
+        `,
+            "Final Practice": `
+            <h3>Final Java Practice</h3>
+            <ol>
+                <li>Build a Student class</li>
+                <li>Store students in ArrayList</li>
+                <li>Add search by roll number</li>
+                <li>Handle bad input with try-catch</li>
+                <li>Menu-driven console app</li>
+            </ol>
+        `
+        };
+        return data[topic] || getGenericContent(topic);
+    }
+
+    /* =====================================================
+       PYTHON CONTENT
+    ===================================================== */
+
+    function getPythonContent(topic) {
+        const data = {
+            "Introduction to Python": `
+            <h3>What is Python?</h3>
+            <p>High-level, interpreted, dynamically typed language known for readability.</p>
+            <pre class="code-box">print("Hello, Python!")</pre>
+            <p>Python uses indentation for blocks — no braces, no semicolons.</p>
+        `,
+            "Variables": `
+            <h3>Variables</h3>
+            <pre class="code-box">name = "Gaurav"
+age = 21
+marks = 85.5
+is_student = True</pre>
+            <p>Python is dynamically typed — no type declaration needed.</p>
+        `,
+            "Data Types": `
+            <h3>Common Data Types</h3>
+            <ul>
+                <li>int</li>
+                <li>float</li>
+                <li>str</li>
+                <li>bool</li>
+                <li>list</li>
+                <li>tuple</li>
+                <li>set</li>
+                <li>dict</li>
+            </ul>
+            <pre class="code-box">print(type(21))      # &lt;class 'int'&gt;
+print(type("hi"))    # &lt;class 'str'&gt;</pre>
+        `,
+            "Input & Output": `
+            <h3>Input / Output</h3>
+            <pre class="code-box">name = input("Name: ")
+age = int(input("Age: "))
+print(f"Hello {name}, age {age}")</pre>
+            <p><b>Note:</b> input() always returns a string.</p>
+        `,
+            "if-else": `
+            <h3>if-elif-else</h3>
+            <pre class="code-box">marks = 75
+
+if marks >= 90:
+    print("A")
+elif marks >= 60:
+    print("B")
+else:
+    print("C")</pre>
+        `,
+            "Loops": `
+            <h3>Loops</h3>
+            <pre class="code-box">for i in range(1, 6):
+    print(i)
+
+i = 1
+while i <= 5:
+    print(i)
+    i += 1</pre>
+        `,
+            "break & continue": `
+            <h3>break and continue</h3>
+            <pre class="code-box">for i in range(1, 10):
+    if i == 5: break
+    print(i)
+
+for i in range(1, 6):
+    if i == 3: continue
+    print(i)</pre>
+        `,
+            "Functions": `
+            <h3>Functions</h3>
+            <pre class="code-box">def add(a, b):
+    return a + b
+
+print(add(10, 20))</pre>
+        `,
+            "Lists": `
+            <h3>Lists</h3>
+            <pre class="code-box">nums = [10, 20, 30]
+nums.append(40)
+nums.remove(20)
+print(nums[0])</pre>
+            <p>Ordered, mutable, allows duplicates.</p>
+        `,
+            "Tuples": `
+            <h3>Tuples</h3>
+            <pre class="code-box">student = ("Gaurav", 21, "CSE")
+print(student[0])</pre>
+            <p>Ordered, immutable.</p>
+        `,
+            "Sets": `
+            <h3>Sets</h3>
+            <pre class="code-box">a = {1, 2, 3}
+b = {3, 4, 5}
+
+print(a | b)   # union
+print(a & b)   # intersection</pre>
+        `,
+            "Dictionaries": `
+            <h3>Dictionaries</h3>
+            <pre class="code-box">student = {
+    "name": "Gaurav",
+    "age": 21
+}
+
+print(student["name"])</pre>
+        `,
+            "Classes": `
+            <h3>Classes</h3>
+            <pre class="code-box">class Student:
+    def __init__(self, name):
+        self.name = name
+
+    def show(self):
+        print("Name:", self.name)</pre>
+        `,
+            "Objects": `
+            <h3>Objects</h3>
+            <pre class="code-box">s = Student("Gaurav")
+s.show()</pre>
+        `,
+            "Inheritance": `
+            <h3>Inheritance</h3>
+            <pre class="code-box">class Animal:
+    def eat(self): print("Eating")
+
+class Dog(Animal):
+    def bark(self): print("Barking")
+
+d = Dog()
+d.eat()
+d.bark()</pre>
+        `,
+            "Polymorphism": `
+            <h3>Polymorphism</h3>
+            <pre class="code-box">class Dog:
+    def sound(self): print("Bark")
+
+class Cat:
+    def sound(self): print("Meow")
+
+for a in [Dog(), Cat()]:
+    a.sound()</pre>
+        `,
+            "Mini Project": `
+            <h3>Student Marks Calculator</h3>
+            <pre class="code-box">name = input("Name: ")
+m1 = float(input("Marks 1: "))
+m2 = float(input("Marks 2: "))
+m3 = float(input("Marks 3: "))
+
+total = m1 + m2 + m3
+print(f"Total: {total}, %: {total/3:.2f}")</pre>
+        `,
+            "Coding Practice": `
+            <h3>Practice Problems</h3>
+            <ol>
+                <li>Even or odd</li>
+                <li>Largest of three</li>
+                <li>Factorial</li>
+                <li>Reverse string</li>
+                <li>Palindrome check</li>
+                <li>Sum of digits</li>
+                <li>Count vowels</li>
+                <li>Remove duplicates from list</li>
+            </ol>
+        `,
+            "Final Practice": `
+            <h3>Final Project</h3>
+            <p>Build a <b>Student Management System</b> with add, view, search, delete using lists and dicts.</p>
+        `
+        };
+        return data[topic] || getGenericContent(topic);
+    }
+
+    /* =====================================================
+       DSA CONTENT
+    ===================================================== */
+
+    function getDSAContent(topic) {
+        const data = {
+            "Array": `
+            <h3>Array</h3>
+            <p>A linear structure storing same-type values in contiguous memory.</p>
+            <pre class="code-box">int[] arr = {10, 20, 30, 40, 50};
+System.out.println(arr[0]);</pre>
+            <p>Access: <b>O(1)</b></p>
+        `,
+            "Array Traversal": `
+            <h3>Traversal</h3>
+            <pre class="code-box">for(int i = 0; i &lt; arr.length; i++) {
+    System.out.println(arr[i]);
+}</pre>
+            <p>Time: O(n), Space: O(1)</p>
+        `,
+            "Array Insert": `
+            <h3>Insertion</h3>
+            <p>Shift elements right to make space.</p>
+            <pre class="code-box">for(int i = n-1; i >= pos; i--)
+    arr[i+1] = arr[i];
+arr[pos] = value;</pre>
+            <p>Worst: <b>O(n)</b></p>
+        `,
+            "Array Delete": `
+            <h3>Deletion</h3>
+            <pre class="code-box">for(int i = pos; i &lt; n-1; i++)
+    arr[i] = arr[i+1];
+n--;</pre>
+            <p>Time: <b>O(n)</b></p>
+        `,
+            "Array Search": `
+            <h3>Linear Search</h3>
+            <pre class="code-box">for(int i = 0; i &lt; arr.length; i++)
+    if(arr[i] == target) return i;
+return -1;</pre>
+            <p>Time: <b>O(n)</b></p>
+        `,
+            "Array Reverse": `
+            <h3>Reverse (Two Pointer)</h3>
+            <pre class="code-box">int l = 0, r = arr.length - 1;
+while(l &lt; r) {
+    int t = arr[l];
+    arr[l++] = arr[r];
+    arr[r--] = t;
+}</pre>
+        `,
+            "Searching": `
+            <h3>Searching Algorithms</h3>
+            <ul>
+                <li>Linear Search — O(n)</li>
+                <li>Binary Search — O(log n), needs sorted array</li>
+            </ul>
+        `,
+            "Linear Search": `
+            <h3>Linear Search</h3>
+            <p>Check every element one by one.</p>
+            <pre class="code-box">for(int i = 0; i &lt; arr.length; i++)
+    if(arr[i] == target) { return i; }
+return -1;</pre>
+            <p>Best: O(1), Worst: O(n)</p>
+        `,
+            "Binary Search": `
+            <h3>Binary Search</h3>
+            <p>Requires a sorted array.</p>
+            <pre class="code-box">int low = 0, high = arr.length - 1;
+
+while(low &lt;= high) {
+    int mid = low + (high - low) / 2;
+
+    if(arr[mid] == target) return mid;
+    if(arr[mid] &lt; target) low = mid + 1;
+    else high = mid - 1;
+}</pre>
+            <p>Time: <b>O(log n)</b></p>
+        `,
+            "Sorting": `
+            <h3>Sorting</h3>
+            <ul>
+                <li>Bubble, Selection, Insertion — O(n²)</li>
+                <li>Merge, Quick — O(n log n)</li>
+            </ul>
+        `,
+            "Bubble Sort": `
+            <h3>Bubble Sort</h3>
+            <pre class="code-box">for(int i = 0; i &lt; n-1; i++)
+    for(int j = 0; j &lt; n-1-i; j++)
+        if(arr[j] > arr[j+1]) {
+            int t = arr[j];
+            arr[j] = arr[j+1];
+            arr[j+1] = t;
+        }</pre>
+            <p>Time: <b>O(n²)</b></p>
+        `,
+            "Selection Sort": `
+            <h3>Selection Sort</h3>
+            <pre class="code-box">for(int i = 0; i &lt; n-1; i++) {
+    int minIdx = i;
+    for(int j = i+1; j &lt; n; j++)
+        if(arr[j] &lt; arr[minIdx]) minIdx = j;
+
+    int t = arr[i];
+    arr[i] = arr[minIdx];
+    arr[minIdx] = t;
+}</pre>
+            <p>Time: <b>O(n²)</b></p>
+        `,
+            "Insertion Sort": `
+            <h3>Insertion Sort</h3>
+            <pre class="code-box">for(int i = 1; i &lt; n; i++) {
+    int key = arr[i];
+    int j = i - 1;
+
+    while(j >= 0 && arr[j] > key) {
+        arr[j+1] = arr[j];
+        j--;
+    }
+    arr[j+1] = key;
+}</pre>
+            <p>Best: O(n), Worst: O(n²)</p>
+        `,
+            "Merge Sort": `
+            <h3>Merge Sort</h3>
+            <p>Divide and conquer. Stable.</p>
+            <pre class="code-box">void mergeSort(int[] a, int l, int r) {
+    if(l >= r) return;
+    int m = l + (r - l) / 2;
+    mergeSort(a, l, m);
+    mergeSort(a, m+1, r);
+    merge(a, l, m, r);
+}</pre>
+            <p>Time: <b>O(n log n)</b>, Space: <b>O(n)</b></p>
+        `,
+            "Quick Sort": `
+            <h3>Quick Sort</h3>
+            <p>Pick pivot, partition, recurse.</p>
+            <pre class="code-box">void quickSort(int[] a, int l, int r) {
+    if(l &lt; r) {
+        int p = partition(a, l, r);
+        quickSort(a, l, p-1);
+        quickSort(a, p+1, r);
+    }
+}</pre>
+            <p>Average: O(n log n), Worst: O(n²)</p>
+        `,
+            "Practice Problems": `
+            <h3>Practice Problems</h3>
+            <ol>
+                <li>Two Sum</li>
+                <li>Reverse Linked List</li>
+                <li>Valid Parentheses</li>
+                <li>Merge Two Sorted Lists</li>
+                <li>Binary Tree Inorder</li>
+            </ol>
+        `
+        };
+        return data[topic] || getGenericContent(topic);
+    }
+
+    /* =====================================================
+       MACHINE LEARNING CONTENT
+    ===================================================== */
+
+    function getMLContent(topic) {
+        const data = {
+            "What is Machine Learning?": `
+            <h3>Machine Learning</h3>
+            <p>Branch of AI where computers learn from data instead of being explicitly programmed.</p>
+            <pre class="code-box">Area   Beds   Price
+1000    2    40L
+1500    3    60L
+2000    4    80L</pre>
+            <p>Learn pattern → predict price of new house.</p>
+        `,
+            "AI vs ML vs Deep Learning": `
+            <h3>AI vs ML vs DL</h3>
+            <pre class="code-box">AI
+ └── ML
+      └── Deep Learning</pre>
+            <ul>
+                <li>AI — broad field</li>
+                <li>ML — learns from data</li>
+                <li>DL — neural nets</li>
+            </ul>
+        `,
+            "Types of Machine Learning": `
+            <h3>Types of ML</h3>
+            <ul>
+                <li><b>Supervised</b> — labeled data</li>
+                <li><b>Unsupervised</b> — unlabeled, discover structure</li>
+                <li><b>Reinforcement</b> — learn via rewards</li>
+            </ul>
+        `,
+            "Machine Learning Workflow": `
+            <h3>ML Workflow</h3>
+            <pre class="code-box">Problem → Data → Clean → EDA → Preprocess
+→ Train/Test → Model → Evaluate → Deploy</pre>
+        `,
+            "Dataset, Features and Labels": `
+            <h3>Dataset, Features, Labels</h3>
+            <pre class="code-box">Hours  Attendance  Result
+  5        90       Pass
+  2        60       Fail</pre>
+            <ul>
+                <li>Features = inputs (X)</li>
+                <li>Label = target (y)</li>
+            </ul>
+        `,
+            "NumPy": `
+            <h3>NumPy</h3>
+            <pre class="code-box">import numpy as np
+
+arr = np.array([10, 20, 30, 40])
+print(arr.mean())</pre>
+            <p>Fast numeric arrays, backbone of ML libraries.</p>
+        `,
+            "Pandas": `
+            <h3>Pandas</h3>
+            <pre class="code-box">import pandas as pd
+
+df = pd.DataFrame({
+    "name": ["A", "B"],
+    "marks": [85, 90]
+})
+
+print(df.describe())</pre>
+        `,
+            "Matplotlib": `
+            <h3>Matplotlib</h3>
+            <pre class="code-box">import matplotlib.pyplot as plt
+
+plt.plot([1,2,3], [4,5,6])
+plt.title("Simple Plot")
+plt.show()</pre>
+        `,
+            "Reading Dataset": `
+            <h3>Reading CSV</h3>
+            <pre class="code-box">import pandas as pd
+
+df = pd.read_csv("data.csv")
+print(df.head())
+print(df.shape)</pre>
+        `,
+            "Data Cleaning": `
+            <h3>Data Cleaning</h3>
+            <ul>
+                <li>Missing values</li>
+                <li>Duplicates</li>
+                <li>Wrong types</li>
+                <li>Outliers</li>
+            </ul>
+            <pre class="code-box">print(df.isnull().sum())
+df = df.drop_duplicates()</pre>
+        `,
+            "Missing Values": `
+            <h3>Missing Values</h3>
+            <pre class="code-box">df = df.dropna()
+
+# or fill
+df["Age"] = df["Age"].fillna(df["Age"].mean())</pre>
+        `,
+            "Linear Regression": `
+            <h3>Linear Regression</h3>
+            <p>Predicts continuous values. Equation: <b>y = mx + b</b>.</p>
+            <pre class="code-box">from sklearn.linear_model import LinearRegression
+
+model = LinearRegression()
+model.fit(X_train, y_train)
+pred = model.predict(X_test)</pre>
+        `,
+            "Logistic Regression": `
+            <h3>Logistic Regression</h3>
+            <p>Used for classification, not regression despite the name.</p>
+            <pre class="code-box">from sklearn.linear_model import LogisticRegression
+
+model = LogisticRegression()
+model.fit(X_train, y_train)</pre>
+        `,
+            "Decision Tree": `
+            <h3>Decision Tree</h3>
+            <pre class="code-box">          Attendance
+          /       \\
+       High       Low
+        /           \\
+      Pass         Fail</pre>
+            <pre class="code-box">from sklearn.tree import DecisionTreeClassifier
+model = DecisionTreeClassifier().fit(X, y)</pre>
+        `,
+            "Random Forest": `
+            <h3>Random Forest</h3>
+            <p>Ensemble of decision trees.</p>
+            <pre class="code-box">from sklearn.ensemble import RandomForestClassifier
+
+model = RandomForestClassifier(n_estimators=100)
+model.fit(X, y)</pre>
+        `,
+            "What is Unsupervised Learning?": `
+            <h3>Unsupervised Learning</h3>
+            <p>No labels — discover patterns.</p>
+            <ul>
+                <li>Customer segmentation</li>
+                <li>Document grouping</li>
+                <li>Anomaly detection</li>
+            </ul>
+        `,
+            "K-Means Clustering": `
+            <h3>K-Means</h3>
+            <pre class="code-box">from sklearn.cluster import KMeans
+
+model = KMeans(n_clusters=3)
+model.fit(X)</pre>
+        `,
+            "Confusion Matrix": `
+            <h3>Confusion Matrix</h3>
+            <pre class="code-box">              Actual
+            Pos    Neg
+Pred Pos    TP     FP
+Pred Neg    FN     TN</pre>
+            <pre class="code-box">from sklearn.metrics import confusion_matrix
+print(confusion_matrix(y_test, pred))</pre>
+        `,
+            "Accuracy": `
+            <h3>Accuracy</h3>
+            <pre class="code-box">Accuracy = (TP + TN) / (TP + TN + FP + FN)</pre>
+            <pre class="code-box">from sklearn.metrics import accuracy_score
+print(accuracy_score(y_test, pred))</pre>
+        `,
+            "Overfitting and Underfitting": `
+            <h3>Fit</h3>
+            <ul>
+                <li><b>Underfit</b> — too simple</li>
+                <li><b>Good fit</b> — generalizes</li>
+                <li><b>Overfit</b> — memorizes training</li>
+            </ul>
+        `,
+            "House Price Prediction": `
+            <h3>House Price Project</h3>
+            <p>Build an end-to-end model: dataset → clean → split → LinearRegression → evaluate.</p>
+        `,
+            "Final ML Project": `
+            <h3>Final Project</h3>
+            <ul>
+                <li>Student performance</li>
+                <li>House price</li>
+                <li>Customer segmentation</li>
+                <li>Spam detection</li>
+            </ul>
+        `
+        };
+        return data[topic] || getGenericContent(topic);
+    }
+
+    /* =====================================================
+       JAVASCRIPT CONTENT
+    ===================================================== */
+
+    function getJavaScriptContent(topic) {
+        const data = {
+            "Variables": `
+            <h3>Variables</h3>
+            <pre class="code-box">let age = 21;
+const PI = 3.14;
+var legacy = "avoid";</pre>
+            <ul>
+                <li><b>let</b> — reassignable, block-scoped</li>
+                <li><b>const</b> — cannot be reassigned</li>
+                <li><b>var</b> — legacy</li>
+            </ul>
+        `,
+            "Data Types": `
+            <h3>Data Types</h3>
+            <ul>
+                <li>Primitive: number, string, boolean, null, undefined, symbol, bigint</li>
+                <li>Reference: object, array, function</li>
+            </ul>
+            <pre class="code-box">typeof 21        // "number"
+typeof "hi"      // "string"
+typeof []        // "object"</pre>
+        `,
+            "Operators": `
+            <h3>Operators</h3>
+            <pre class="code-box">10 + 3       // 13
+10 % 3       // 1
+10 === "10"  // false
+10 == "10"   // true (avoid)</pre>
+        `,
+            "Functions": `
+            <h3>Functions</h3>
+            <pre class="code-box">function greet(name) {
+    return "Hello, " + name;
+}
+
+const greet2 = name => "Hello, " + name;</pre>
+        `,
+            "DOM Basics": `
+            <h3>DOM</h3>
+            <pre class="code-box">const el = document.getElementById("title");
+el.textContent = "Updated!";
+el.style.color = "red";</pre>
+        `,
+            "Selectors": `
+            <h3>Selectors</h3>
+            <pre class="code-box">document.getElementById("id");
+document.querySelector(".card");
+document.querySelectorAll(".card");</pre>
+        `,
+            "Events": `
+            <h3>Events</h3>
+            <pre class="code-box">document.querySelector("button")
+    .addEventListener("click", () => {
+        alert("Clicked!");
+    });</pre>
+        `,
+            "Dynamic HTML": `
+            <h3>Create & Insert</h3>
+            <pre class="code-box">const li = document.createElement("li");
+li.textContent = "New item";
+document.querySelector("ul").appendChild(li);</pre>
+        `,
+            "Arrays": `
+            <h3>Arrays</h3>
+            <pre class="code-box">const nums = [10, 20, 30];
+nums.push(40);
+
+nums.forEach(n => console.log(n));</pre>
+        `,
+            "Objects": `
+            <h3>Objects</h3>
+            <pre class="code-box">const student = {
+    name: "Gaurav",
+    age: 21
+};
+
+console.log(student.name);
+student.city = "Delhi";</pre>
+        `,
+            "Array Methods": `
+            <h3>Array Methods</h3>
+            <pre class="code-box">nums.map(n => n * 2);
+nums.filter(n => n > 2);
+nums.reduce((a, b) => a + b, 0);
+nums.find(n => n === 3);</pre>
+        `,
+            "Arrow Functions": `
+            <h3>Arrow Functions</h3>
+            <pre class="code-box">const add = (a, b) => a + b;
+const square = n => n * n;</pre>
+        `,
+            "Destructuring": `
+            <h3>Destructuring</h3>
+            <pre class="code-box">const { name, age } = user;
+const [a, b] = [10, 20];</pre>
+        `,
+            "Spread Operator": `
+            <h3>Spread</h3>
+            <pre class="code-box">const merged = [...a, ...b];
+const copy = { ...obj, extra: true };</pre>
+        `,
+            "Promises": `
+            <h3>Promises</h3>
+            <pre class="code-box">fetch("https://api.example.com/data")
+    .then(res => res.json())
+    .then(data => console.log(data))
+    .catch(err => console.error(err));</pre>
+        `,
+            "Mini Project": `
+            <h3>To-Do App</h3>
+            <pre class="code-box">&lt;input id="task"&gt;
+&lt;button id="add"&gt;Add&lt;/button&gt;
+&lt;ul id="list"&gt;&lt;/ul&gt;
+
+&lt;script&gt;
+    const list = document.querySelector("#list");
+    document.querySelector("#add").onclick = () => {
+        const li = document.createElement("li");
+        li.textContent = document.querySelector("#task").value;
+        list.appendChild(li);
+    };
+&lt;/script&gt;</pre>
+        `,
+            "DOM Project": `
+            <h3>Color Changer</h3>
+            <pre class="code-box">["red","green","blue"].forEach(c => {
+    const btn = document.createElement("button");
+    btn.textContent = c;
+    btn.onclick = () => document.body.style.background = c;
+    document.body.appendChild(btn);
+});</pre>
+        `,
+            "Final Practice": `
+            <h3>Final Ideas</h3>
+            <ul>
+                <li>Calculator</li>
+                <li>Digital clock</li>
+                <li>Form validator</li>
+                <li>Notes app</li>
+            </ul>
+        `
+        };
+        return data[topic] || getGenericContent(topic);
+    }
+
+    /* =====================================================
+       SQL CONTENT
+    ===================================================== */
+
+    function getSQLContent(topic) {
+        const data = {
+            "Database Introduction": `
+            <h3>What is a Database?</h3>
+            <p>Organized collection of data managed by a DBMS.</p>
+            <ul>
+                <li>MySQL</li>
+                <li>PostgreSQL</li>
+                <li>SQLite</li>
+                <li>Oracle</li>
+            </ul>
+        `,
+            "Tables": `
+            <h3>Tables</h3>
+            <pre class="code-box">CREATE TABLE students (
+    id INT PRIMARY KEY,
+    name VARCHAR(50),
+    age INT,
+    marks INT
+);</pre>
+        `,
+            "SELECT": `
+            <h3>SELECT</h3>
+            <pre class="code-box">SELECT * FROM students;
+SELECT name, marks FROM students;</pre>
+        `,
+            "WHERE": `
+            <h3>WHERE</h3>
+            <pre class="code-box">SELECT * FROM students WHERE marks > 80;
+SELECT * FROM students WHERE age BETWEEN 18 AND 25;</pre>
+        `,
+            "ORDER BY": `
+            <h3>ORDER BY</h3>
+            <pre class="code-box">SELECT * FROM students ORDER BY marks DESC;</pre>
+        `,
+            "GROUP BY": `
+            <h3>GROUP BY</h3>
+            <pre class="code-box">SELECT department, COUNT(*)
+FROM employees
+GROUP BY department;</pre>
+        `,
+            "HAVING": `
+            <h3>HAVING</h3>
+            <pre class="code-box">SELECT department, COUNT(*)
+FROM employees
+GROUP BY department
+HAVING COUNT(*) > 5;</pre>
+        `,
+            "Aggregate Functions": `
+            <h3>Aggregates</h3>
+            <pre class="code-box">SELECT COUNT(*), AVG(marks), MAX(marks), MIN(marks) FROM students;</pre>
+        `,
+            "INNER JOIN": `
+            <h3>INNER JOIN</h3>
+            <pre class="code-box">SELECT s.name, c.title
+FROM students s
+INNER JOIN courses c ON s.course_id = c.id;</pre>
+        `,
+            "LEFT JOIN": `
+            <h3>LEFT JOIN</h3>
+            <pre class="code-box">SELECT s.name, c.title
+FROM students s
+LEFT JOIN courses c ON s.course_id = c.id;</pre>
+        `,
+            "RIGHT JOIN": `
+            <h3>RIGHT JOIN</h3>
+            <pre class="code-box">SELECT s.name, c.title
+FROM students s
+RIGHT JOIN courses c ON s.course_id = c.id;</pre>
+        `,
+            "Primary Key": `
+            <h3>Primary Key</h3>
+            <p>Uniquely identifies each row.</p>
+            <pre class="code-box">CREATE TABLE users (
+    id INT PRIMARY KEY,
+    email VARCHAR(100) UNIQUE
+);</pre>
+        `,
+            "Foreign Key": `
+            <h3>Foreign Key</h3>
+            <pre class="code-box">CREATE TABLE orders (
+    id INT PRIMARY KEY,
+    user_id INT,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);</pre>
+        `,
+            "Normalization": `
+            <h3>Normalization</h3>
+            <ul>
+                <li>1NF — atomic values</li>
+                <li>2NF — no partial dependency</li>
+                <li>3NF — no transitive dependency</li>
+            </ul>
+        `,
+            "Query Practice": `
+            <h3>Practice Queries</h3>
+            <ol>
+                <li>Employees with salary > 50000</li>
+                <li>Count per department</li>
+                <li>Average salary per department</li>
+                <li>Top 5 highest-paid</li>
+            </ol>
+        `,
+            "Database Project": `
+            <h3>Library System</h3>
+            <p>Design tables: books, authors, members, loans.</p>
+        `
+        };
+        return data[topic] || getGenericContent(topic);
+    }
+
+    /* =====================================================
+       SPRING BOOT CONTENT
+    ===================================================== */
+
+    function getSpringBootContent(topic) {
+        const data = {
+            "Spring Introduction": `
+            <h3>Spring & Spring Boot</h3>
+            <p>Spring is a Java framework. Spring Boot simplifies setup and configuration.</p>
+        `,
+            "Spring Boot Setup": `
+            <h3>Setup</h3>
+            <ol>
+                <li>Go to start.spring.io</li>
+                <li>Choose Maven, Java version, deps</li>
+                <li>Download and open</li>
+            </ol>
+            <pre class="code-box">@SpringBootApplication
+public class Application {
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
+}</pre>
+        `,
+            "Dependency Injection": `
+            <h3>DI</h3>
+            <pre class="code-box">@Service
+public class UserService {
+    private final UserRepository repo;
+
+    public UserService(UserRepository repo) {
+        this.repo = repo;
+    }
+}</pre>
+        `,
+            "IoC": `
+            <h3>Inversion of Control</h3>
+            <p>Framework controls object lifecycle and flow.</p>
+        `,
+            "Spring Beans": `
+            <h3>Beans</h3>
+            <pre class="code-box">@Component
+public class GreetingService {
+    public String greet() { return "Hello!"; }
+}</pre>
+        `,
+            "REST API": `
+            <h3>REST</h3>
+            <pre class="code-box">@RestController
+@RequestMapping("/api/users")
+public class UserController {
+    @GetMapping
+    public List&lt;User&gt; getAll() { ... }
+}</pre>
+        `,
+            "Controllers": `
+            <h3>Controllers</h3>
+            <pre class="code-box">@RestController
+public class HelloController {
+    @GetMapping("/hello")
+    public String hello() { return "Hello"; }
+}</pre>
+        `,
+            "Services": `
+            <h3>Services</h3>
+            <pre class="code-box">@Service
+public class UserService {
+    public User findById(Long id) { ... }
+}</pre>
+        `,
+            "Repositories": `
+            <h3>Repositories</h3>
+            <pre class="code-box">public interface UserRepository extends JpaRepository&lt;User, Long&gt; {
+    User findByEmail(String email);
+}</pre>
+        `,
+            "MySQL Integration": `
+            <h3>MySQL</h3>
+            <pre class="code-box">spring.datasource.url=jdbc:mysql://localhost:3306/mydb
+spring.datasource.username=root
+spring.jpa.hibernate.ddl-auto=update</pre>
+        `,
+            "JPA": `
+            <h3>JPA Entity</h3>
+            <pre class="code-box">@Entity
+public class User {
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
+}</pre>
+        `,
+            "Hibernate": `
+            <h3>Hibernate</h3>
+            <p>Popular JPA implementation.</p>
+        `,
+            "Authentication": `
+            <h3>Spring Security</h3>
+            <pre class="code-box">@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.authorizeHttpRequests(auth -&gt; auth
+            .requestMatchers("/public/**").permitAll()
+            .anyRequest().authenticated());
+        return http.build();
+    }
+}</pre>
+        `
+        };
+        return data[topic] || getGenericContent(topic);
+    }
+
+    /* =====================================================
+       REACT CONTENT
+    ===================================================== */
+
+    function getReactContent(topic) {
+        const data = {
+            "React Introduction": `
+            <h3>What is React?</h3>
+            <p>A JavaScript library for building UIs from reusable components.</p>
+            <ul>
+                <li>Components</li>
+                <li>Props</li>
+                <li>State</li>
+                <li>Hooks</li>
+            </ul>
+        `,
+            "Components": `
+            <h3>Components</h3>
+            <pre class="code-box">function Welcome() {
+    return &lt;h1&gt;Hello React!&lt;/h1&gt;;
+}
+
+export default Welcome;</pre>
+        `,
+            "Props": `
+            <h3>Props</h3>
+            <pre class="code-box">function Greeting({ name }) {
+    return &lt;p&gt;Hello, {name}!&lt;/p&gt;;
+}
+
+&lt;Greeting name="Gaurav" /&gt;</pre>
+        `,
+            "State": `
+            <h3>State</h3>
+            <pre class="code-box">import { useState } from "react";
+
+function Counter() {
+    const [count, setCount] = useState(0);
+
+    return &lt;button onClick={() =&gt; setCount(count + 1)}&gt;{count}&lt;/button&gt;;
+}</pre>
+        `,
+            "Event Handling": `
+            <h3>Events</h3>
+            <pre class="code-box">function Clicker() {
+    function handleClick() { alert("Clicked!"); }
+    return &lt;button onClick={handleClick}&gt;Click&lt;/button&gt;;
+}</pre>
+        `,
+            "Conditional Rendering": `
+            <h3>Conditional Rendering</h3>
+            <pre class="code-box">{isLoggedIn ? &lt;Dashboard /&gt; : &lt;Login /&gt;}
+{count &gt; 0 &amp;&amp; &lt;p&gt;Count is positive&lt;/p&gt;}</pre>
+        `,
+            "Lists and Keys": `
+            <h3>Lists</h3>
+            <pre class="code-box">{items.map(item =&gt; (
+    &lt;li key={item.id}&gt;{item.name}&lt;/li&gt;
+))}</pre>
+        `,
+            "Forms": `
+            <h3>Forms</h3>
+            <pre class="code-box">const [name, setName] = useState("");
+
+&lt;input
+    value={name}
+    onChange={e =&gt; setName(e.target.value)}
+/&gt;</pre>
+        `,
+            "useEffect": `
+            <h3>useEffect</h3>
+            <pre class="code-box">import { useEffect, useState } from "react";
+
+function Users() {
+    const [users, setUsers] = useState([]);
+
+    useEffect(() =&gt; {
+        fetch("/api/users")
+            .then(res =&gt; res.json())
+            .then(setUsers);
+    }, []);
+
+    return &lt;ul&gt;{users.map(u =&gt; &lt;li key={u.id}&gt;{u.name}&lt;/li&gt;)}&lt;/ul&gt;;
+}</pre>
+        `,
+            "React Router": `
+            <h3>React Router</h3>
+            <pre class="code-box">import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+&lt;BrowserRouter&gt;
+    &lt;Routes&gt;
+        &lt;Route path="/" element={&lt;Home /&gt;} /&gt;
+        &lt;Route path="/about" element={&lt;About /&gt;} /&gt;
+    &lt;/Routes&gt;
+&lt;/BrowserRouter&gt;</pre>
+        `
+        };
+        return data[topic] || getGenericContent(topic);
+    }
+
+    /* =====================================================
+       WEB DEVELOPMENT CONTENT
+    ===================================================== */
+
+    function getWebDevContent(topic) {
+        const data = {
+            "HTML Basics": `
+            <h3>HTML</h3>
+            <pre class="code-box">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;&lt;title&gt;Page&lt;/title&gt;&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Hello&lt;/h1&gt;
+    &lt;p&gt;A paragraph.&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+        `,
+            "HTML Forms": `
+            <h3>Forms</h3>
+            <pre class="code-box">&lt;form&gt;
+    &lt;input type="text" placeholder="Name"&gt;
+    &lt;input type="email" placeholder="Email"&gt;
+    &lt;button type="submit"&gt;Submit&lt;/button&gt;
+&lt;/form&gt;</pre>
+        `,
+            "CSS Basics": `
+            <h3>CSS</h3>
+            <pre class="code-box">h1 {
+    color: navy;
+    font-size: 32px;
+}
+
+.card {
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+}</pre>
+        `,
+            "Flexbox": `
+            <h3>Flexbox</h3>
+            <pre class="code-box">.row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}</pre>
+        `,
+            "Grid": `
+            <h3>CSS Grid</h3>
+            <pre class="code-box">.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}</pre>
+        `,
+            "Responsive Design": `
+            <h3>Media Queries</h3>
+            <pre class="code-box">@media (max-width: 768px) {
+    .grid { grid-template-columns: 1fr; }
+}</pre>
+        `,
+            "JavaScript Basics": `
+            <h3>JS in Browser</h3>
+            <pre class="code-box">let count = 0;
+
+function increment() {
+    count++;
+    document.getElementById("count").textContent = count;
+}</pre>
+        `,
+            "DOM": `
+            <h3>DOM</h3>
+            <pre class="code-box">const el = document.querySelector(".title");
+el.textContent = "Updated";
+el.style.color = "red";</pre>
+        `,
+            "Events": `
+            <h3>Events</h3>
+            <pre class="code-box">document.querySelector("button")
+    .addEventListener("click", () => {
+        alert("Clicked");
+    });</pre>
+        `,
+            "Fetch API": `
+            <h3>Fetch</h3>
+            <pre class="code-box">fetch("https://api.example.com/users")
+    .then(res => res.json())
+    .then(data => console.log(data));</pre>
+        `,
+            "Projects": `
+            <h3>Web Dev Projects</h3>
+            <ul>
+                <li>Portfolio site</li>
+                <li>To-do app</li>
+                <li>Weather app</li>
+                <li>Quiz app</li>
+            </ul>
+        `
+        };
+        return data[topic] || getGenericContent(topic);
+    }
+
+    /* =====================================================
+       DATA SCIENCE CONTENT
+    ===================================================== */
+
+    function getDataScienceContent(topic) {
+        const data = {
+            "Introduction to Data Science": `
+            <h3>What is Data Science?</h3>
+            <p>Extracting insights from data using statistics + programming + domain knowledge.</p>
+            <ol>
+                <li>Collect</li>
+                <li>Clean</li>
+                <li>Analyze</li>
+                <li>Visualize</li>
+                <li>Communicate</li>
+            </ol>
+        `,
+            "Python for Data Science": `
+            <h3>Python Libraries</h3>
+            <ul>
+                <li>NumPy — numbers</li>
+                <li>Pandas — dataframes</li>
+                <li>Matplotlib / Seaborn — visualization</li>
+                <li>Scikit-learn — ML</li>
+            </ul>
+            <pre class="code-box">import pandas as pd
+df = pd.read_csv("data.csv")
+print(df.head())</pre>
+        `,
+            "NumPy": `
+            <h3>NumPy</h3>
+            <pre class="code-box">import numpy as np
+arr = np.array([1, 2, 3, 4])
+print(arr.mean())</pre>
+        `,
+            "Pandas": `
+            <h3>Pandas</h3>
+            <pre class="code-box">import pandas as pd
+df = pd.DataFrame({"name": ["A","B"], "marks": [85,90]})
+print(df.describe())</pre>
+        `,
+            "Data Cleaning": `
+            <h3>Data Cleaning</h3>
+            <pre class="code-box">df.dropna()
+df.drop_duplicates()
+df.fillna(0)</pre>
+        `,
+            "Data Visualization": `
+            <h3>Visualization</h3>
+            <pre class="code-box">import matplotlib.pyplot as plt
+
+plt.plot([1,2,3], [4,5,6])
+plt.title("Simple Plot")
+plt.show()</pre>
+        `,
+            "Statistics": `
+            <h3>Statistics</h3>
+            <ul>
+                <li>Mean, median, mode</li>
+                <li>Variance, std dev</li>
+                <li>Correlation</li>
+            </ul>
+            <pre class="code-box">import numpy as np
+data = [10, 20, 30, 40]
+print(np.mean(data))
+print(np.std(data))</pre>
+        `,
+            "Exploratory Data Analysis": `
+            <h3>EDA</h3>
+            <ul>
+                <li>Summary stats</li>
+                <li>Distributions</li>
+                <li>Correlation heatmap</li>
+                <li>Outlier detection</li>
+            </ul>
+        `,
+            "Machine Learning Basics": `
+            <h3>ML Basics</h3>
+            <ul>
+                <li>Supervised</li>
+                <li>Unsupervised</li>
+                <li>Reinforcement</li>
+            </ul>
+        `,
+            "Projects": `
+            <h3>Projects</h3>
+            <ul>
+                <li>Sales analysis</li>
+                <li>Movie recommendation</li>
+                <li>Customer churn prediction</li>
+            </ul>
+        `
+        };
+        return data[topic] || getGenericContent(topic);
+    }
+
+    /* =====================================================
+       ANDROID CONTENT
+    ===================================================== */
+
+    function getAndroidContent(topic) {
+        const data = {
+            "Android Introduction": `
+            <h3>What is Android?</h3>
+            <p>Mobile OS by Google based on the Linux kernel.</p>
+            <ul>
+                <li>Java</li>
+                <li>Kotlin</li>
+            </ul>
+        `,
+            "Android Studio": `
+            <h3>Android Studio</h3>
+            <ul>
+                <li>Project view</li>
+                <li>Editor</li>
+                <li>Layout editor</li>
+                <li>Emulator</li>
+            </ul>
+        `,
+            "Layouts": `
+            <h3>Layouts</h3>
+            <ul>
+                <li>LinearLayout</li>
+                <li>RelativeLayout</li>
+                <li>ConstraintLayout</li>
+            </ul>
+            <pre class="code-box">&lt;LinearLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"&gt;
+
+    &lt;TextView
+        android:text="Hello"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" /&gt;
+
+&lt;/LinearLayout&gt;</pre>
+        `,
+            "Activities": `
+            <h3>Activities</h3>
+            <pre class="code-box">public class MainActivity extends AppCompatActivity {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+    }
+}</pre>
+        `,
+            "Intents": `
+            <h3>Intents</h3>
+            <pre class="code-box">Intent intent = new Intent(this, SecondActivity.class);
+startActivity(intent);</pre>
+        `,
+            "RecyclerView": `
+            <h3>RecyclerView</h3>
+            <ul>
+                <li>Adapter</li>
+                <li>ViewHolder</li>
+                <li>LayoutManager</li>
+            </ul>
+        `,
+            "Android Project": `
+            <h3>Notes App</h3>
+            <ul>
+                <li>Add a note</li>
+                <li>List notes</li>
+                <li>Delete a note</li>
+            </ul>
+        `
+        };
+        return data[topic] || getGenericContent(topic);
+    }
+
+    /* =====================================================
+       GENERIC CONTENT
+    ===================================================== */
+
+    function getGenericContent(topic) {
+        return `
+        <p>Learn the fundamentals of <b>${escapeHtml(topic)}</b> with examples and practice.</p>
+        <h3>Concept</h3>
+        <p>Understand the basic definition, purpose and practical use of this topic.</p>
+        <h3>Example</h3>
+        <pre class="code-box">// Practice ${escapeHtml(topic)}
+
+Start with a simple example
+and gradually solve more problems.</pre>
+    `;
+    }
+
+    /* =====================================================
+       COMPLETE LESSON — backend ko save karo
+    ===================================================== */
+
+    async function toggleComplete() {
+        if (completed.includes(currentIndex)) {
+            completed = completed.filter(i => i !== currentIndex);
+        } else {
+            completed.push(currentIndex);
+        }
+        saveData(progressKey, completed);
+        render();
+
+        try {
+            await fetch("/api/progress/update", {
+                method: "POST",
+                headers: authHeaders(),
+                body: JSON.stringify({
+                    skill: currentSkill,
+                    completedLessons: completed,
+                    totalLessons: lessons.length
+                })
+            });
+        } catch (e) {
+            console.warn("Could not save progress:", e);
+        }
+    }
+
+    /* =====================================================
+       NEXT
+    ===================================================== */
+
+    async function nextLesson() {
+        if (currentIndex === lessons.length - 1) {
+            if (completed.length !== lessons.length) {
+                alert("Please complete all course lessons before starting the assessment.");
+                return;
+            }
+            try {
+                await fetch("/api/progress/update", {
+                    method: "POST",
+                    headers: authHeaders(),
+                    body: JSON.stringify({
+                        skill: currentSkill,
+                        completedLessons: completed,
+                        totalLessons: lessons.length
+                    })
+                });
+            } catch (e) {
+                console.warn("Could not sync progress:", e);
+            }
+            window.location.href = "assessment.html";
+            return;
+        }
+        currentIndex++;
+        render();
+    }
+
+    /* =====================================================
+       PREVIOUS
+    ===================================================== */
+
+    function previousLesson() {
+        if (currentIndex > 0) {
+            currentIndex--;
+            render();
+        }
+    }
+
+    /* =====================================================
+       PROGRESS
+    ===================================================== */
+
+    function updateProgress() {
+        const percentage = Math.round((completed.length / lessons.length) * 100);
+        document.getElementById("progressText").textContent = percentage + "%";
+        document.getElementById("progressBar").style.width = percentage + "%";
+        saveData(progressKey, completed);
+    }
+
+    /* =====================================================
+       RENDER
+    ===================================================== */
+
+    function render() {
+        renderModules();
+        renderLesson();
+        updateProgress();
+    }
+
+    /* =====================================================
+       ESCAPE HTML
+    ===================================================== */
+
+    function escapeHtml(value) {
+        return String(value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+    /* =====================================================
+       ✅ SKILL SWITCHER — switch between learning skills
+    ===================================================== */
+
+    function populateSkillPicker() {
+        const picker = document.getElementById("skillPicker");
+        if (!picker) return;
+
+        /* Build the list of skills the user can choose from */
+        let skillList = learningSkills.length ? learningSkills : Object.keys(courseData);
+
+        picker.innerHTML = "";
+
+        skillList.forEach(skill => {
+            const opt = document.createElement("option");
+            opt.value = skill;
+            opt.textContent = skill;
+            if (skill === currentSkill) opt.selected = true;
+            picker.appendChild(opt);
+        });
+    }
+
+    function switchSkill(newSkill) {
+        if (!newSkill || newSkill === currentSkill) return;
+
+        localStorage.setItem(
+            "skillBuddyCurrentLearningSkill",
+            newSkill
+        );
+
+        /* Reload so everything rebuilds for the new skill */
+        window.location.reload();
+    }
+
+    /* =====================================================
+       LOGOUT
+    ===================================================== */
+
+    document.getElementById("logoutBtn").addEventListener("click", function () {
+        localStorage.removeItem("skillBuddyToken");
+        localStorage.removeItem("skillBuddyUser");
+        window.location.href = "/index.html";
+    });
+
+    /* =====================================================
+       START — load progress, then render
+    ===================================================== */
+
+    loadProgress().then(() => {
+        populateSkillPicker();
+        render();
+    });
+
+</script>
+
+</body>
+</html>

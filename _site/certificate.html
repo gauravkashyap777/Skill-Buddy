@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Skill Buddy | Certificate</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="flow.css">
+
+    <style>
+        .certificate-meta {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .certificate-meta div {
+            padding: 14px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: #fafbff;
+        }
+
+        .certificate-meta strong {
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 5px;
+        }
+
+        .certificate-meta span {
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .certificate-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 7px 14px;
+            border-radius: 999px;
+            background: #ecfdf5;
+            color: #059669;
+            font-size: 12px;
+            font-weight: 700;
+            margin-top: 10px;
+        }
+
+        .certificate-message {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .certificate-message h1 {
+            margin-bottom: 8px;
+        }
+
+        .certificate-message p {
+            margin: 0;
+        }
+
+        @media (max-width: 700px) {
+            .certificate {
+                padding: 35px 20px;
+            }
+
+            .certificate h1 {
+                font-size: 32px;
+            }
+
+            .certificate-course {
+                font-size: 19px;
+            }
+
+            .certificate-meta {
+                grid-template-columns: 1fr;
+            }
+
+            .certificate-footer {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+
+        @media print {
+
+            .flow-navbar,
+            .flow-progress-wrapper,
+            .certificate-actions {
+                display: none !important;
+            }
+
+            body {
+                background: white !important;
+            }
+
+            .flow-main {
+                padding: 0 !important;
+            }
+
+            .certificate {
+                box-shadow: none !important;
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+
+
+<body class="flow-page">
+
+
+<!-- ================= NAVBAR ================= -->
+
+<header class="flow-navbar">
+
+    <div class="flow-nav-container">
+
+        <a href="dashboard.html" class="flow-logo">
+            <span class="flow-mark">SB</span>
+            <span>Skill<span>Buddy</span></span>
+        </a>
+
+
+        <div class="flow-user-area">
+
+            <div class="flow-user-avatar">
+                👤
+            </div>
+
+            <div class="flow-user-info">
+                <span>Certificate For</span>
+                <strong id="userName">Learner</strong>
+            </div>
+
+            <button
+                    class="flow-logout-btn"
+                    onclick="logout()">
+                Logout
+            </button>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+
+<!-- ================= PROGRESS ================= -->
+
+<div class="flow-progress-wrapper">
+
+    <div class="flow-progress">
+
+        <div class="flow-step">
+            <span class="flow-step-number">1</span>
+            Buddy
+        </div>
+
+        <span class="flow-line"></span>
+
+        <div class="flow-step">
+            <span class="flow-step-number">2</span>
+            Course
+        </div>
+
+        <span class="flow-line"></span>
+
+        <div class="flow-step">
+            <span class="flow-step-number">3</span>
+            Assessment
+        </div>
+
+        <span class="flow-line"></span>
+
+        <div class="flow-step">
+            <span class="flow-step-number">4</span>
+            Feedback
+        </div>
+
+        <span class="flow-line"></span>
+
+        <div class="flow-step active">
+            <span class="flow-step-number">5</span>
+            Certificate
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- ================= MAIN ================= -->
+
+<main class="flow-main">
+
+    <div class="flow-container">
+
+
+        <div class="certificate-message">
+
+            <span class="flow-badge">
+                Step 5 • Certificate
+            </span>
+
+            <h1>
+                Congratulations! 🎉
+            </h1>
+
+            <p>
+                You successfully completed your learning journey.
+            </p>
+
+            <div class="certificate-status">
+                ✓ Course Completed
+            </div>
+
+        </div>
+
+
+
+        <!-- ================= CERTIFICATE ================= -->
+
+        <div class="certificate-wrapper">
+
+            <section class="certificate">
+
+
+                <div class="certificate-badge">
+                    🎓
+                </div>
+
+
+                <div class="certificate-small">
+                    Skill Buddy
+                </div>
+
+
+                <h1>
+                    Certificate of Completion
+                </h1>
+
+
+                <p>
+                    This certificate is proudly presented to
+                </p>
+
+
+                <div
+                        class="certificate-name"
+                        id="certificateName">
+                    Learner
+                </div>
+
+
+                <p>
+                    for successfully completing the course
+                </p>
+
+
+                <div
+                        class="certificate-course"
+                        id="courseTitle">
+                    Java Programming
+                </div>
+
+
+                <p>
+                    and successfully passing the assessment
+                </p>
+
+
+                <!-- ================= META ================= -->
+
+                <div class="certificate-meta">
+
+                    <div>
+
+                        <strong>
+                            Assessment Score
+                        </strong>
+
+                        <span id="score">
+                            --
+                        </span>
+
+                    </div>
+
+
+                    <div>
+
+                        <strong>
+                            Mentor
+                        </strong>
+
+                        <span id="mentor">
+                            Skill Buddy Mentor
+                        </span>
+
+                    </div>
+
+
+                    <div>
+
+                        <strong>
+                            Completion Date
+                        </strong>
+
+                        <span id="completionDate">
+                            --
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- ================= FOOTER ================= -->
+
+                <div class="certificate-footer">
+
+                    <div>
+
+                        <strong>
+                            Certificate ID
+                        </strong>
+
+                        <span id="certificateId">
+                            --
+                        </span>
+
+                    </div>
+
+
+                    <div>
+
+                        <strong>
+                            Platform
+                        </strong>
+
+                        <span>
+                            Skill Buddy
+                        </span>
+
+                    </div>
+
+
+                    <div>
+
+                        <strong>
+                            Status
+                        </strong>
+
+                        <span>
+                            Verified Completion
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </div>
+
+
+
+        <!-- ================= ACTIONS ================= -->
+
+        <div
+                class="certificate-actions"
+                style="
+                display:flex;
+                justify-content:center;
+                gap:12px;
+                margin-top:25px;
+                flex-wrap:wrap;
+            "
+        >
+
+            <button
+                    class="btn-flow btn-soft-flow"
+                    onclick="window.print()">
+
+                🖨 Print / Save PDF
+
+            </button>
+
+
+            <button
+                    class="btn-flow btn-primary-flow"
+                    onclick="continueToExchange()">
+
+                Continue →
+
+            </button>
+
+        </div>
+
+
+    </div>
+
+</main>
+
+
+
+<script>
+
+    /* =====================================================
+       USER
+    ===================================================== */
+
+    const sessionUser =
+        sessionStorage.getItem("skillBuddyUser");
+
+    const localUser =
+        localStorage.getItem("skillBuddyUser");
+
+    let user = null;
+
+
+    try {
+
+        user =
+            JSON.parse(sessionUser || localUser || "{}");
+
+    } catch (error) {
+
+        user = {};
+
+    }
+
+
+    const username =
+        user.username ||
+        user.name ||
+        "Learner";
+
+
+    document.getElementById("userName").textContent =
+        username;
+
+    document.getElementById("certificateName").textContent =
+        username;
+
+
+
+    /* =====================================================
+       ✅ EDIT 1: AUTH HELPERS (NEW)
+    ===================================================== */
+
+    function getToken() {
+        return localStorage.getItem("skillBuddyToken");
+    }
+
+    function authHeaders() {
+        return {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + getToken()
+        };
+    }
+
+
+
+    /* =====================================================
+       CURRENT LEARNING SKILL
+    ===================================================== */
+
+    let currentSkill =
+        localStorage.getItem(
+            "skillBuddyCurrentLearningSkill"
+        );
+
+
+    if (!currentSkill) {
+
+        try {
+
+            const learnSkills =
+                JSON.parse(
+                    localStorage.getItem(
+                        "skillBuddyLearnSkills"
+                    )
+                ) || [];
+
+            currentSkill =
+                learnSkills[0] || "";
+
+        } catch (error) {
+
+            currentSkill = "";
+
+        }
+
+    }
+
+
+    if (!currentSkill) {
+
+        try {
+
+            const skills =
+                JSON.parse(
+                    localStorage.getItem(
+                        "skillBuddySkills"
+                    )
+                ) || [];
+
+            currentSkill =
+                skills[0] || "";
+
+        } catch (error) {
+
+            currentSkill = "";
+
+        }
+
+    }
+
+
+    if (!currentSkill) {
+        currentSkill = "Java";
+    }
+
+
+
+    /* =====================================================
+       COURSE TITLE
+    ===================================================== */
+
+    const courseTitles = {
+
+        "Java":
+            "Java Programming",
+
+        "Python":
+            "Python Programming",
+
+        "Data Structures":
+            "Data Structures & Algorithms",
+
+        "DSA":
+            "Data Structures & Algorithms",
+
+        "JavaScript":
+            "JavaScript Programming",
+
+        "SQL":
+            "SQL & Database",
+
+        "Machine Learning":
+            "Machine Learning",
+
+        "Data Science":
+            "Data Science",
+
+        "Spring Boot":
+            "Spring Boot Development"
+
+    };
+
+
+    const courseTitle =
+        courseTitles[currentSkill] ||
+        `${currentSkill} Course`;
+
+
+    document.getElementById("courseTitle").textContent =
+        courseTitle;
+
+
+
+    /* =====================================================
+       ASSESSMENT SCORE
+    ===================================================== */
+
+    let assessmentResult = null;
+
+
+    try {
+
+        assessmentResult =
+            JSON.parse(
+                localStorage.getItem(
+                    "skillBuddyAssessmentResult"
+                )
+            );
+
+    } catch (error) {
+
+        assessmentResult = null;
+
+    }
+
+
+    let score =
+        localStorage.getItem(
+            "skillBuddyScore"
+        );
+
+
+    if (
+        assessmentResult &&
+        assessmentResult.percentage !== undefined
+    ) {
+
+        score =
+            assessmentResult.percentage;
+
+    }
+
+
+    if (score === null || score === "") {
+        score = 0;
+    }
+
+
+    document.getElementById("score").textContent =
+        score + "%";
+
+
+
+    /* =====================================================
+       MENTOR
+    ===================================================== */
+
+    let mentor = null;
+
+
+    try {
+
+        mentor =
+            JSON.parse(
+                localStorage.getItem(
+                    "skillBuddyMentor"
+                )
+            );
+
+    } catch (error) {
+
+        mentor = null;
+
+    }
+
+
+    if (!mentor) {
+
+        try {
+
+            mentor =
+                JSON.parse(
+                    localStorage.getItem(
+                        "skillBuddySelectedBuddy"
+                    )
+                );
+
+        } catch (error) {
+
+            mentor = null;
+
+        }
+
+    }
+
+
+    let mentorName = "Skill Buddy Mentor";
+
+
+    if (mentor) {
+
+        if (typeof mentor === "string") {
+
+            mentorName = mentor;
+
+        } else {
+
+            mentorName =
+                mentor.name ||
+                mentor.mentor ||
+                mentor.username ||
+                "Skill Buddy Mentor";
+
+        }
+
+    }
+
+
+    document.getElementById("mentor").textContent =
+        mentorName;
+
+
+
+    /* =====================================================
+       COMPLETION DATE
+    ===================================================== */
+
+    let completionDate = null;
+
+
+    if (
+        assessmentResult &&
+        assessmentResult.completedAt
+    ) {
+
+        completionDate =
+            new Date(
+                assessmentResult.completedAt
+            );
+
+    }
+
+
+    if (
+        !completionDate ||
+        isNaN(completionDate.getTime())
+    ) {
+
+        completionDate = new Date();
+
+    }
+
+
+    document.getElementById(
+        "completionDate"
+    ).textContent =
+        completionDate.toLocaleDateString(
+            "en-IN",
+            {
+                day: "2-digit",
+                month: "short",
+                year: "numeric"
+            }
+        );
+
+
+
+    /* =====================================================
+       ✅ EDIT 2: CERTIFICATE — generate/load from backend
+       (replaces the old localStorage-only certificateId block)
+    ===================================================== */
+
+    async function syncCertificate() {
+
+        if (!getToken() || !currentSkill) {
+            return null;
+        }
+
+        try {
+
+            const generated =
+                await fetch(
+                    "/api/certificate/generate",
+                    {
+                        method: "POST",
+                        headers: authHeaders(),
+                        body: JSON.stringify({
+                            skill: currentSkill
+                        })
+                    }
+                );
+
+            if (!generated.ok) {
+                console.warn(
+                    "Certificate generate failed:",
+                    generated.status
+                );
+                return null;
+            }
+
+            const cert = await generated.json();
+
+            if (cert) {
+
+                if (cert.certificateId) {
+                    document.getElementById(
+                        "certificateId"
+                    ).textContent = cert.certificateId;
+                }
+
+                if (cert.studentName) {
+                    document.getElementById(
+                        "certificateName"
+                    ).textContent = cert.studentName;
+                }
+
+                if (cert.courseTitle) {
+                    document.getElementById(
+                        "courseTitle"
+                    ).textContent = cert.courseTitle;
+                }
+
+                if (cert.mentorName) {
+                    document.getElementById(
+                        "mentor"
+                    ).textContent = cert.mentorName;
+                }
+
+                if (cert.score != null) {
+                    document.getElementById(
+                        "score"
+                    ).textContent = cert.score + "%";
+                }
+
+                if (cert.completedAt) {
+                    const d = new Date(cert.completedAt);
+                    if (!isNaN(d.getTime())) {
+                        document.getElementById(
+                            "completionDate"
+                        ).textContent =
+                            d.toLocaleDateString(
+                                "en-IN",
+                                {
+                                    day: "2-digit",
+                                    month: "short",
+                                    year: "numeric"
+                                }
+                            );
+                    }
+                }
+
+                /* local mirror for printing later */
+                localStorage.setItem(
+                    "skillBuddyCertificateId",
+                    cert.certificateId || ""
+                );
+
+            }
+
+            return cert;
+
+        } catch (e) {
+
+            console.warn(
+                "Certificate sync failed:",
+                e
+            );
+
+            return null;
+
+        }
+
+    }
+
+
+
+    /* =====================================================
+       ✅ EDIT 3: SAVE COMPLETION + SYNC CERTIFICATE TO DB
+    ===================================================== */
+
+    localStorage.setItem(
+        "skillBuddyCompletedCourse",
+        currentSkill
+    );
+
+
+    localStorage.setItem(
+        "skillBuddyCourseCompleted",
+        "true"
+    );
+
+
+    /* Fire the backend certificate generation on page load */
+    syncCertificate();
+
+
+
+    /* =====================================================
+       CONTINUE
+    ===================================================== */
+
+    function continueToExchange() {
+
+        window.location.href =
+            "skill-exchange.html";
+
+    }
+
+
+
+    /* =====================================================
+       LOGOUT
+    ===================================================== */
+
+    function logout() {
+
+        sessionStorage.removeItem(
+            "skillBuddyUser"
+        );
+
+        localStorage.removeItem(
+            "skillBuddyUser"
+        );
+
+        localStorage.removeItem(
+            "skillBuddyToken"
+        );
+
+        window.location.href =
+            "index.html";
+
+    }
+
+</script>
+
+</body>
+
+</html>

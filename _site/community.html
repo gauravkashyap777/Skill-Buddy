@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Skill Buddy | Community</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="flow.css">
+
+    <style>
+        .community-hero {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .community-hero h1 {
+            margin: 12px 0 8px;
+        }
+
+        .community-hero p {
+            color: var(--muted);
+        }
+
+        .community-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 320px;
+            gap: 25px;
+            align-items: start;
+        }
+
+        .post-create,
+        .community-post,
+        .community-sidebar-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            box-shadow: var(--shadow);
+        }
+
+        .post-create {
+            padding: 22px;
+            margin-bottom: 20px;
+        }
+
+        .post-create h2 {
+            margin-top: 0;
+        }
+
+        .post-create textarea {
+            width: 100%;
+            min-height: 110px;
+            padding: 14px;
+            box-sizing: border-box;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            resize: vertical;
+            outline: none;
+            font-family: inherit;
+        }
+
+        .post-create textarea:focus {
+            border-color: var(--primary);
+        }
+
+        .post-create-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 12px;
+        }
+
+        .community-post {
+            padding: 22px;
+            margin-bottom: 18px;
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .post-avatar {
+            width: 44px;
+            height: 44px;
+            display: grid;
+            place-items: center;
+            border-radius: 13px;
+            background: #f0efff;
+            font-size: 20px;
+        }
+
+        .post-user {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .post-user strong {
+            font-size: 14px;
+        }
+
+        .post-user span {
+            color: var(--muted);
+            font-size: 11px;
+            margin-top: 3px;
+        }
+
+        .community-post h3 {
+            margin: 18px 0 8px;
+            font-size: 17px;
+        }
+
+        .community-post > p {
+            color: #475569;
+            line-height: 1.7;
+            font-size: 14px;
+        }
+
+        .post-skill {
+            display: inline-block;
+            padding: 6px 10px;
+            margin-top: 8px;
+            border-radius: 999px;
+            background: #f0efff;
+            color: var(--primary);
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .post-actions {
+            display: flex;
+            gap: 18px;
+            margin-top: 18px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border);
+        }
+
+        .post-action {
+            border: 0;
+            background: transparent;
+            cursor: pointer;
+            color: #64748b;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .post-action:hover {
+            color: var(--primary);
+        }
+
+        .comments {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border);
+        }
+
+        .comment {
+            padding: 10px 12px;
+            margin-top: 8px;
+            border-radius: 10px;
+            background: #f8f9fd;
+            font-size: 13px;
+        }
+
+        .comment strong {
+            margin-right: 5px;
+        }
+
+        .comment-box {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .comment-box input {
+            flex: 1;
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            outline: none;
+        }
+
+        .comment-box button {
+            border: 0;
+            border-radius: 9px;
+            padding: 0 14px;
+            background: var(--primary);
+            color: white;
+            cursor: pointer;
+        }
+
+        .community-sidebar-card {
+            padding: 22px;
+            margin-bottom: 18px;
+        }
+
+        .community-sidebar-card h3 {
+            margin-top: 0;
+        }
+
+        .skill-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            padding: 11px 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 13px;
+        }
+
+        .skill-row:last-child {
+            border-bottom: 0;
+        }
+
+        .skill-label {
+            color: var(--muted);
+            font-size: 11px;
+            display: block;
+        }
+
+        .skill-value {
+            font-weight: 700;
+        }
+
+        .activity-item {
+            padding: 11px 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .activity-item:last-child {
+            border-bottom: 0;
+        }
+
+        .community-status {
+            display: none;
+            margin-bottom: 18px;
+            padding: 13px 15px;
+            border-radius: 12px;
+            background: #ecfdf5;
+            color: #047857;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .empty-state {
+            padding: 35px;
+            text-align: center;
+            color: var(--muted);
+            border: 1px dashed var(--border);
+            border-radius: 16px;
+            background: white;
+        }
+
+        @media (max-width: 850px) {
+            .community-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+
+<body class="flow-page">
+
+<header class="flow-navbar">
+
+    <div class="flow-nav-container">
+
+        <a href="dashboard.html" class="flow-logo">
+            <span class="flow-mark">SB</span>
+            <span>Skill<span>Buddy</span></span>
+        </a>
+
+        <div class="flow-user-area">
+
+            <div class="flow-user-avatar">
+                👤
+            </div>
+
+            <div class="flow-user-info">
+
+                <span>Community Member</span>
+
+                <strong id="userName">
+                    Learner
+                </strong>
+
+            </div>
+
+            <button class="flow-logout-btn" onclick="logout()">
+                Logout
+            </button>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<main class="flow-main">
+
+    <div class="flow-container">
+
+        <section class="community-hero">
+
+            <span class="flow-badge">
+                Skill Buddy Community
+            </span>
+
+            <h1>
+                Learn Together. Grow Together. 🌐
+            </h1>
+
+            <p>
+                Share your learning journey, ask questions,
+                exchange knowledge and connect with learners.
+            </p>
+
+        </section>
+
+        <div class="community-status" id="communityStatus"></div>
+
+        <div class="community-layout">
+
+            <section>
+
+                <div class="post-create">
+
+                    <h2>Share Something</h2>
+
+                    <textarea
+                            id="postText"
+                            placeholder="Share what you learned, ask a question, or help another learner..."
+                    ></textarea>
+
+                    <div class="post-create-actions">
+
+                        <button class="btn-flow btn-primary-flow" onclick="createPost()">
+                            Publish Post
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <div id="postFeed"></div>
+
+            </section>
+
+
+            <aside>
+
+                <div class="community-sidebar-card">
+
+                    <h3>My Skills</h3>
+
+                    <div class="skill-row">
+                        <div>
+                            <span class="skill-label">Learning</span>
+                            <span class="skill-value" id="learningSkill">-</span>
+                        </div>
+                    </div>
+
+                    <div class="skill-row">
+                        <div>
+                            <span class="skill-label">Teaching</span>
+                            <span class="skill-value" id="teachingSkill">-</span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="community-sidebar-card">
+
+                    <h3>My Progress</h3>
+
+                    <div class="skill-row">
+                        <span>Assessment</span>
+                        <strong id="assessmentScore">0%</strong>
+                    </div>
+
+                    <div class="skill-row">
+                        <span>Course</span>
+                        <strong id="courseStatus">Not Completed</strong>
+                    </div>
+
+                    <div class="skill-row">
+                        <span>Feedback</span>
+                        <strong id="feedbackStatus">Pending</strong>
+                    </div>
+
+                </div>
+
+                <div class="community-sidebar-card">
+
+                    <h3>Recent Activity</h3>
+
+                    <div id="activityList"></div>
+
+                </div>
+
+            </aside>
+
+        </div>
+
+
+        <div style="display:flex;justify-content:center;gap:12px;margin-top:30px;flex-wrap:wrap;">
+
+            <button class="btn-flow btn-soft-flow" onclick="location.href='skill-exchange.html'">
+                🤝 Skill Exchange
+            </button>
+
+            <button class="btn-flow btn-primary-flow" onclick="location.href='course.html'">
+                📚 Continue Learning
+            </button>
+
+            <button class="btn-flow btn-soft-flow" onclick="location.href='dashboard.html'">
+                ← Dashboard
+            </button>
+
+        </div>
+
+    </div>
+
+</main>
+
+
+<script>
+
+    /* =====================================================
+       ✅ CHANGE 1: AUTH HELPERS (NEW)
+    ===================================================== */
+
+    function getToken() {
+        return localStorage.getItem("skillBuddyToken");
+    }
+
+    function authHeaders() {
+        return {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + getToken()
+        };
+    }
+
+    /* AUTH GUARD */
+    (function requireLogin() {
+        const u = localStorage.getItem("skillBuddyUser");
+        if (!u || !getToken()) {
+            window.location.href = "/index.html";
+        }
+    })();
+
+
+    /* =====================================================
+       USER
+    ===================================================== */
+
+    let user = {};
+
+    try {
+
+        user = JSON.parse(
+            localStorage.getItem("skillBuddyUser") || "{}"
+        );
+
+    } catch (error) {
+
+        user = {};
+
+    }
+
+
+    const username =
+        user.username ||
+        user.name ||
+        "Learner";
+
+
+    document.getElementById("userName").textContent =
+        username;
+
+
+
+    /* =====================================================
+       STATE
+    ===================================================== */
+
+    let learnSkills = [];
+    let teachSkills = [];
+    let posts = [];
+    let score = 0;
+    let courseCompleted = false;
+    let feedbackSubmitted = false;
+    let assessmentPassed = false;
+
+
+
+    /* =====================================================
+       ✅ CHANGE 2: LOAD SIDEBAR DATA FROM BACKEND
+    ===================================================== */
+
+    async function loadSidebarData() {
+
+        try {
+
+            const res = await fetch("/api/profile", {
+                headers: authHeaders()
+            });
+
+            if (!res.ok) return;
+
+            const profile = await res.json();
+
+            const u = profile.user || {};
+
+            learnSkills = Array.from(u.learningSkills || []);
+            teachSkills = Array.from(u.teachingSkills || []);
+
+            /* Assessment */
+            const assessments = profile.assessments || [];
+            if (assessments.length) {
+                score = assessments[0].percentage || 0;
+                assessmentPassed = assessments.some(a => a.passed);
+            }
+
+            /* Certificates */
+            const certificates = profile.certificates || [];
+            if (certificates.length) {
+                courseCompleted = true;
+            }
+
+            /* Progress */
+            const progressList = profile.progress || [];
+            if (progressList.some(p => p.courseCompleted)) {
+                courseCompleted = true;
+            }
+
+            /* Feedback */
+            const feedbackList = profile.feedback || [];
+            if (feedbackList.length) {
+                feedbackSubmitted = true;
+            }
+
+            /* Render sidebar */
+            document.getElementById("learningSkill").textContent =
+                learnSkills.length ? learnSkills.join(", ") : "Not selected";
+
+            document.getElementById("teachingSkill").textContent =
+                teachSkills.length ? teachSkills.join(", ") : "Not selected";
+
+            document.getElementById("assessmentScore").textContent =
+                score + "%";
+
+            document.getElementById("courseStatus").textContent =
+                courseCompleted ? "Completed ✓" : "In Progress";
+
+            document.getElementById("feedbackStatus").textContent =
+                feedbackSubmitted ? "Submitted ✓" : "Pending";
+
+            renderActivity();
+
+        } catch (err) {
+            console.error("loadSidebarData error:", err);
+        }
+    }
+
+
+
+    /* =====================================================
+       ✅ CHANGE 3: LOAD POSTS FROM BACKEND
+    ===================================================== */
+
+    async function loadPosts() {
+
+        try {
+
+            const res = await fetch("/api/community/posts", {
+                headers: authHeaders()
+            });
+
+            if (!res.ok) return;
+
+            const data = await res.json();
+
+            posts = data || [];
+            renderPosts();
+
+        } catch (err) {
+            console.error("loadPosts error:", err);
+        }
+    }
+
+
+
+    /* =====================================================
+       RENDER POSTS
+    ===================================================== */
+
+    function renderPosts() {
+
+        const feed = document.getElementById("postFeed");
+
+        feed.innerHTML = "";
+
+        if (!posts.length) {
+            feed.innerHTML = `
+                <div class="empty-state">
+                    No posts yet. Be the first to share something!
+                </div>
+            `;
+            return;
+        }
+
+        posts.forEach(post => {
+
+            const comments = post.comments || [];
+
+            let commentsHtml = "";
+
+            comments.forEach(comment => {
+
+                commentsHtml += `
+                    <div class="comment">
+                        <strong>${escapeHtml(comment.user)}</strong>
+                        ${escapeHtml(comment.text)}
+                    </div>
+                `;
+
+            });
+
+            feed.innerHTML += `
+
+                <article class="community-post">
+
+                    <div class="post-header">
+
+                        <div class="post-avatar">
+                            ${post.avatar || "👤"}
+                        </div>
+
+                        <div class="post-user">
+
+                            <strong>
+                                ${escapeHtml(post.authorName || post.user || "Learner")}
+                            </strong>
+
+                            <span>
+                                Skill Buddy Member
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <h3>
+                        ${escapeHtml(post.title || "Post")}
+                    </h3>
+
+                    <p>
+                        ${escapeHtml(post.text)}
+                    </p>
+
+                    ${
+                post.skill
+                    ? `<span class="post-skill">${escapeHtml(post.skill)}</span>`
+                    : ""
+            }
+
+                    <div class="post-actions">
+
+                        <button class="post-action" onclick="likePost(${post.id})">
+                            ❤️ ${post.likes || 0}
+                        </button>
+
+                        <button class="post-action" onclick="focusComment(${post.id})">
+                            💬 ${comments.length}
+                        </button>
+
+                    </div>
+
+                    <div class="comments">
+
+                        ${commentsHtml}
+
+                        <div class="comment-box">
+
+                            <input
+                                id="comment-${post.id}"
+                                type="text"
+                                placeholder="Write a comment..."
+                            >
+
+                            <button onclick="addComment(${post.id})">
+                                Send
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+            `;
+
+        });
+
+    }
+
+
+
+    /* =====================================================
+       ✅ CHANGE 4: CREATE POST — Backend API
+    ===================================================== */
+
+    async function createPost() {
+
+        const text =
+            document.getElementById("postText").value.trim();
+
+        if (!text) {
+
+            showStatus("Please write something before publishing.");
+            return;
+
+        }
+
+        const firstSkill =
+            learnSkills[0] ||
+            teachSkills[0] ||
+            "General";
+
+        try {
+
+            const res = await fetch("/api/community/posts", {
+                method: "POST",
+                headers: authHeaders(),
+                body: JSON.stringify({
+                    text: text,
+                    title: "My Skill Buddy Update",
+                    skill: firstSkill,
+                    avatar: "👤"
+                })
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                showStatus(data.message || "Failed to publish post.");
+                return;
+            }
+
+            document.getElementById("postText").value = "";
+
+            await loadPosts();
+
+            showStatus("Your post has been published successfully.");
+
+        } catch (err) {
+            console.error("createPost error:", err);
+            showStatus("Cannot connect to server.");
+        }
+    }
+
+
+
+    /* =====================================================
+       ✅ CHANGE 5: LIKE + COMMENT — Backend API
+    ===================================================== */
+
+    async function likePost(id) {
+
+        try {
+
+            const res = await fetch(`/api/community/posts/${id}/like`, {
+                method: "POST",
+                headers: authHeaders()
+            });
+
+            if (!res.ok) return;
+
+            await loadPosts();
+
+        } catch (err) {
+            console.error("likePost error:", err);
+        }
+    }
+
+
+    async function addComment(id) {
+
+        const input = document.getElementById(`comment-${id}`);
+        const text = input.value.trim();
+
+        if (!text) return;
+
+        try {
+
+            const res = await fetch(`/api/community/posts/${id}/comments`, {
+                method: "POST",
+                headers: authHeaders(),
+                body: JSON.stringify({ text: text })
+            });
+
+            if (!res.ok) return;
+
+            await loadPosts();
+
+        } catch (err) {
+            console.error("addComment error:", err);
+        }
+    }
+
+
+
+    /* =====================================================
+       FOCUS COMMENT
+    ===================================================== */
+
+    function focusComment(id) {
+
+        setTimeout(() => {
+
+            const input = document.getElementById(`comment-${id}`);
+
+            if (input) {
+                input.focus();
+            }
+
+        }, 100);
+
+    }
+
+
+
+    /* =====================================================
+       ACTIVITY
+    ===================================================== */
+
+    function renderActivity() {
+
+        const activityList = document.getElementById("activityList");
+
+        const activities = [];
+
+        if (learnSkills.length) {
+            activities.push(`📚 Learning ${learnSkills.join(", ")}`);
+        }
+
+        if (teachSkills.length) {
+            activities.push(`🎓 Teaching ${teachSkills.join(", ")}`);
+        }
+
+        if (courseCompleted) {
+            activities.push("✅ Course completed");
+        }
+
+        if (assessmentPassed) {
+            activities.push("🏆 Assessment passed");
+        }
+
+        if (feedbackSubmitted) {
+            activities.push("⭐ Feedback submitted");
+        }
+
+        if (!activities.length) {
+            activities.push("Start learning to build your activity.");
+        }
+
+        activityList.innerHTML =
+            activities
+                .slice(0, 6)
+                .map(
+                    item =>
+                        `<div class="activity-item">${escapeHtml(item)}</div>`
+                )
+                .join("");
+
+    }
+
+
+
+    /* =====================================================
+       STATUS
+    ===================================================== */
+
+    function showStatus(message) {
+
+        const status = document.getElementById("communityStatus");
+
+        status.textContent = "✓ " + message;
+        status.style.display = "block";
+
+        setTimeout(() => {
+            status.style.display = "none";
+        }, 3500);
+
+    }
+
+
+
+    /* =====================================================
+       HELPERS
+    ===================================================== */
+
+    function escapeHtml(value) {
+
+        return String(value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+
+    }
+
+
+
+    /* =====================================================
+       ✅ CHANGE 6: LOGOUT
+    ===================================================== */
+
+    function logout() {
+
+        localStorage.removeItem("skillBuddyToken");
+        localStorage.removeItem("skillBuddyUser");
+
+        window.location.href = "/index.html";
+
+    }
+
+
+
+    /* =====================================================
+       INIT
+    ===================================================== */
+
+    loadSidebarData();
+    loadPosts();
+
+</script>
+
+</body>
+
+</html>

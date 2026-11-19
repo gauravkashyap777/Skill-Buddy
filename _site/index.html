@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+          content="Skill Buddy - Learn skills, share skills and grow together with mentors and learners.">
+
+    <title>Skill Buddy | Learn • Share • Grow</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+            rel="stylesheet">
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- =========================
+     NAVBAR
+========================== -->
+
+<header class="navbar">
+
+    <div class="nav-container">
+
+        <a href="index.html" class="logo">
+            <span class="logo-icon">S</span>
+            <span>Skill Buddy</span>
+        </a>
+
+        <nav class="nav-menu">
+
+            <a href="#home">Home</a>
+
+            <a href="#skills">Skills</a>
+
+            <a href="#mentors">Mentors</a>
+
+            <a href="#courses">Courses</a>
+
+            <a href="#why-us">Why Us</a>
+
+        </nav>
+
+        <div class="nav-buttons">
+
+            <button class="btn btn-outline" onclick="openLoginModal()">
+                Login
+            </button>
+
+            <button class="btn btn-primary" onclick="openRegisterModal()">
+                Register
+            </button>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<!-- =========================
+     HERO SECTION
+========================== -->
+
+<main>
+
+    <section id="home" class="hero-section">
+
+        <div class="hero-container">
+
+            <div class="hero-content">
+
+                <div class="hero-badge">
+                    🚀 Learn • Share • Grow
+                </div>
+
+                <h1>
+                    Learn Skills.
+                    <span>Share Skills.</span>
+                    Grow Together.
+                </h1>
+
+                <p>
+                    Skill Buddy connects students and learners with
+                    mentors and peers to learn new skills, exchange
+                    knowledge and grow together.
+                </p>
+
+                <div class="hero-buttons">
+
+                    <button class="btn btn-primary btn-large"
+                            onclick="openRegisterModal()">
+                        Start Learning
+                        <span>→</span>
+                    </button>
+
+                    <button class="btn btn-outline btn-large"
+                            onclick="openLoginModal()">
+                        Find a Mentor
+                    </button>
+
+                </div>
+
+                <div class="hero-stats">
+
+                    <div class="stat">
+                        <strong>1000+</strong>
+                        <span>Learners</span>
+                    </div>
+
+                    <div class="stat">
+                        <strong>100+</strong>
+                        <span>Mentors</span>
+                    </div>
+
+                    <div class="stat">
+                        <strong>50+</strong>
+                        <span>Skills</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- HERO CARD -->
+
+            <div class="hero-visual">
+
+                <div class="floating-card card-one">
+
+                    <div class="card-icon purple">
+                        ☕
+                    </div>
+
+                    <div>
+                        <strong>Java</strong>
+                        <small>Programming</small>
+                    </div>
+
+                </div>
+
+
+                <div class="hero-main-card">
+
+                    <div class="hero-card-header">
+
+                        <div class="profile-circle">
+                            👨‍💻
+                        </div>
+
+                        <div>
+                            <strong>Find Your Buddy</strong>
+
+                            <span>
+                                    Learn from the best
+                                </span>
+                        </div>
+
+                    </div>
+
+
+                    <div class="skill-progress">
+
+                        <div class="progress-header">
+                            <span>Java & DSA</span>
+                            <span>75%</span>
+                        </div>
+
+                        <div class="progress-bar">
+
+                            <div class="progress-fill"
+                                 style="width: 75%;">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="hero-learning-list">
+
+                        <div class="learning-item">
+                            <span>✓</span>
+                            Learn with mentors
+                        </div>
+
+                        <div class="learning-item">
+                            <span>✓</span>
+                            Practice real projects
+                        </div>
+
+                        <div class="learning-item">
+                            <span>✓</span>
+                            Get certified
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="floating-card card-two">
+
+                    <div class="card-icon green">
+                        🧠
+                    </div>
+
+                    <div>
+                        <strong>DSA</strong>
+                        <small>Problem Solving</small>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         SKILLS SECTION
+    ========================== -->
+
+    <section id="skills" class="section">
+
+        <div class="section-heading">
+
+                <span class="section-tag">
+                    EXPLORE SKILLS
+                </span>
+
+            <h2>
+                Learn What You Love
+            </h2>
+
+            <p>
+                Choose from popular technologies and skills
+                and start your learning journey.
+            </p>
+
+        </div>
+
+
+        <div class="skills-grid">
+
+            <div class="skill-card">
+
+                <div class="skill-icon java">
+                    ☕
+                </div>
+
+                <h3>Java</h3>
+
+                <p>
+                    Core Java, OOPs, Collections and more.
+                </p>
+
+                <span class="skill-link">
+                        Learn More →
+                    </span>
+
+            </div>
+
+
+            <div class="skill-card">
+
+                <div class="skill-icon python">
+                    🐍
+                </div>
+
+                <h3>Python</h3>
+
+                <p>
+                    Python programming and development.
+                </p>
+
+                <span class="skill-link">
+                        Learn More →
+                    </span>
+
+            </div>
+
+
+            <div class="skill-card">
+
+                <div class="skill-icon js">
+                    JS
+                </div>
+
+                <h3>JavaScript</h3>
+
+                <p>
+                    Modern web development with JavaScript.
+                </p>
+
+                <span class="skill-link">
+                        Learn More →
+                    </span>
+
+            </div>
+
+
+            <div class="skill-card">
+
+                <div class="skill-icon react">
+                    ⚛
+                </div>
+
+                <h3>React</h3>
+
+                <p>
+                    Build modern interactive web applications.
+                </p>
+
+                <span class="skill-link">
+                        Learn More →
+                    </span>
+
+            </div>
+
+
+            <div class="skill-card">
+
+                <div class="skill-icon spring">
+                    🌱
+                </div>
+
+                <h3>Spring Boot</h3>
+
+                <p>
+                    Build powerful Java backend applications.
+                </p>
+
+                <span class="skill-link">
+                        Learn More →
+                    </span>
+
+            </div>
+
+
+            <div class="skill-card">
+
+                <div class="skill-icon dsa">
+                    🧩
+                </div>
+
+                <h3>DSA</h3>
+
+                <p>
+                    Data structures and algorithms.
+                </p>
+
+                <span class="skill-link">
+                        Learn More →
+                    </span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         MENTORS SECTION
+    ========================== -->
+
+    <section id="mentors" class="section section-light">
+
+        <div class="section-heading">
+
+                <span class="section-tag">
+                    MEET OUR MENTORS
+                </span>
+
+            <h2>
+                Learn From Experienced Mentors
+            </h2>
+
+            <p>
+                Connect with people who can guide you
+                throughout your learning journey.
+            </p>
+
+        </div>
+
+
+        <div class="mentor-grid">
+
+            <div class="mentor-card">
+
+                <div class="mentor-avatar">
+                    👩‍💻
+                </div>
+
+                <h3>Ananya Sharma</h3>
+
+                <p class="mentor-role">
+                    Java & Spring Boot
+                </p>
+
+                <div class="mentor-rating">
+                    ⭐ 4.9
+                </div>
+
+                <button class="btn btn-primary mentor-btn"
+                        onclick="openLoginModal()">
+                    Connect
+                </button>
+
+            </div>
+
+
+            <div class="mentor-card">
+
+                <div class="mentor-avatar">
+                    👨‍💻
+                </div>
+
+                <h3>Rahul Verma</h3>
+
+                <p class="mentor-role">
+                    Python & Machine Learning
+                </p>
+
+                <div class="mentor-rating">
+                    ⭐ 4.8
+                </div>
+
+                <button class="btn btn-primary mentor-btn"
+                        onclick="openLoginModal()">
+                    Connect
+                </button>
+
+            </div>
+
+
+            <div class="mentor-card">
+
+                <div class="mentor-avatar">
+                    👩‍💻
+                </div>
+
+                <h3>Priya Singh</h3>
+
+                <p class="mentor-role">
+                    Web Development
+                </p>
+
+                <div class="mentor-rating">
+                    ⭐ 4.9
+                </div>
+
+                <button class="btn btn-primary mentor-btn"
+                        onclick="openLoginModal()">
+                    Connect
+                </button>
+
+            </div>
+
+
+            <div class="mentor-card">
+
+                <div class="mentor-avatar">
+                    👨‍💻
+                </div>
+
+                <h3>Arjun Mehta</h3>
+
+                <p class="mentor-role">
+                    DSA & Java
+                </p>
+
+                <div class="mentor-rating">
+                    ⭐ 4.8
+                </div>
+
+                <button class="btn btn-primary mentor-btn"
+                        onclick="openLoginModal()">
+                    Connect
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         WHY US
+    ========================== -->
+
+    <section id="why-us" class="section">
+
+        <div class="section-heading">
+
+                <span class="section-tag">
+                    WHY SKILL BUDDY
+                </span>
+
+            <h2>
+                Everything You Need To Grow
+            </h2>
+
+            <p>
+                A complete learning ecosystem designed
+                for students and skill seekers.
+            </p>
+
+        </div>
+
+
+        <div class="benefits-grid">
+
+            <div class="benefit-card">
+
+                <div class="benefit-icon">
+                    🎯
+                </div>
+
+                <h3>
+                    Personalized Learning
+                </h3>
+
+                <p>
+                    Choose the skills you want to learn
+                    and create your own learning journey.
+                </p>
+
+            </div>
+
+
+            <div class="benefit-card">
+
+                <div class="benefit-icon">
+                    🤝
+                </div>
+
+                <h3>
+                    Find Your Buddy
+                </h3>
+
+                <p>
+                    Connect with mentors and learners
+                    who match your interests.
+                </p>
+
+            </div>
+
+
+            <div class="benefit-card">
+
+                <div class="benefit-icon">
+                    📚
+                </div>
+
+                <h3>
+                    Structured Courses
+                </h3>
+
+                <p>
+                    Learn through topics, modules,
+                    examples and practice.
+                </p>
+
+            </div>
+
+
+            <div class="benefit-card">
+
+                <div class="benefit-icon">
+                    🏆
+                </div>
+
+                <h3>
+                    Get Certified
+                </h3>
+
+                <p>
+                    Complete assessments and earn
+                    certificates for your skills.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         COURSES SECTION
+    ========================== -->
+
+    <section id="courses" class="section section-light">
+
+        <div class="section-heading">
+
+                <span class="section-tag">
+                    POPULAR COURSES
+                </span>
+
+            <h2>
+                Start Learning Today
+            </h2>
+
+            <p>
+                Explore structured courses created
+                for practical learning.
+            </p>
+
+        </div>
+
+
+        <div class="course-grid">
+
+            <div class="course-card">
+
+                <div class="course-top java-bg">
+                    ☕
+                </div>
+
+                <div class="course-body">
+
+                        <span class="course-level">
+                            Beginner → Advanced
+                        </span>
+
+                    <h3>
+                        Java Programming
+                    </h3>
+
+                    <p>
+                        Learn Java from basics to
+                        advanced concepts.
+                    </p>
+
+                    <button class="btn btn-primary"
+                            onclick="openRegisterModal()">
+                        Start Course
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div class="course-card">
+
+                <div class="course-top dsa-bg">
+                    🧩
+                </div>
+
+                <div class="course-body">
+
+                        <span class="course-level">
+                            Intermediate
+                        </span>
+
+                    <h3>
+                        Data Structures & Algorithms
+                    </h3>
+
+                    <p>
+                        Improve your problem solving
+                        and coding skills.
+                    </p>
+
+                    <button class="btn btn-primary"
+                            onclick="openRegisterModal()">
+                        Start Course
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div class="course-card">
+
+                <div class="course-top spring-bg">
+                    🌱
+                </div>
+
+                <div class="course-body">
+
+                        <span class="course-level">
+                            Intermediate
+                        </span>
+
+                    <h3>
+                        Spring Boot
+                    </h3>
+
+                    <p>
+                        Build Java backend and REST
+                        API applications.
+                    </p>
+
+                    <button class="btn btn-primary"
+                            onclick="openRegisterModal()">
+                        Start Course
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         CTA SECTION
+    ========================== -->
+
+    <section class="cta-section">
+
+        <div class="cta-content">
+
+                <span class="section-tag">
+                    START YOUR JOURNEY
+                </span>
+
+            <h2>
+                Ready To Learn Something New?
+            </h2>
+
+            <p>
+                Join Skill Buddy and connect with
+                mentors and learners today.
+            </p>
+
+            <button class="btn btn-white btn-large"
+                    onclick="openRegisterModal()">
+                Join Skill Buddy →
+            </button>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- =========================
+     LOGIN MODAL
+========================== -->
+
+<div id="loginModal" class="modal">
+
+    <div class="modal-overlay"
+         onclick="closeLoginModal()">
+    </div>
+
+    <div class="modal-content">
+
+        <button class="modal-close"
+                onclick="closeLoginModal()">
+            ×
+        </button>
+
+        <div class="modal-header">
+
+            <div class="modal-icon">
+                🔐
+            </div>
+
+            <h2>
+                Welcome Back
+            </h2>
+
+            <p>
+                Login to continue your Skill Buddy journey.
+            </p>
+
+        </div>
+
+
+        <form id="loginForm">
+
+            <div class="form-group">
+
+                <label for="loginUsername">
+                    Username
+                </label>
+
+                <input
+                        type="text"
+                        id="loginUsername"
+                        name="username"
+                        placeholder="Enter username"
+                        required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="loginEmail">
+                    Email
+                </label>
+
+                <input
+                        type="email"
+                        id="loginEmail"
+                        name="email"
+                        placeholder="Enter email"
+                        required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="loginPassword">
+                    Password
+                </label>
+
+                <input
+                        type="password"
+                        id="loginPassword"
+                        name="password"
+                        placeholder="Enter password"
+                        required
+                >
+
+            </div>
+
+
+            <div class="form-options">
+
+                <label class="checkbox-label">
+
+                    <input
+                            type="checkbox"
+                            id="rememberMe"
+                    >
+
+                    <span>
+                            Remember me
+                        </span>
+
+                </label>
+
+                <a href="#">
+                    Forgot Password?
+                </a>
+
+            </div>
+
+
+            <button
+                    type="submit"
+                    class="btn btn-primary btn-full">
+                Login
+            </button>
+
+        </form>
+
+
+        <div class="modal-footer">
+
+                <span>
+                    Don't have an account?
+                </span>
+
+            <button
+                    class="text-button"
+                    onclick="switchToRegister()">
+                Create Account
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     REGISTER MODAL
+========================== -->
+
+<div id="registerModal" class="modal">
+
+    <div class="modal-overlay"
+         onclick="closeRegisterModal()">
+    </div>
+
+    <div class="modal-content">
+
+        <button class="modal-close"
+                onclick="closeRegisterModal()">
+            ×
+        </button>
+
+        <div class="modal-header">
+
+            <div class="modal-icon">
+                🚀
+            </div>
+
+            <h2>
+                Create Your Account
+            </h2>
+
+            <p>
+                Start learning and growing with Skill Buddy.
+            </p>
+
+        </div>
+
+
+        <form id="registerForm">
+
+            <div class="form-group">
+
+                <label for="registerUsername">
+                    Username
+                </label>
+
+                <input
+                        type="text"
+                        id="registerUsername"
+                        name="username"
+                        placeholder="Choose username"
+                        required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="registerEmail">
+                    Email
+                </label>
+
+                <input
+                        type="email"
+                        id="registerEmail"
+                        name="email"
+                        placeholder="Enter email"
+                        required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="registerPassword">
+                    Password
+                </label>
+
+                <input
+                        type="password"
+                        id="registerPassword"
+                        name="password"
+                        placeholder="Create password"
+                        required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="registerConfirmPassword">
+                    Confirm Password
+                </label>
+
+                <input
+                        type="password"
+                        id="registerConfirmPassword"
+                        name="confirmPassword"
+                        placeholder="Confirm password"
+                        required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="userRole">
+                    I want to
+                </label>
+
+                <select id="userRole">
+
+                    <option value="student">
+                        Learn Skills
+                    </option>
+
+                    <option value="mentor">
+                        Teach Skills
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <label class="terms-label">
+
+                <input
+                        type="checkbox"
+                        id="terms"
+                        required
+                >
+
+                <span>
+                        I agree to the Skill Buddy terms
+                    </span>
+
+            </label>
+
+
+            <button
+                    type="submit"
+                    class="btn btn-primary btn-full">
+                Create Account
+            </button>
+
+        </form>
+
+
+        <div class="modal-footer">
+
+                <span>
+                    Already have an account?
+                </span>
+
+            <button
+                    class="text-button"
+                    onclick="switchToLogin()">
+                Login
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     FOOTER
+========================== -->
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <div class="footer-brand">
+
+            <div class="logo">
+                    <span class="logo-icon">
+                        S
+                    </span>
+
+                <span>
+                        Skill Buddy
+                    </span>
+            </div>
+
+            <p>
+                Learn skills. Share knowledge.
+                Grow together.
+            </p>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <a href="#home">
+                Home
+            </a>
+
+            <a href="#skills">
+                Skills
+            </a>
+
+            <a href="#mentors">
+                Mentors
+            </a>
+
+            <a href="#courses">
+                Courses
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="footer-bottom">
+
+        <p>
+            © 2026 Skill Buddy. All rights reserved.
+        </p>
+
+    </div>
+
+</footer>
+
+
+<!-- Main JavaScript -->
+<script src="script.js"></script>
+
+</body>
+
+</html>
