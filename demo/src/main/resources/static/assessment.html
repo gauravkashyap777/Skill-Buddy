@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Skill Buddy | Assessment</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="flow.css">
+
+    <style>
+        .assessment-card {
+            max-width: 850px;
+            margin: auto;
+        }
+
+        .assessment-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .skill-badge {
+            display: inline-block;
+            padding: 7px 14px;
+            border-radius: 20px;
+            background: #eef2ff;
+            color: #4f46e5;
+            font-size: 12px;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .question {
+            padding: 22px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .question:last-child {
+            border-bottom: 0;
+        }
+
+        .question-number {
+            font-size: 12px;
+            font-weight: 800;
+            color: #635bff;
+            margin-bottom: 8px;
+        }
+
+        .question h3 {
+            font-size: 16px;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        .option {
+            display: block;
+            padding: 12px 15px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            margin: 8px 0;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .option:hover {
+            background: #f8f9ff;
+            border-color: #635bff;
+        }
+
+        .option input {
+            margin-right: 9px;
+        }
+
+        .submit-area {
+            margin-top: 25px;
+            text-align: center;
+        }
+
+        .result-box {
+            display: none;
+            text-align: center;
+            padding: 30px;
+            margin-top: 25px;
+            border-radius: 16px;
+            background: #f8fafc;
+        }
+
+        .result-score {
+            font-size: 42px;
+            font-weight: 800;
+            color: #635bff;
+        }
+
+        .result-message {
+            color: var(--muted);
+            margin: 10px 0 20px;
+        }
+
+        .retry-btn {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+
+<body>
+
+<header class="flow-nav">
+
+    <a href="index.html" class="flow-brand">
+        <span class="flow-mark">SB</span>
+        <span>Skill<span>Buddy</span></span>
+    </a>
+
+    <div class="flow-user">
+
+        <span
+                class="flow-avatar"
+                id="userAvatar">
+            SB
+        </span>
+
+        <div>
+            <b id="userName">Learner</b>
+            <small>Student / Learner</small>
+        </div>
+
+        <button
+                class="btn btn-soft-flow btn-flow"
+                id="logoutBtn">
+            Logout
+        </button>
+
+    </div>
+
+</header>
+
+
+<main class="flow-main">
+
+    <div class="flow-wrap narrow">
+
+        <!-- HERO -->
+
+        <div class="flow-hero">
+
+            <span class="flow-kicker">
+                Step 4 • Assessment
+            </span>
+
+            <h1>
+                Test Your Learning
+            </h1>
+
+            <p>
+                Complete the assessment to continue
+                to feedback and certification.
+            </p>
+
+        </div>
+
+
+        <!-- PROGRESS -->
+
+        <div class="flow-progress-wrapper">
+
+            <div class="flow-progress">
+
+                <div class="flow-step active">
+                    <div class="flow-step-number">1</div>
+                    <span>Skills</span>
+                </div>
+
+                <div class="flow-line active"></div>
+
+                <div class="flow-step active">
+                    <div class="flow-step-number">2</div>
+                    <span>Buddy</span>
+                </div>
+
+                <div class="flow-line active"></div>
+
+                <div class="flow-step active">
+                    <div class="flow-step-number">3</div>
+                    <span>Course</span>
+                </div>
+
+                <div class="flow-line active"></div>
+
+                <div class="flow-step active">
+                    <div class="flow-step-number">4</div>
+                    <span>Assessment</span>
+                </div>
+
+                <div class="flow-line"></div>
+
+                <div class="flow-step">
+                    <div class="flow-step-number">5</div>
+                    <span>Feedback</span>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ASSESSMENT -->
+
+        <section class="flow-card assessment-card">
+
+            <div class="assessment-header">
+
+                <span
+                        class="skill-badge"
+                        id="skillBadge">
+                    Java
+                </span>
+
+                <h2 id="assessmentTitle">
+                    Java Assessment
+                </h2>
+
+                <p>
+                    Passing score:
+                    <b>60%</b>
+                </p>
+
+            </div>
+
+
+            <form id="assessmentForm">
+
+                <div id="questions"></div>
+
+
+                <div class="submit-area">
+
+                    <button
+                            type="submit"
+                            class="btn-flow btn-primary-flow">
+                        Submit Assessment →
+                    </button>
+
+                </div>
+
+            </form>
+
+
+            <!-- RESULT -->
+
+            <div
+                    class="result-box"
+                    id="resultBox">
+
+                <div
+                        class="result-score"
+                        id="resultScore">
+                    0%
+                </div>
+
+                <h2 id="resultTitle">
+                    Assessment Result
+                </h2>
+
+                <p
+                        class="result-message"
+                        id="resultMessage">
+                </p>
+
+                <div id="resultAction"></div>
+
+            </div>
+
+        </section>
+
+    </div>
+
+</main>
+
+
+<!-- ✅ CHANGE: flow-common.js removed -->
+<!-- <script src="flow-common.js"></script> -->
+
+
+<script>
+
+    /* =====================================================
+       ✅ ADDITION 1: AUTH HEADER (NEW)
+    ===================================================== */
+
+    function authHeaders() {
+        return {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + (localStorage.getItem("skillBuddyToken") || "")
+        };
+    }
+
+
+    /* =====================================================
+       STORAGE
+    ===================================================== */
+
+    function getData(key, fallback) {
+
+        try {
+
+            const value =
+                localStorage.getItem(key);
+
+            if (value === null) {
+                return fallback;
+            }
+
+            return JSON.parse(value);
+
+        } catch (error) {
+
+            return fallback;
+
+        }
+
+    }
+
+
+    function saveData(key, value) {
+
+        localStorage.setItem(
+            key,
+            JSON.stringify(value)
+        );
+
+    }
+
+
+    /* =====================================================
+       USER
+    ===================================================== */
+
+    const user =
+        getData(
+            "skillBuddyUser",
+            null
+        );
+
+
+    const userName =
+        user?.name ||
+        user?.username ||
+        "Learner";
+
+
+    document.getElementById(
+        "userName"
+    ).textContent = userName;
+
+
+    document.getElementById(
+        "userAvatar"
+    ).textContent =
+        getInitials(userName);
+
+
+    function getInitials(name) {
+
+        return name
+            .split(" ")
+            .map(x => x[0])
+            .join("")
+            .substring(0, 2)
+            .toUpperCase();
+
+    }
+
+
+    /* =====================================================
+       CURRENT LEARNING SKILL
+    ===================================================== */
+
+    let learningSkills =
+        getData(
+            "skillBuddyLearnSkills",
+            []
+        );
+
+
+    if (!learningSkills.length) {
+
+        learningSkills =
+            getData(
+                "skillBuddySkills",
+                []
+            );
+
+    }
+
+
+    let currentSkill =
+        localStorage.getItem(
+            "skillBuddyCurrentLearningSkill"
+        );
+
+
+    if (
+        !currentSkill &&
+        learningSkills.length
+    ) {
+
+        currentSkill =
+            learningSkills[0];
+
+        localStorage.setItem(
+            "skillBuddyCurrentLearningSkill",
+            currentSkill
+        );
+
+    }
+
+
+    if (!currentSkill) {
+
+        currentSkill = "Java";
+
+    }
+
+
+    document.getElementById(
+        "skillBadge"
+    ).textContent =
+        currentSkill;
+
+
+    document.getElementById(
+        "assessmentTitle"
+    ).textContent =
+        currentSkill +
+        " Assessment";
+
+
+    /* =====================================================
+       QUESTIONS
+    ===================================================== */
+
+    const questionBank = {
+
+        Java: [
+
+            {
+                q: "Which keyword is used to create an object in Java?",
+                options: ["class", "new", "object", "create"],
+                answer: 1
+            },
+
+            {
+                q: "Which concept allows one class to acquire properties of another class?",
+                options: ["Encapsulation", "Inheritance", "Compilation", "Abstraction"],
+                answer: 1
+            },
+
+            {
+                q: "Which collection stores key-value pairs?",
+                options: ["List", "Set", "Map", "Queue"],
+                answer: 2
+            },
+
+            {
+                q: "Which keyword is used to inherit a class in Java?",
+                options: ["implements", "extends", "inherits", "super"],
+                answer: 1
+            },
+
+            {
+                q: "Which OOP concept means one interface can have multiple forms?",
+                options: ["Inheritance", "Polymorphism", "Encapsulation", "Constructor"],
+                answer: 1
+            }
+
+        ],
+
+
+        Python: [
+
+            {
+                q: "Which symbol is used to write a comment in Python?",
+                options: ["//", "#", "/*", "<!--"],
+                answer: 1
+            },
+
+            {
+                q: "Which keyword is used to define a function?",
+                options: ["function", "define", "def", "fun"],
+                answer: 2
+            },
+
+            {
+                q: "Which data structure stores ordered values?",
+                options: ["List", "Set", "Dictionary", "None"],
+                answer: 0
+            },
+
+            {
+                q: "Which keyword is used for a condition in Python?",
+                options: ["when", "if", "condition", "check"],
+                answer: 1
+            },
+
+            {
+                q: "Which function is commonly used to display output?",
+                options: ["display()", "show()", "print()", "output()"],
+                answer: 2
+            }
+
+        ],
+
+
+        "Data Structures": [
+
+            {
+                q: "Which data structure follows LIFO?",
+                options: ["Queue", "Stack", "Array", "Tree"],
+                answer: 1
+            },
+
+            {
+                q: "Which data structure follows FIFO?",
+                options: ["Stack", "Queue", "Tree", "Graph"],
+                answer: 1
+            },
+
+            {
+                q: "Binary Search works efficiently on which type of array?",
+                options: ["Random array", "Sorted array", "Empty array", "Unsorted array"],
+                answer: 1
+            },
+
+            {
+                q: "Which traversal visits Root, Left, Right?",
+                options: ["Inorder", "Postorder", "Preorder", "Level order"],
+                answer: 2
+            },
+
+            {
+                q: "Average time complexity of Merge Sort is:",
+                options: ["O(n)", "O(log n)", "O(n log n)", "O(n²)"],
+                answer: 2
+            }
+
+        ],
+
+
+        JavaScript: [
+
+            {
+                q: "Which keyword can declare a block-scoped variable?",
+                options: ["let", "define", "variable", "int"],
+                answer: 0
+            },
+
+            {
+                q: "Which method selects an HTML element by ID?",
+                options: ["getElementById()", "getById()", "selectId()", "findId()"],
+                answer: 0
+            },
+
+            {
+                q: "Which symbol is commonly used for strict equality?",
+                options: ["=", "==", "===", "!="],
+                answer: 2
+            },
+
+            {
+                q: "Which keyword declares a function?",
+                options: ["function", "method", "fun", "define"],
+                answer: 0
+            },
+
+            {
+                q: "Which method adds an element to the end of an array?",
+                options: ["push()", "add()", "insert()", "append()"],
+                answer: 0
+            }
+
+        ],
+
+
+        SQL: [
+
+            {
+                q: "Which SQL command is used to retrieve data?",
+                options: ["GET", "SELECT", "FETCH", "READ"],
+                answer: 1
+            },
+
+            {
+                q: "Which clause filters rows?",
+                options: ["ORDER BY", "GROUP BY", "WHERE", "SORT"],
+                answer: 2
+            },
+
+            {
+                q: "Which key uniquely identifies a record?",
+                options: ["Foreign Key", "Primary Key", "Unique Row", "Index Key"],
+                answer: 1
+            },
+
+            {
+                q: "Which clause sorts query results?",
+                options: ["SORT BY", "ORDER BY", "GROUP BY", "ARRANGE"],
+                answer: 1
+            },
+
+            {
+                q: "Which SQL operation combines rows from tables?",
+                options: ["JOIN", "MERGE", "CONNECT", "LINK"],
+                answer: 0
+            }
+
+        ],
+
+
+        "Machine Learning": [
+
+            {
+                q: "Which type of ML learns from labelled data?",
+                options: ["Supervised Learning", "Unsupervised Learning", "Random Learning", "Manual Learning"],
+                answer: 0
+            },
+
+            {
+                q: "Which algorithm is commonly used for classification?",
+                options: ["Logistic Regression", "Linear Search", "Merge Sort", "Binary Search"],
+                answer: 0
+            },
+
+            {
+                q: "What is a feature in ML?",
+                options: ["An input variable", "Only the output", "A database", "A programming language"],
+                answer: 0
+            },
+
+            {
+                q: "Which algorithm is commonly used for clustering?",
+                options: ["K-Means", "Binary Search", "Quick Sort", "DFS"],
+                answer: 0
+            },
+
+            {
+                q: "What is the purpose of a training dataset?",
+                options: ["Train the model", "Delete the model", "Create UI", "Store passwords"],
+                answer: 0
+            }
+
+        ]
+
+    };
+
+
+    /* =====================================================
+       FALLBACK QUESTIONS
+    ===================================================== */
+
+    const defaultQuestions = [
+
+        {
+            q: "What is the main purpose of this technology?",
+            options: ["Programming and problem solving", "Only gaming", "Only video editing", "None"],
+            answer: 0
+        },
+
+        {
+            q: "Which approach helps improve practical learning?",
+            options: ["Practice", "Ignoring examples", "Skipping topics", "None"],
+            answer: 0
+        },
+
+        {
+            q: "Why are examples useful?",
+            options: ["They show practical implementation", "They remove the need to learn", "They are only decoration", "None"],
+            answer: 0
+        },
+
+        {
+            q: "What should a learner do after understanding a topic?",
+            options: ["Practice", "Skip everything", "Close the course", "None"],
+            answer: 0
+        },
+
+        {
+            q: "What is important for improving technical skills?",
+            options: ["Consistent practice", "Never coding", "Only watching", "None"],
+            answer: 0
+        }
+
+    ];
+
+
+    const questions =
+        questionBank[currentSkill] ||
+        defaultQuestions;
+
+
+    /* =====================================================
+       RENDER QUESTIONS
+    ===================================================== */
+
+    const questionsContainer =
+        document.getElementById("questions");
+
+
+    function renderQuestions() {
+
+        questionsContainer.innerHTML =
+            questions
+                .map(
+                    (question, index) => `
+
+                    <div class="question">
+
+                        <div class="question-number">
+                            Question ${index + 1}
+                        </div>
+
+                        <h3>
+                            ${escapeHtml(question.q)}
+                        </h3>
+
+                        ${question.options
+                        .map(
+                            (option, optionIndex) => `
+
+                                <label class="option">
+
+                                    <input
+                                        type="radio"
+                                        name="q${index}"
+                                        value="${optionIndex}"
+                                    >
+
+                                    ${escapeHtml(option)}
+
+                                </label>
+
+                            `
+                        )
+                        .join("")}
+
+                    </div>
+
+                `
+                )
+                .join("");
+
+    }
+
+
+    /* =====================================================
+       SUBMIT
+    ===================================================== */
+
+    document
+        .getElementById("assessmentForm")
+        .addEventListener(
+            "submit",
+            function(event) {
+
+                event.preventDefault();
+
+
+                let score = 0;
+
+
+                questions.forEach(
+                    (question, index) => {
+
+                        const selected =
+                            document.querySelector(
+                                `input[name="q${index}"]:checked`
+                            );
+
+
+                        if (
+                            selected &&
+                            Number(selected.value) === question.answer
+                        ) {
+
+                            score++;
+
+                        }
+
+                    }
+                );
+
+
+                const percentage =
+                    Math.round(
+                        (
+                            score /
+                            questions.length
+                        ) * 100
+                    );
+
+
+                /* =====================================================
+                   ✅ ADDITION 2: SAVE TO BACKEND (NEW)
+                ===================================================== */
+
+                fetch("/api/assessment/submit", {
+                    method: "POST",
+                    headers: authHeaders(),
+                    body: JSON.stringify({
+                        skill: currentSkill,
+                        score: score,
+                        total: questions.length,
+                        percentage: percentage,
+                        passed: percentage >= 60
+                    })
+                }).catch(err => console.warn("Backend save failed:", err));
+
+
+                /* Save score */
+
+                localStorage.setItem(
+                    "skillBuddyScore",
+                    percentage
+                );
+
+
+                /* Save detailed result */
+
+                saveData(
+                    "skillBuddyAssessmentResult",
+                    {
+                        skill: currentSkill,
+                        score: score,
+                        total: questions.length,
+                        percentage: percentage,
+                        passed: percentage >= 60,
+                        completedAt: new Date().toISOString()
+                    }
+                );
+
+
+                /* Save per-skill assessment */
+
+                const bySkill =
+                    getData(
+                        "skillBuddyAssessmentBySkill",
+                        {}
+                    );
+
+
+                bySkill[currentSkill] = {
+
+                    score: score,
+
+                    total: questions.length,
+
+                    percentage: percentage,
+
+                    passed: percentage >= 60,
+
+                    completedAt: new Date().toISOString()
+
+                };
+
+
+                saveData(
+                    "skillBuddyAssessmentBySkill",
+                    bySkill
+                );
+
+
+                /* Add to completed courses if passed */
+
+                if (percentage >= 60) {
+
+                    let completedCourses =
+                        getData(
+                            "skillBuddyCompletedCourses",
+                            []
+                        );
+
+
+                    const mentorData =
+                        getData(
+                            "skillBuddyMentor",
+                            {}
+                        );
+
+
+                    completedCourses =
+                        completedCourses.filter(
+                            c => c.skill !== currentSkill
+                        );
+
+
+                    completedCourses.push({
+
+                        skill: currentSkill,
+
+                        mentor:
+                            mentorData.name ||
+                            "Skill Buddy Mentor",
+
+                        mentorRole:
+                            mentorData.skill ||
+                            "Mentor",
+
+                        score: percentage,
+
+                        completedAt: new Date().toISOString()
+
+                    });
+
+
+                    saveData(
+                        "skillBuddyCompletedCourses",
+                        completedCourses
+                    );
+
+                }
+
+
+                if (percentage >= 60) {
+
+                    localStorage.setItem(
+                        "skillBuddyAssessmentPassed",
+                        "true"
+                    );
+
+                }
+
+                else {
+
+                    localStorage.setItem(
+                        "skillBuddyAssessmentPassed",
+                        "false"
+                    );
+
+                }
+
+
+                showResult(percentage);
+
+            }
+        );
+
+
+    /* =====================================================
+       RESULT
+    ===================================================== */
+
+    function showResult(percentage) {
+
+        const resultBox =
+            document.getElementById("resultBox");
+
+
+        const resultScore =
+            document.getElementById("resultScore");
+
+
+        const resultTitle =
+            document.getElementById("resultTitle");
+
+
+        const resultMessage =
+            document.getElementById("resultMessage");
+
+
+        const resultAction =
+            document.getElementById("resultAction");
+
+
+        resultBox.style.display = "block";
+
+
+        document.getElementById("assessmentForm").style.display = "none";
+
+
+        resultScore.textContent = percentage + "%";
+
+
+        if (percentage >= 60) {
+
+            resultTitle.textContent = "🎉 Assessment Passed!";
+
+
+            resultMessage.textContent =
+                "Great work! You can now continue to feedback and certificate.";
+
+
+            resultAction.innerHTML = `
+
+                <button
+                    class="btn-flow btn-primary-flow"
+                    onclick="location.href='feedback.html'">
+
+                    Continue to Feedback →
+
+                </button>
+
+            `;
+
+        }
+
+        else {
+
+            resultTitle.textContent = "Keep Learning!";
+
+
+            resultMessage.textContent =
+                "You need at least 60% to pass. Review the course and try again.";
+
+
+            resultAction.innerHTML = `
+
+                <button
+                    class="btn-flow btn-primary-flow retry-btn"
+                    onclick="location.href='course.html'">
+
+                    ← Revise Course
+
+                </button>
+
+                <button
+                    class="btn-flow btn-soft-flow retry-btn"
+                    onclick="location.reload()">
+
+                    Try Assessment Again
+
+                </button>
+
+            `;
+
+        }
+
+
+        resultBox.scrollIntoView({ behavior: "smooth" });
+
+    }
+
+
+    
+       /* ESCAPE HTML */
+
+    function escapeHtml(value) {
+
+        return String(value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+
+    }
+
+
+    /* 
+       LOGOUT
+     */
+
+    document
+        .getElementById("logoutBtn")
+        .addEventListener(
+            "click",
+            function() {
+
+                sessionStorage.removeItem("skillBuddyUser");
+
+                localStorage.removeItem("skillBuddyUser");
+
+                location.href = "index.html";
+
+            }
+        );
+
+
+    /* =====================================================
+       START
+    ===================================================== */
+
+    renderQuestions();
+
+</script>
+
+</body>
+</html>

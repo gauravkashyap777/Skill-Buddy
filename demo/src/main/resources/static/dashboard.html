@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Skill Buddy | Dashboard</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="flow.css">
+
+    <style>
+        .dashboard-hero { display: flex; justify-content: space-between; align-items: center; gap: 25px; margin-bottom: 28px; }
+        .dashboard-hero h1 { margin: 8px 0; }
+        .dashboard-hero p { color: var(--muted); margin: 0; }
+
+        .dashboard-avatar {
+            width: 70px;
+            height: 70px;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+            background: #f0efff;
+            color: var(--primary);
+            font-size: 24px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.2s;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .dashboard-avatar:hover {
+            background: #e0dfff;
+            transform: scale(1.05);
+        }
+
+        .dashboard-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .dashboard-actions { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin-bottom: 28px; }
+        .dashboard-action { padding: 25px; border: 1px solid var(--border); border-radius: 18px; background: white; box-shadow: var(--shadow); }
+        .dashboard-action h2 { margin: 8px 0; }
+        .dashboard-action p { color: var(--muted); font-size: 13px; line-height: 1.6; }
+        .action-icon { font-size: 30px; }
+        .dashboard-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
+        .stat-card { padding: 20px; background: white; border: 1px solid var(--border); border-radius: 16px; box-shadow: var(--shadow); }
+        .stat-card span { display: block; color: var(--muted); font-size: 11px; font-weight: 700; }
+        .stat-card strong { display: block; margin: 8px 0; font-size: 25px; }
+        .stat-card small { color: var(--muted); font-size: 11px; }
+        .dashboard-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 22px; }
+        .dashboard-panel { padding: 25px; background: white; border: 1px solid var(--border); border-radius: 18px; box-shadow: var(--shadow); }
+        .dashboard-panel h2 { margin-top: 0; }
+        .progress-track { width: 100%; height: 9px; margin: 15px 0; border-radius: 999px; background: #e9edf5; overflow: hidden; }
+        .progress-fill { height: 100%; width: 0; border-radius: inherit; background: var(--primary); transition: width .4s ease; }
+        .progress-info { display: flex; justify-content: space-between; gap: 10px; font-size: 13px; }
+        .skill-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 15px; }
+        .skill-tag { padding: 7px 11px; border-radius: 999px; background: #f0efff; color: var(--primary); font-size: 11px; font-weight: 700; }
+        .session-box { padding: 16px; border-radius: 13px; background: #f8f9fd; }
+        .session-box strong { display: block; margin-bottom: 6px; }
+        .session-box span { color: var(--muted); font-size: 12px; }
+        .session-empty { color: var(--muted); font-size: 13px; }
+        .dashboard-nav { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-top: 28px; }
+        .dashboard-nav button { padding: 13px 8px; border: 1px solid var(--border); border-radius: 11px; background: white; cursor: pointer; font-size: 12px; font-weight: 700; }
+        .dashboard-nav button:hover { border-color: var(--primary); color: var(--primary); }
+        .profile-panel { margin-top: 22px; }
+        .profile-row { display: flex; justify-content: space-between; gap: 15px; padding: 12px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+        .profile-row:last-child { border-bottom: 0; }
+        .profile-row span { color: var(--muted); }
+
+        .flow-user-avatar {
+            width: 42px !important;
+            height: 42px !important;
+            min-width: 42px !important;
+            min-height: 42px !important;
+            border-radius: 50% !important;
+            overflow: hidden;
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: 0.2s;
+            flex-shrink: 0;
+        }
+
+        .flow-user-avatar:hover {
+            background: #dbeafe;
+            transform: scale(1.05);
+        }
+
+        .flow-user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        @media (max-width: 900px) {
+            .dashboard-cards { grid-template-columns: repeat(2, 1fr); }
+            .dashboard-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 650px) {
+            .dashboard-hero { align-items: flex-start; }
+            .dashboard-actions { grid-template-columns: 1fr; }
+            .dashboard-cards { grid-template-columns: 1fr 1fr; }
+            .dashboard-nav { grid-template-columns: repeat(3, 1fr); }
+        }
+
+        @media (max-width: 450px) {
+            .dashboard-cards { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+
+
+<body class="flow-page">
+
+<header class="flow-navbar">
+    <div class="flow-nav-container">
+
+        <a href="dashboard.html" class="flow-logo">
+            <span class="flow-mark">SB</span>
+            <span>Skill<span>Buddy</span></span>
+        </a>
+
+        <div class="flow-user-area">
+
+            <div class="flow-user-avatar"
+                 id="navAvatar"
+                 onclick="location.href='profile.html'"
+                 title="View My Profile">
+                👤
+            </div>
+
+            <div class="flow-user-info">
+                <span>Student Dashboard</span>
+                <strong id="navUserName">Learner</strong>
+            </div>
+
+            <button class="flow-logout-btn" onclick="logout()">
+                Logout
+            </button>
+
+        </div>
+
+    </div>
+</header>
+
+
+<main class="flow-main">
+    <div class="flow-container">
+
+        <section class="dashboard-hero">
+            <div>
+                <span class="flow-badge">Student Dashboard</span>
+                <h1>
+                    Welcome,
+                    <span id="firstName">Learner</span>
+                    👋
+                </h1>
+                <p>Continue learning, connect with buddies and build your skills.</p>
+            </div>
+
+            <div class="dashboard-avatar"
+                 id="heroAvatar"
+                 onclick="location.href='profile.html'"
+                 title="View My Profile">
+                SB
+            </div>
+        </section>
+
+
+
+        <section class="dashboard-actions">
+            <div class="dashboard-action">
+                <div class="action-icon">📚</div>
+                <h2>Learn a Skill</h2>
+                <p>Continue your selected learning course, complete modules and improve your progress.</p>
+                <button class="btn-flow btn-primary-flow" onclick="startLearning()">
+                    Continue Learning →
+                </button>
+            </div>
+
+            <div class="dashboard-action">
+                <div class="action-icon">🎓</div>
+                <h2>Teach a Skill</h2>
+                <p>Share your knowledge, offer your skills and connect with learners.</p>
+                <button class="btn-flow btn-soft-flow" onclick="startTeaching()">
+                    Start Teaching →
+                </button>
+            </div>
+        </section>
+
+
+
+        <section class="dashboard-cards">
+            <div class="stat-card">
+                <span>COURSE PROGRESS</span>
+                <strong id="progressPercent">0%</strong>
+                <small>Current learning progress</small>
+            </div>
+
+            <div class="stat-card">
+                <span>ASSESSMENT</span>
+                <strong id="assessmentScore">0%</strong>
+                <small>Latest assessment score</small>
+            </div>
+
+            <div class="stat-card">
+                <span>BADGES</span>
+                <strong id="badgeCount">0</strong>
+                <small>Badges unlocked</small>
+            </div>
+
+            <div class="stat-card">
+                <span>SKILL POINTS</span>
+                <strong id="points">0</strong>
+                <small>Earned through learning</small>
+            </div>
+        </section>
+
+
+
+        <section class="dashboard-grid">
+            <div class="dashboard-panel">
+                <h2>Your Learning Progress</h2>
+                <p id="currentCourse" style="color:var(--muted);font-size:13px;">
+                    No course selected
+                </p>
+
+                <div class="progress-track">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+
+                <div class="progress-info">
+                    <span>Progress</span>
+                    <strong id="progressText">0%</strong>
+                </div>
+
+                <div style="margin-top:20px;display:flex;gap:10px;flex-wrap:wrap;">
+                    <button class="btn-flow btn-primary-flow" onclick="startLearning()">
+                        Continue Course
+                    </button>
+                    <button class="btn-flow btn-soft-flow" onclick="goAssessment()">
+                        Assessment
+                    </button>
+                </div>
+            </div>
+
+            <div class="dashboard-panel">
+                <h2>Upcoming Session</h2>
+                <div class="session-box" id="sessionBox">
+                    <div class="session-empty">No upcoming session yet.</div>
+                </div>
+                <button class="btn-flow btn-primary-flow" style="margin-top:15px" onclick="goBuddy()">
+                    Find a Buddy
+                </button>
+            </div>
+        </section>
+
+
+
+        <section class="dashboard-grid" style="margin-top:22px;">
+            <div class="dashboard-panel">
+                <h2>Skills I'm Learning</h2>
+                <div class="skill-list" id="learningSkills"></div>
+            </div>
+
+            <div class="dashboard-panel">
+                <h2>Skills I Can Teach</h2>
+                <div class="skill-list" id="teachingSkills"></div>
+            </div>
+        </section>
+
+
+
+        <section class="dashboard-panel profile-panel" id="profile">
+            <h2>My Profile</h2>
+
+            <div class="profile-row">
+                <span>Name</span>
+                <strong id="profileName">Learner</strong>
+            </div>
+
+            <div class="profile-row">
+                <span>Learning Skills</span>
+                <strong id="profileLearn">-</strong>
+            </div>
+
+            <div class="profile-row">
+                <span>Teaching Skills</span>
+                <strong id="profileTeach">-</strong>
+            </div>
+
+            <div class="profile-row">
+                <span>Course Status</span>
+                <strong id="profileCourse">In Progress</strong>
+            </div>
+        </section>
+
+
+
+        <nav class="dashboard-nav">
+            <button onclick="location.href='dashboard.html'">🏠 Home</button>
+            <button onclick="goBuddy()">🤝 Buddy</button>
+            <button onclick="goSessions()">📅 Sessions</button>
+            <button onclick="goRewards()">🏆 Rewards</button>
+            <button onclick="location.href='profile.html'">👤 Profile</button>
+        </nav>
+
+
+
+        <div style="display:flex;justify-content:center;gap:10px;margin-top:25px;flex-wrap:wrap;">
+            <button class="btn-flow btn-soft-flow" onclick="location.href='community.html'">
+                💬 Community
+            </button>
+            <button class="btn-flow btn-soft-flow" onclick="location.href='skill-exchange.html'">
+                🔄 Skill Exchange
+            </button>
+            <button class="btn-flow btn-soft-flow" onclick="goCertificate()">
+                🎓 Certificate
+            </button>
+        </div>
+
+    </div>
+</main>
+
+
+
+<script>
+
+    /* =====================================================
+       ✅ CHANGE 1: AUTH HELPERS (NEW)
+    ===================================================== */
+
+    function getToken() {
+        return localStorage.getItem("skillBuddyToken");
+    }
+
+    function authHeaders() {
+        return {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + getToken()
+        };
+    }
+
+    /* AUTH GUARD */
+    (function requireLogin() {
+        const u = localStorage.getItem("skillBuddyUser");
+        if (!u || !getToken()) {
+            window.location.href = "/index.html";
+        }
+    })();
+
+
+    /* =====================================================
+       USER
+    ===================================================== */
+
+    let user = {};
+
+    try {
+        user = JSON.parse(
+            localStorage.getItem("skillBuddyUser") || "{}"
+        );
+    } catch (error) {
+        user = {};
+    }
+
+
+    const username = user.username || user.name || "Learner";
+
+    document.getElementById("navUserName").textContent = username;
+    document.getElementById("profileName").textContent = username;
+    document.getElementById("firstName").textContent =
+        username.split(" ")[0];
+
+
+    /* =====================================================
+       AVATAR SETUP
+    ===================================================== */
+
+    (function setupAvatars() {
+
+        function getInitials(name) {
+            return String(name)
+                .split(" ")
+                .map(x => x[0])
+                .filter(Boolean)
+                .join("")
+                .substring(0, 2)
+                .toUpperCase();
+        }
+
+        const navAvatar = document.getElementById("navAvatar");
+        const heroAvatar = document.getElementById("heroAvatar");
+
+        const initials = getInitials(username);
+        const seed = encodeURIComponent(username);
+        const avatarUrl =
+            "https://api.dicebear.com/7.x/avataaars/svg?seed=" + seed;
+
+        function applyAvatar(el) {
+
+            if (!el) return;
+
+            el.textContent = initials;
+            el.style.cursor = "pointer";
+            el.onclick = function () {
+                window.location.href = "profile.html";
+            };
+
+            if (user && (user.username || user.name)) {
+
+                const img = new Image();
+                img.src = avatarUrl;
+                img.alt = username;
+                img.style.width = "100%";
+                img.style.height = "100%";
+                img.style.objectFit = "cover";
+                img.style.borderRadius = "50%";
+
+                img.onload = function () {
+                    el.innerHTML = "";
+                    el.appendChild(img);
+                };
+
+            }
+        }
+
+        applyAvatar(navAvatar);
+        applyAvatar(heroAvatar);
+
+    })();
+
+
+    /* =====================================================
+       ✅ CHANGE 2: LOAD DATA FROM BACKEND
+    ===================================================== */
+
+    let learnSkills = [];
+    let teachSkills = [];
+    let currentSkill = "";
+    let progress = 0;
+    let score = 0;
+    let badgeCount = 0;
+    let points = 0;
+    let courseCompleted = false;
+    let mentorName = "";
+    let latestAssessment = null;
+
+    async function loadDashboardData() {
+
+        try {
+
+            /* --- Profile --- */
+            const profileRes = await fetch("/api/profile", {
+                headers: authHeaders()
+            });
+
+            if (profileRes.ok) {
+
+                const profile = await profileRes.json();
+
+                const u = profile.user || {};
+
+                learnSkills = Array.from(u.learningSkills || []);
+                teachSkills = Array.from(u.teachingSkills || []);
+                currentSkill = u.currentLearningSkill || learnSkills[0] || "Java";
+
+                badgeCount = u.badges || 0;
+                points = u.points || 0;
+
+                /* Progress for current skill */
+                const progressArr = profile.progress || [];
+                const p = progressArr.find(x => x.skill === currentSkill);
+                if (p) {
+                    progress = p.percent || 0;
+                    courseCompleted = !!p.courseCompleted;
+                }
+
+                /* Assessment score for current skill */
+                const assessArr = profile.assessments || [];
+                const a = assessArr.find(x => x.skill === currentSkill);
+
+                if (a) {
+                    score = a.percentage || 0;
+                    latestAssessment = a;
+                }
+
+                /* Certificate check (courseCompleted via certificates) */
+                const certArr = profile.certificates || [];
+                if (certArr.some(c => c.skill === currentSkill)) {
+                    courseCompleted = true;
+                    progress = 100;
+                }
+            }
+
+            renderDashboard();
+
+        } catch (err) {
+            console.error("loadDashboardData error:", err);
+        }
+    }
+
+
+    /* =====================================================
+       RENDER DASHBOARD
+    ===================================================== */
+
+    function renderDashboard() {
+
+        /* Skills */
+        renderSkillList("learningSkills", learnSkills, "No learning skills selected");
+        renderSkillList("teachingSkills", teachSkills, "No teaching skills selected");
+
+        document.getElementById("profileLearn").textContent =
+            learnSkills.length ? learnSkills.join(", ") : "None";
+
+        document.getElementById("profileTeach").textContent =
+            teachSkills.length ? teachSkills.join(", ") : "None";
+
+
+        /* Progress */
+        progress = Math.max(0, Math.min(100, Number(progress) || 0));
+
+        document.getElementById("progressPercent").textContent = progress + "%";
+        document.getElementById("progressText").textContent = progress + "%";
+        document.getElementById("progressFill").style.width = progress + "%";
+
+        document.getElementById("currentCourse").textContent =
+            currentSkill + " • " +
+            (courseCompleted ? "Completed" : "In Progress");
+
+
+        /* Assessment */
+        document.getElementById("assessmentScore").textContent = score + "%";
+
+
+        /* Badges */
+        document.getElementById("badgeCount").textContent = badgeCount;
+
+
+        /* Points */
+        document.getElementById("points").textContent = points;
+
+
+        /* Course status */
+        document.getElementById("profileCourse").textContent =
+            courseCompleted ? "Completed ✓" : "In Progress";
+    }
+
+
+    /* =====================================================
+       SKILL LISTS
+    ===================================================== */
+
+    function renderSkillList(elementId, skills, emptyText) {
+
+        const container = document.getElementById(elementId);
+        container.innerHTML = "";
+
+        if (!skills.length) {
+            container.innerHTML = `
+                <span style="color:var(--muted);font-size:13px;">
+                    ${emptyText}
+                </span>
+            `;
+            return;
+        }
+
+        skills.forEach(skill => {
+            container.innerHTML += `
+                <span class="skill-tag">${escapeHtml(skill)}</span>
+            `;
+        });
+    }
+
+
+    /* =====================================================
+       ✅ CHANGE 3: UPCOMING SESSION
+    ===================================================== */
+
+    async function renderSession() {
+
+        const box = document.getElementById("sessionBox");
+
+        try {
+
+            const res = await fetch("/api/exchange", {
+                headers: authHeaders()
+            });
+
+            if (!res.ok) {
+                box.innerHTML = `
+                    <div class="session-empty">No upcoming session yet.</div>
+                `;
+                return;
+            }
+
+            const exchanges = await res.json();
+
+            const connection = exchanges.find(e => e.type === "connection");
+
+            if (!connection) {
+                box.innerHTML = `
+                    <div class="session-empty">No upcoming session yet.</div>
+                `;
+                return;
+            }
+
+            box.innerHTML = `
+                <strong>🤝 ${escapeHtml(connection.partnerName || "Buddy")}</strong>
+                <span>${escapeHtml(connection.skill || currentSkill)}</span>
+                <br>
+                <span>Connected</span>
+            `;
+
+        } catch (err) {
+            console.error("renderSession error:", err);
+            box.innerHTML = `
+                <div class="session-empty">No upcoming session yet.</div>
+            `;
+        }
+    }
+
+
+    /* =====================================================
+       NAVIGATION FUNCTIONS
+    ===================================================== */
+
+    function startLearning() {
+        if (!learnSkills.length) {
+            window.location.href = "select-skills.html";
+            return;
+        }
+        window.location.href = "course.html";
+    }
+
+    function startTeaching() {
+        if (!teachSkills.length) {
+            window.location.href = "select-skills.html";
+            return;
+        }
+        window.location.href = "skill-exchange.html";
+    }
+
+    function goBuddy() {
+        window.location.href = "buddy-matching.html";
+    }
+
+    function goSessions() {
+        window.location.href = "buddy-matching.html";
+    }
+
+    function goRewards() {
+        if (courseCompleted) {
+            window.location.href = "certificate.html";
+        } else {
+            window.location.href = "course.html";
+        }
+    }
+
+    function goCertificate() {
+        window.location.href = "certificate.html";
+    }
+
+    function goAssessment() {
+        window.location.href = "assessment.html";
+    }
+
+
+    /* =====================================================
+       HELPERS
+    ===================================================== */
+
+    function escapeHtml(value) {
+        return String(value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+
+    /* =====================================================
+       ✅ CHANGE 4: LOGOUT
+    ===================================================== */
+
+    function logout() {
+        localStorage.removeItem("skillBuddyToken");
+        localStorage.removeItem("skillBuddyUser");
+        window.location.href = "/index.html";
+    }
+
+
+    /* =====================================================
+       ✅ CHANGE 5: INIT
+    ===================================================== */
+
+    loadDashboardData().then(() => {
+        renderSession();
+    });
+
+</script>
+
+</body>
+
+</html>

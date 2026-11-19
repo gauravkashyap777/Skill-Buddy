@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Skill Buddy | Find Your Buddy</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="flow.css">
+
+    <style>
+        .buddy-page { max-width: 1200px; margin: auto; }
+        .buddy-settings { display: grid; grid-template-columns: 280px 1fr; gap: 24px; margin-top: 25px; }
+        .settings-card { height: fit-content; }
+        .setting-group { margin-bottom: 22px; }
+        .setting-group label { display: block; font-size: 13px; font-weight: 700; margin-bottom: 8px; }
+        .setting-group select { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 10px; background: white; font-size: 14px; outline: none; }
+        .learning-skill { display: inline-flex; padding: 8px 12px; border-radius: 20px; background: #eef2ff; color: #4f46e5; font-size: 12px; font-weight: 700; margin: 4px; }
+        .mentor-list { display: grid; gap: 18px; }
+        .mentor-card { background: white; border: 1px solid var(--border); border-radius: 18px; padding: 20px; display: grid; grid-template-columns: 65px 1fr auto; gap: 18px; align-items: center; box-shadow: var(--shadow); }
+        .mentor-avatar { width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #635bff, #14b8a6); color: white; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 18px; }
+        .mentor-name { margin: 0 0 4px; font-size: 18px; }
+        .mentor-role { color: var(--muted); margin: 0 0 8px; font-size: 13px; }
+        .mentor-info { font-size: 12px; color: var(--muted); margin-bottom: 9px; }
+        .mentor-skills { display: flex; flex-wrap: wrap; gap: 6px; }
+        .mentor-skill { background: #f3f4f6; padding: 5px 9px; border-radius: 7px; font-size: 11px; font-weight: 600; }
+        .match-percent { color: #16a34a; font-size: 13px; font-weight: 800; margin-bottom: 8px; }
+        .rating { font-size: 13px; margin-bottom: 12px; }
+        .empty-state { background: white; border: 1px dashed var(--border); border-radius: 18px; padding: 40px; text-align: center; }
+        .empty-state h3 { margin-bottom: 8px; }
+        .empty-state p { color: var(--muted); }
+        .selected-info { margin-top: 18px; padding: 14px; border-radius: 12px; background: #ecfdf5; color: #166534; font-size: 13px; display: none; }
+
+        /* ✅ Avatar fix — clickable + rounded image */
+        .flow-avatar {
+            width: 42px;
+            height: 42px;
+            min-width: 42px;
+            border-radius: 50%;
+            background: #eef2ff;
+            color: #4f46e5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 800;
+            overflow: hidden;
+            cursor: pointer;
+            transition: 0.2s;
+            flex-shrink: 0;
+        }
+        .flow-avatar:hover { transform: scale(1.05); background: #dbeafe; }
+        .flow-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+
+        @media (max-width: 850px) {
+            .buddy-settings { grid-template-columns: 1fr; }
+            .mentor-card { grid-template-columns: 55px 1fr; }
+            .mentor-action { grid-column: 1 / -1; }
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="flow-nav">
+    <a href="index.html" class="flow-brand">
+        <span class="flow-mark">SB</span>
+        <span>Skill<span>Buddy</span></span>
+    </a>
+    <div class="flow-user">
+        <span class="flow-avatar" id="userAvatar">SB</span>
+        <div>
+            <b id="userName">Learner</b>
+            <small>Student / Learner</small>
+        </div>
+        <button class="btn btn-soft-flow btn-flow" id="logoutBtn">Logout</button>
+    </div>
+</header>
+
+
+<main class="flow-main">
+    <div class="buddy-page">
+
+        <div class="flow-hero">
+            <span class="flow-kicker">Step 2 • Buddy Matching</span>
+            <h1>Find Your Skill Buddy!</h1>
+            <p>Find a mentor or learner who can help you with the skill you want to learn.</p>
+        </div>
+
+        <div class="flow-progress-wrapper">
+            <div class="flow-progress">
+                <div class="flow-step active"><div class="flow-step-number">1</div><span>Skills</span></div>
+                <div class="flow-line active"></div>
+                <div class="flow-step active"><div class="flow-step-number">2</div><span>Buddy</span></div>
+                <div class="flow-line"></div>
+                <div class="flow-step"><div class="flow-step-number">3</div><span>Course</span></div>
+                <div class="flow-line"></div>
+                <div class="flow-step"><div class="flow-step-number">4</div><span>Assessment</span></div>
+            </div>
+        </div>
+
+        <div class="buddy-settings">
+
+            <aside class="flow-card settings-card">
+                <div class="flow-card-header">
+                    <div>
+                        <h2>Your Learning</h2>
+                        <p>Matching preferences</p>
+                    </div>
+                </div>
+
+                <div class="setting-group">
+                    <label>I Want to Learn</label>
+                    <select id="learningSkill"></select>
+                </div>
+
+                <div class="setting-group">
+                    <label>Preferred Time</label>
+                    <select id="preferredTime">
+                        <option value="Morning">Morning</option>
+                        <option value="Afternoon">Afternoon</option>
+                        <option value="Evening">Evening</option>
+                        <option value="Flexible">Flexible</option>
+                    </select>
+                </div>
+
+                <div class="setting-group">
+                    <label>Learning Mode</label>
+                    <select id="learningMode">
+                        <option value="Online">Online</option>
+                        <option value="Offline">Offline</option>
+                        <option value="Both">Both</option>
+                    </select>
+                </div>
+
+                <div class="setting-group">
+                    <label>Your Selected Skills</label>
+                    <div id="skillTags"></div>
+                </div>
+
+                <button class="btn-flow btn-primary-flow" id="searchBtn" style="width:100%;">
+                    Search Buddies
+                </button>
+
+                <div id="selectedInfo" class="selected-info">
+                    Buddy selected successfully.
+                </div>
+            </aside>
+
+
+            <section>
+                <div class="section-head">
+                    <div>
+                        <h2>Recommended Buddies</h2>
+                        <p id="resultText">Based on your learning skill</p>
+                    </div>
+                </div>
+                <div id="mentorList" class="mentor-list"></div>
+            </section>
+
+        </div>
+
+    </div>
+</main>
+
+
+<script src="flow-common.js"></script>
+
+<script>
+
+    /* =========================
+       STORAGE HELPERS
+    ========================= */
+
+    function getStorage(key, fallback) {
+        try {
+            const value = localStorage.getItem(key);
+            if (value === null) return fallback;
+            return JSON.parse(value);
+        } catch (error) {
+            return fallback;
+        }
+    }
+
+    function saveStorage(key, value) {
+        localStorage.setItem(key, JSON.stringify(value));
+    }
+
+    /* =========================
+       GET INITIALS (defined first)
+    ========================= */
+
+    function getInitials(name) {
+        return name
+            .split(" ")
+            .map(word => word.charAt(0))
+            .join("")
+            .substring(0, 2)
+            .toUpperCase();
+    }
+
+    /* =========================
+       USER + AVATAR
+    ========================= */
+
+    const user = getStorage("skillBuddyUser", null);
+    const userName = user?.name || user?.username || "Learner";
+
+    document.getElementById("userName").textContent = userName;
+
+    // ✅ Avatar setup — DiceBear + clickable
+    (function setupAvatar() {
+
+        const avatarEl = document.getElementById("userAvatar");
+        if (!avatarEl) return;
+
+        // Show initials as fallback
+        avatarEl.textContent = getInitials(userName);
+        avatarEl.style.cursor = "pointer";
+        avatarEl.title = "View My Profile";
+        avatarEl.onclick = function () {
+            window.location.href = "profile.html";
+        };
+
+        // Load DiceBear avatar if user exists
+        if (user && (user.username || user.name)) {
+
+            const seedName = user.username || user.name;
+            const avatarUrl =
+                "https://api.dicebear.com/7.x/avataaars/svg?seed=" +
+                encodeURIComponent(seedName);
+
+            const img = new Image();
+            img.src = avatarUrl;
+            img.alt = seedName;
+            img.style.width = "100%";
+            img.style.height = "100%";
+            img.style.objectFit = "cover";
+            img.style.borderRadius = "50%";
+
+            img.onload = function () {
+                avatarEl.innerHTML = "";
+                avatarEl.appendChild(img);
+            };
+
+            img.onerror = function () {
+                console.log("Avatar load failed, keeping initials");
+            };
+
+        }
+
+    })();
+
+    /* =========================
+       LEARNING SKILLS
+    ========================= */
+
+    let learningSkills = getStorage("skillBuddyLearnSkills", []);
+    if (!learningSkills.length) learningSkills = getStorage("skillBuddySkills", []);
+    if (!learningSkills.length) learningSkills = ["Java"];
+
+    const learningSkillSelect = document.getElementById("learningSkill");
+
+    learningSkills.forEach(skill => {
+        const option = document.createElement("option");
+        option.value = skill;
+        option.textContent = skill;
+        learningSkillSelect.appendChild(option);
+    });
+
+    let currentLearningSkill = localStorage.getItem("skillBuddyCurrentLearningSkill");
+
+    if (!currentLearningSkill || !learningSkills.includes(currentLearningSkill)) {
+        currentLearningSkill = learningSkills[0];
+        localStorage.setItem("skillBuddyCurrentLearningSkill", currentLearningSkill);
+    }
+
+    learningSkillSelect.value = currentLearningSkill;
+
+    /* =========================
+       SHOW SKILLS
+    ========================= */
+
+    const skillTags = document.getElementById("skillTags");
+
+    function renderSkillTags() {
+        skillTags.innerHTML = "";
+        learningSkills.forEach(skill => {
+            const span = document.createElement("span");
+            span.className = "learning-skill";
+            span.textContent = skill;
+            skillTags.appendChild(span);
+        });
+    }
+
+    renderSkillTags();
+
+    /* =========================
+       PREFERRED TIME
+    ========================= */
+
+    const preferredTime = document.getElementById("preferredTime");
+
+    const savedTime = localStorage.getItem("skillBuddyPreferredTime");
+    if (savedTime) preferredTime.value = savedTime;
+
+    preferredTime.addEventListener("change", function () {
+        localStorage.setItem("skillBuddyPreferredTime", this.value);
+    });
+
+    /* =========================
+       LEARNING MODE
+    ========================= */
+
+    const learningMode = document.getElementById("learningMode");
+
+    const savedMode = localStorage.getItem("skillBuddyLearningMode");
+    if (savedMode) learningMode.value = savedMode;
+
+    learningMode.addEventListener("change", function () {
+        localStorage.setItem("skillBuddyLearningMode", this.value);
+    });
+
+    /* =========================
+       MENTORS — one mentor per course, aligned to skill names
+    ========================= */
+
+    const mentors = [
+
+        /* --- JAVA --- */
+        {
+            name: "Ananya Sharma",
+            role: "Java & Spring Boot Mentor",
+            qualification: "B.Tech CSE",
+            experience: "6+ Years",
+            rating: "4.9",
+            reviews: 128,
+            skills: ["Java", "Spring Boot", "SQL"],
+            time: ["Morning", "Evening"]
+        },
+        {
+            name: "Arjun Mehta",
+            role: "Java & DSA Mentor",
+            qualification: "B.Tech CSE",
+            experience: "5+ Years",
+            rating: "4.8",
+            reviews: 96,
+            skills: ["Java", "Data Structures", "Algorithms"],
+            time: ["Evening", "Flexible"]
+        },
+        {
+            name: "Kavya Iyer",
+            role: "Java Backend Mentor",
+            qualification: "M.Tech CSE",
+            experience: "4+ Years",
+            rating: "4.7",
+            reviews: 72,
+            skills: ["Java", "Spring Boot", "Backend"],
+            time: ["Afternoon", "Flexible"]
+        },
+
+        /* --- PYTHON --- */
+        {
+            name: "Rahul Verma",
+            role: "Python & Machine Learning Mentor",
+            qualification: "M.Tech AI",
+            experience: "7+ Years",
+            rating: "4.8",
+            reviews: 145,
+            skills: ["Python", "Machine Learning", "Data Science"],
+            time: ["Afternoon", "Evening"]
+        },
+        {
+            name: "Sneha Nair",
+            role: "Python Developer Mentor",
+            qualification: "B.Tech CSE",
+            experience: "4+ Years",
+            rating: "4.7",
+            reviews: 88,
+            skills: ["Python", "Django", "Automation"],
+            time: ["Morning", "Flexible"]
+        },
+
+        /* --- JAVASCRIPT --- */
+        {
+            name: "Priya Singh",
+            role: "JavaScript & React Mentor",
+            qualification: "B.Tech IT",
+            experience: "5+ Years",
+            rating: "4.9",
+            reviews: 113,
+            skills: ["JavaScript", "React", "Web Development"],
+            time: ["Morning", "Afternoon"]
+        },
+        {
+            name: "Vikash Kumar",
+            role: "Frontend Developer Mentor",
+            qualification: "B.Tech CSE",
+            experience: "4+ Years",
+            rating: "4.7",
+            reviews: 76,
+            skills: ["JavaScript", "React", "HTML", "CSS"],
+            time: ["Evening", "Flexible"]
+        },
+
+        /* --- REACT --- */
+        {
+            name: "Tanvi Desai",
+            role: "React & Frontend Mentor",
+            qualification: "B.E. IT",
+            experience: "5+ Years",
+            rating: "4.8",
+            reviews: 92,
+            skills: ["React", "JavaScript", "Web Development"],
+            time: ["Morning", "Evening"]
+        },
+
+        /* --- SPRING BOOT --- */
+        {
+            name: "Rohit Kumar",
+            role: "Spring Boot & Backend Mentor",
+            qualification: "B.Tech CSE",
+            experience: "6+ Years",
+            rating: "4.8",
+            reviews: 110,
+            skills: ["Spring Boot", "Java", "SQL", "Backend"],
+            time: ["Evening", "Flexible"]
+        },
+        {
+            name: "Aditya Rao",
+            role: "Spring Boot API Mentor",
+            qualification: "M.Tech CSE",
+            experience: "4+ Years",
+            rating: "4.6",
+            reviews: 61,
+            skills: ["Spring Boot", "REST API", "JPA"],
+            time: ["Afternoon", "Flexible"]
+        },
+
+        /* --- SQL --- */
+        {
+            name: "Neha Gupta",
+            role: "SQL & Data Mentor",
+            qualification: "M.Sc Data Science",
+            experience: "6+ Years",
+            rating: "4.8",
+            reviews: 101,
+            skills: ["SQL", "MySQL", "Data Science"],
+            time: ["Morning", "Flexible"]
+        },
+        {
+            name: "Ravi Menon",
+            role: "Database & SQL Mentor",
+            qualification: "B.Tech CSE",
+            experience: "5+ Years",
+            rating: "4.7",
+            reviews: 84,
+            skills: ["SQL", "PostgreSQL", "Database Design"],
+            time: ["Afternoon", "Evening"]
+        },
+
+        /* --- DATA STRUCTURES --- */
+        {
+            name: "Meera Joshi",
+            role: "DSA & Interview Prep Mentor",
+            qualification: "B.Tech CSE",
+            experience: "6+ Years",
+            rating: "4.9",
+            reviews: 132,
+            skills: ["Data Structures", "Algorithms", "C++"],
+            time: ["Morning", "Evening"]
+        },
+
+        /* --- MACHINE LEARNING --- */
+        {
+            name: "Ishita Kapoor",
+            role: "ML & AI Mentor",
+            qualification: "M.Sc AI",
+            experience: "5+ Years",
+            rating: "4.8",
+            reviews: 98,
+            skills: ["Machine Learning", "Scikit-learn", "Python"],
+            time: ["Morning", "Flexible"]
+        },
+
+        /* --- DATA SCIENCE --- */
+        {
+            name: "Karan Bhatia",
+            role: "Data Analyst Mentor",
+            qualification: "M.Sc Statistics",
+            experience: "5+ Years",
+            rating: "4.7",
+            reviews: 89,
+            skills: ["Data Science", "Pandas", "Visualization"],
+            time: ["Afternoon", "Evening"]
+        },
+
+        /* --- WEB DEVELOPMENT --- */
+        {
+            name: "Ravi Sharma",
+            role: "Full Stack Web Mentor",
+            qualification: "B.Tech IT",
+            experience: "5+ Years",
+            rating: "4.8",
+            reviews: 96,
+            skills: ["Web Development", "HTML", "CSS", "JavaScript"],
+            time: ["Morning", "Evening"]
+        },
+
+        /* --- ANDROID --- */
+        {
+            name: "Sanjay Patil",
+            role: "Android Developer Mentor",
+            qualification: "B.E. CSE",
+            experience: "5+ Years",
+            rating: "4.7",
+            reviews: 82,
+            skills: ["Android", "Kotlin", "Java"],
+            time: ["Morning", "Evening"]
+        },
+        {
+            name: "Pooja Reddy",
+            role: "Android App Development Mentor",
+            qualification: "B.Tech IT",
+            experience: "4+ Years",
+            rating: "4.6",
+            reviews: 68,
+            skills: ["Android", "Kotlin", "Firebase"],
+            time: ["Afternoon", "Flexible"]
+        }
+
+    ];
+
+    /* =========================
+       MATCH SCORE
+    ========================= */
+
+    function calculateMatch(mentor, skill, time) {
+
+        let score = 60;
+
+        const skillMatch = mentor.skills.some(
+            s => s.toLowerCase() === skill.toLowerCase()
+        );
+
+        if (skillMatch) score += 30;
+
+        if (mentor.time.includes(time) || time === "Flexible") score += 8;
+
+        /* Rating bonus */
+        const rating = parseFloat(mentor.rating);
+        if (rating >= 4.9) score += 3;
+        else if (rating >= 4.8) score += 2;
+        else if (rating >= 4.7) score += 1;
+
+        return Math.min(score, 99);
+    }
+
+    /* =========================
+       RENDER MENTORS
+    ========================= */
+
+    function renderMentors() {
+
+        const skill = learningSkillSelect.value;
+        const time = preferredTime.value;
+
+        const list = document.getElementById("mentorList");
+        const resultText = document.getElementById("resultText");
+
+        const matched = mentors
+            .map(mentor => ({
+                mentor,
+                score: calculateMatch(mentor, skill, time)
+            }))
+            .filter(item =>
+                item.mentor.skills.some(
+                    s => s.toLowerCase() === skill.toLowerCase()
+                )
+            )
+            .sort((a, b) => b.score - a.score);
+
+        resultText.textContent = matched.length + " buddies found for " + skill;
+
+        if (!matched.length) {
+            list.innerHTML = `
+            <div class="empty-state">
+                <h3>No exact buddy found</h3>
+                <p>Try another learning skill or preferred time.</p>
+            </div>
+        `;
+            return;
+        }
+
+        list.innerHTML = matched.map(item => {
+            const mentor = item.mentor;
+
+            return `
+            <article class="mentor-card">
+                <div class="mentor-avatar">
+                    ${getInitials(mentor.name)}
+                </div>
+
+                <div>
+                    <h3 class="mentor-name">${mentor.name}</h3>
+                    <p class="mentor-role">${mentor.role}</p>
+
+                    <div class="mentor-info">
+                        🎓 ${mentor.qualification}
+                        &nbsp; • &nbsp;
+                        💼 ${mentor.experience}
+                        &nbsp; • &nbsp;
+                        ⭐ ${mentor.rating} (${mentor.reviews} reviews)
+                    </div>
+
+                    <div class="mentor-skills">
+                        ${mentor.skills.map(s => `<span class="mentor-skill">${s}</span>`).join("")}
+                    </div>
+                </div>
+
+                <div class="mentor-action">
+                    <div class="match-percent">${item.score}% Match</div>
+                    <div class="rating">⭐ ${mentor.rating}</div>
+                    <button
+                        class="btn-flow btn-primary-flow"
+                        onclick='connectBuddy(${JSON.stringify(mentor)})'
+                    >
+                        Connect
+                    </button>
+                </div>
+            </article>
+        `;
+        }).join("");
+    }
+
+    /* =========================
+       SEARCH BUTTON
+    ========================= */
+
+    document.getElementById("searchBtn").addEventListener("click", function () {
+
+        currentLearningSkill = learningSkillSelect.value;
+
+        localStorage.setItem("skillBuddyCurrentLearningSkill", currentLearningSkill);
+        localStorage.setItem("skillBuddyPreferredTime", preferredTime.value);
+        localStorage.setItem("skillBuddyLearningMode", learningMode.value);
+
+        renderMentors();
+    });
+
+    /* =========================
+       CHANGE LEARNING SKILL
+    ========================= */
+
+    learningSkillSelect.addEventListener("change", function () {
+
+        currentLearningSkill = this.value;
+
+        localStorage.setItem("skillBuddyCurrentLearningSkill", currentLearningSkill);
+
+        renderMentors();
+    });
+
+    /* =========================
+       CONNECT BUDDY
+    ========================= */
+
+    function connectBuddy(mentor) {
+
+        const selectedSkill = learningSkillSelect.value;
+        const selectedTime = preferredTime.value;
+        const selectedMode = learningMode.value;
+
+        saveStorage("skillBuddyMentor", {
+            name: mentor.name,
+            skill: mentor.role,
+            qualification: mentor.qualification,
+            experience: mentor.experience,
+            rating: mentor.rating,
+            reviews: mentor.reviews
+        });
+
+        saveStorage("skillBuddySelectedBuddy", {
+            name: mentor.name,
+            skill: selectedSkill,
+            rating: mentor.rating
+        });
+
+        saveStorage("skillBuddyUpcomingSession", {
+            mentor: mentor.name,
+            skill: selectedSkill,
+            preferredTime: selectedTime,
+            mode: selectedMode,
+            status: "Upcoming"
+        });
+
+        localStorage.setItem("skillBuddyCurrentLearningSkill", selectedSkill);
+
+        const info = document.getElementById("selectedInfo");
+        info.style.display = "block";
+        info.innerHTML = `
+        ✓ Connected with <strong>${mentor.name}</strong>
+        for learning <strong>${selectedSkill}</strong>.
+    `;
+
+        setTimeout(function () {
+            window.location.href = "course.html";
+        }, 700);
+    }
+
+    /* =========================
+       LOGOUT
+    ========================= */
+
+    document.getElementById("logoutBtn").addEventListener("click", function () {
+
+        sessionStorage.removeItem("skillBuddyUser");
+        localStorage.removeItem("skillBuddyUser");
+
+        window.location.href = "index.html";
+    });
+
+    /* =========================
+       INITIAL LOAD
+    ========================= */
+
+    renderMentors();
+
+</script>
+
+</body>
+</html>

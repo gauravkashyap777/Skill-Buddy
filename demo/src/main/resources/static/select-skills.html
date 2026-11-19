@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Skill Buddy | Select Skills</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="flow.css">
+
+    <style>
+        .skills-page { max-width: 900px; margin: auto; }
+        .skills-header { text-align: center; margin-bottom: 30px; }
+        .skills-header h1 { margin: 12px 0 8px; }
+        .skills-header p { color: var(--muted); }
+        .role-selector { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 25px; }
+        .role-card { padding: 25px; border: 2px solid var(--border); border-radius: 18px; background: white; cursor: pointer; transition: 0.2s ease; }
+        .role-card:hover { transform: translateY(-2px); border-color: var(--primary); }
+        .role-card.active { border-color: var(--primary); background: #f7f6ff; }
+        .role-icon { font-size: 30px; margin-bottom: 10px; }
+        .role-card h3 { margin: 5px 0; }
+        .role-card p { margin: 0; color: var(--muted); font-size: 13px; }
+        .skills-card { padding: 28px; background: white; border: 1px solid var(--border); border-radius: 20px; box-shadow: var(--shadow); }
+        .skills-card h2 { margin-top: 0; }
+        .selection-info { padding: 12px 15px; margin-bottom: 20px; border-radius: 11px; background: #f8f9fd; color: #475569; font-size: 13px; }
+        .skill-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+        .skill-option { padding: 15px; border: 1px solid var(--border); border-radius: 12px; background: white; cursor: pointer; font-size: 13px; font-weight: 700; text-align: center; transition: 0.2s ease; }
+        .skill-option:hover { border-color: var(--primary); background: #f8f7ff; }
+        .skill-option.selected { border-color: var(--primary); background: #f0efff; color: var(--primary); }
+        .selected-skills { margin-top: 25px; padding-top: 20px; border-top: 1px solid var(--border); }
+        .selected-skills h3 { margin-top: 0; }
+        .selected-list { display: flex; flex-wrap: wrap; gap: 8px; }
+        .selected-tag { padding: 7px 12px; border-radius: 999px; background: #f0efff; color: var(--primary); font-size: 12px; font-weight: 700; }
+        .continue-area { display: flex; justify-content: center; margin-top: 25px; }
+        .status-message { display: none; margin-top: 18px; padding: 12px; border-radius: 10px; background: #fff7ed; color: #c2410c; text-align: center; font-size: 13px; font-weight: 600; }
+
+        .flow-user-avatar {
+            width: 42px !important;
+            height: 42px !important;
+            min-width: 42px !important;
+            min-height: 42px !important;
+            border-radius: 50% !important;
+            overflow: hidden;
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: 0.2s;
+            flex-shrink: 0;
+            padding: 0 !important;
+        }
+
+        .flow-user-avatar:hover {
+            background: #dbeafe !important;
+            transform: scale(1.05);
+        }
+
+        .flow-user-avatar img {
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: cover;
+            border-radius: 50% !important;
+            display: block;
+            pointer-events: none;
+        }
+
+        @media (max-width: 700px) {
+            .role-selector { grid-template-columns: 1fr; }
+            .skill-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        @media (max-width: 450px) {
+            .skill-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+
+
+<body class="flow-page">
+
+
+<header class="flow-navbar">
+
+    <div class="flow-nav-container">
+
+        <a href="index.html" class="flow-logo">
+            <span class="flow-mark">SB</span>
+            <span>Skill<span>Buddy</span></span>
+        </a>
+
+
+        <div class="flow-user-area">
+
+            <div class="flow-user-avatar"
+                 id="navAvatar"
+                 title="View My Profile">
+                👤
+            </div>
+
+            <div class="flow-user-info">
+
+                <span>Skill Setup</span>
+
+                <strong id="userName">
+                    Learner
+                </strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+
+<main class="flow-main">
+
+    <div class="flow-container">
+
+        <div class="skills-page">
+
+            <section class="skills-header">
+                <span class="flow-badge">Skill Setup</span>
+                <h1>What do you want to do?</h1>
+                <p>Choose whether you want to learn or teach, then select your skills.</p>
+            </section>
+
+
+
+            <section class="role-selector">
+
+                <div class="role-card active"
+                     id="learnRole"
+                     onclick="selectRole('learn')">
+                    <div class="role-icon">📚</div>
+                    <h3>I Want to Learn</h3>
+                    <p>Select technologies and skills you want to learn.</p>
+                </div>
+
+
+
+                <div class="role-card"
+                     id="teachRole"
+                     onclick="selectRole('teach')">
+                    <div class="role-icon">🎓</div>
+                    <h3>I Want to Teach</h3>
+                    <p>Select technologies and skills you can teach others.</p>
+                </div>
+
+            </section>
+
+
+
+            <section class="skills-card">
+
+                <h2 id="selectionTitle">
+                    Select Skills You Want to Learn
+                </h2>
+
+                <div class="selection-info">
+                    You can select multiple skills.
+                    <strong>
+                        Your learning and teaching
+                        skills are saved separately.
+                    </strong>
+                </div>
+
+
+
+                <div class="skill-grid" id="skillGrid"></div>
+
+
+
+                <div class="selected-skills">
+                    <h3>Selected Skills</h3>
+                    <div class="selected-list" id="selectedList"></div>
+                </div>
+
+
+
+                <div class="status-message" id="statusMessage"></div>
+
+
+                <div class="continue-area">
+                    <button class="btn-flow btn-primary-flow" onclick="continueNext()">
+                        Continue →
+                    </button>
+                </div>
+
+            </section>
+
+        </div>
+
+    </div>
+
+</main>
+
+
+
+<script>
+
+    /* =====================================================
+       AUTH HELPERS
+    ===================================================== */
+
+    function getToken() {
+        return localStorage.getItem("skillBuddyToken");
+    }
+
+    function getCurrentUser() {
+        try {
+            return JSON.parse(
+                localStorage.getItem("skillBuddyUser") || "null"
+            );
+        } catch (error) {
+            return null;
+        }
+    }
+
+    function authHeaders() {
+        return {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + getToken()
+        };
+    }
+
+    /* =====================================================
+       AUTH GUARD
+    ===================================================== */
+
+    const user = getCurrentUser();
+
+    if (!user || !getToken()) {
+        window.location.href = "/index.html";
+    }
+
+    const userName = user?.username || user?.name || "Learner";
+
+    document.getElementById("userName").textContent = userName;
+
+
+
+    /* =====================================================
+       NAVBAR AVATAR — DICEBEAR + CLICKABLE
+    ===================================================== */
+
+    (function setupNavbarAvatar() {
+
+        const avatarEl = document.getElementById("navAvatar");
+        if (!avatarEl) return;
+
+        const initials = String(userName)
+            .split(" ")
+            .map(x => x[0])
+            .filter(Boolean)
+            .join("")
+            .substring(0, 2)
+            .toUpperCase();
+
+        avatarEl.textContent = initials;
+        avatarEl.style.cursor = "pointer";
+        avatarEl.onclick = function () {
+            window.location.href = "profile.html";
+        };
+
+        if (user && (user.username || user.name)) {
+
+            const avatarUrl =
+                "https://api.dicebear.com/7.x/avataaars/svg?seed=" +
+                encodeURIComponent(userName);
+
+            const img = new Image();
+            img.src = avatarUrl;
+            img.alt = userName;
+            img.style.width = "100%";
+            img.style.height = "100%";
+            img.style.objectFit = "cover";
+            img.style.borderRadius = "50%";
+
+            img.onload = function () {
+                avatarEl.innerHTML = "";
+                avatarEl.appendChild(img);
+            };
+
+            img.onerror = function () {
+                console.log("Avatar load failed, keeping initials");
+            };
+        }
+
+    })();
+
+
+
+    /* =====================================================
+       SKILLS
+    ===================================================== */
+
+    const allSkills = [
+        "Java",
+        "Python",
+        "JavaScript",
+        "React",
+        "Spring Boot",
+        "SQL",
+        "Data Structures",
+        "Machine Learning",
+        "Data Science",
+        "Android",
+        "Web Development"
+    ];
+
+
+
+    /* =====================================================
+       CURRENT ROLE
+    ===================================================== */
+
+    let currentRole = "learn";
+
+
+
+    /* =====================================================
+       STATE — loaded from backend
+    ===================================================== */
+
+    let learnSkills = [];
+    let teachSkills = [];
+
+
+
+    /* =====================================================
+       LOAD SKILLS FROM BACKEND
+    ===================================================== */
+
+    async function loadSavedSkills() {
+
+        try {
+
+            const res = await fetch("/api/skills", {
+                headers: authHeaders()
+            });
+
+            if (!res.ok) return;
+
+            const data = await res.json();
+
+            learnSkills = Array.from(data.learningSkills || []);
+            teachSkills = Array.from(data.teachingSkills || []);
+
+            renderSkills();
+
+        } catch (error) {
+            console.error("loadSavedSkills error:", error);
+        }
+
+    }
+
+
+
+    /* =====================================================
+       SELECT ROLE
+    ===================================================== */
+
+    function selectRole(role) {
+
+        currentRole = role;
+
+        document.getElementById("learnRole").classList.toggle(
+            "active", role === "learn"
+        );
+
+        document.getElementById("teachRole").classList.toggle(
+            "active", role === "teach"
+        );
+
+        document.getElementById("selectionTitle").textContent =
+            role === "learn"
+                ? "Select Skills You Want to Learn"
+                : "Select Skills You Can Teach";
+
+        renderSkills();
+    }
+
+
+
+    /* =====================================================
+       GET CURRENT SELECTION
+    ===================================================== */
+
+    function getCurrentSelection() {
+        return currentRole === "learn" ? learnSkills : teachSkills;
+    }
+
+
+
+    /* =====================================================
+       RENDER SKILLS
+    ===================================================== */
+
+    function renderSkills() {
+
+        const grid = document.getElementById("skillGrid");
+        const selected = getCurrentSelection();
+
+        grid.innerHTML = "";
+
+        allSkills.forEach(skill => {
+
+            const div = document.createElement("div");
+            div.className = "skill-option";
+
+            if (selected.includes(skill)) {
+                div.classList.add("selected");
+            }
+
+            div.textContent = skill;
+            div.onclick = () => toggleSkill(skill);
+
+            grid.appendChild(div);
+        });
+
+        renderSelected();
+    }
+
+
+
+    /* =====================================================
+       TOGGLE SKILL
+    ===================================================== */
+
+    function toggleSkill(skill) {
+
+        if (currentRole === "learn") {
+
+            if (learnSkills.includes(skill)) {
+                learnSkills = learnSkills.filter(item => item !== skill);
+            } else {
+                learnSkills.push(skill);
+            }
+
+        } else {
+
+            if (teachSkills.includes(skill)) {
+                teachSkills = teachSkills.filter(item => item !== skill);
+            } else {
+                teachSkills.push(skill);
+            }
+
+        }
+
+        renderSkills();
+    }
+
+
+
+    /* =====================================================
+       RENDER SELECTED
+    ===================================================== */
+
+    function renderSelected() {
+
+        const container = document.getElementById("selectedList");
+        const selected = getCurrentSelection();
+
+        container.innerHTML = "";
+
+        if (!selected.length) {
+            container.innerHTML = `
+                <span style="color:#94a3b8;font-size:13px">
+                    No skill selected yet.
+                </span>
+            `;
+            return;
+        }
+
+        selected.forEach(skill => {
+            const tag = document.createElement("span");
+            tag.className = "selected-tag";
+            tag.textContent = skill;
+            container.appendChild(tag);
+        });
+    }
+
+
+
+    /* =====================================================
+       CONTINUE — save to backend + localStorage
+    ===================================================== */
+
+    async function continueNext() {
+
+        if (currentRole === "learn" && !learnSkills.length) {
+            showStatus("Please select at least one skill you want to learn.");
+            return;
+        }
+
+        if (currentRole === "teach" && !teachSkills.length) {
+            showStatus("Please select at least one skill you can teach.");
+            return;
+        }
+
+
+        try {
+
+            const res = await fetch("/api/skills/select", {
+                method: "POST",
+                headers: authHeaders(),
+                body: JSON.stringify({
+                    learningSkills: learnSkills,
+                    teachingSkills: teachSkills
+                })
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                showStatus(data.message || "Failed to save skills.");
+                return;
+            }
+
+            /* ✅ Save selected skills to localStorage so course.html
+               knows which skill the user wants to learn next */
+            localStorage.setItem(
+                "skillBuddyLearnSkills",
+                JSON.stringify(learnSkills)
+            );
+
+            localStorage.setItem(
+                "skillBuddyTeachSkills",
+                JSON.stringify(teachSkills)
+            );
+
+            if (learnSkills.length) {
+                localStorage.setItem(
+                    "skillBuddyCurrentLearningSkill",
+                    learnSkills[0]
+                );
+            }
+
+            /* NEXT PAGE */
+
+            if (currentRole === "learn") {
+                window.location.href = "buddy-matching.html";
+            } else {
+                window.location.href = "skill-exchange.html";
+            }
+
+        } catch (error) {
+            console.error("continueNext error:", error);
+            showStatus("Cannot connect to server. Try again.");
+        }
+    }
+
+
+
+    /* =====================================================
+       STATUS
+    ===================================================== */
+
+    function showStatus(message) {
+
+        const status = document.getElementById("statusMessage");
+
+        status.textContent = message;
+        status.style.display = "block";
+
+        setTimeout(() => {
+            status.style.display = "none";
+        }, 3500);
+    }
+
+
+
+    /* =====================================================
+       INITIAL RENDER
+    ===================================================== */
+
+    loadSavedSkills().then(() => {
+        renderSkills();
+    });
+
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Skill Buddy | Feedback</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="flow.css">
+
+    <style>
+        .feedback-card {
+            max-width: 720px;
+            margin: auto;
+        }
+
+        .feedback-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .skill-badge {
+            display: inline-block;
+            padding: 7px 14px;
+            border-radius: 20px;
+            background: #eef2ff;
+            color: #4f46e5;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .score-circle {
+            width: 95px;
+            height: 95px;
+            border-radius: 50%;
+            background: #eef2ff;
+            color: #4f46e5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 15px auto;
+            font-size: 25px;
+            font-weight: 800;
+        }
+
+        .mentor-box {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 16px;
+            background: #f8fafc;
+            border-radius: 14px;
+            margin: 22px 0;
+        }
+
+        .mentor-avatar {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: linear-gradient(
+                    135deg,
+                    #635bff,
+                    #14b8a6
+            );
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+        }
+
+        .mentor-box h3 {
+            margin: 0 0 4px;
+        }
+
+        .mentor-box p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .rating-section {
+            text-align: center;
+            margin: 25px 0;
+        }
+
+        .stars {
+            display: flex;
+            justify-content: center;
+            gap: 7px;
+            margin-top: 12px;
+        }
+
+        .star {
+            border: 0;
+            background: transparent;
+            font-size: 36px;
+            color: #cbd5e1;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .star:hover,
+        .star.active {
+            color: #f59e0b;
+            transform: scale(1.08);
+        }
+
+        .rating-text {
+            color: var(--muted);
+            font-size: 13px;
+            margin-top: 7px;
+        }
+
+        .feedback-label {
+            display: block;
+            font-weight: 700;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 130px;
+            resize: vertical;
+            padding: 14px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            font-family: inherit;
+            font-size: 14px;
+            outline: none;
+            box-sizing: border-box;
+        }
+
+        textarea:focus {
+            border-color: #635bff;
+        }
+
+        .submit-area {
+            margin-top: 18px;
+        }
+
+        .success-box {
+            display: none;
+            text-align: center;
+            padding: 30px;
+        }
+
+        .success-icon {
+            font-size: 50px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+
+<body>
+
+<header class="flow-nav">
+
+    <a href="index.html" class="flow-brand">
+        <span class="flow-mark">SB</span>
+        <span>Skill<span>Buddy</span></span>
+    </a>
+
+    <div class="flow-user">
+
+        <span
+                class="flow-avatar"
+                id="userAvatar">
+            SB
+        </span>
+
+        <div>
+            <b id="userName">Learner</b>
+            <small>Student / Learner</small>
+        </div>
+
+        <button
+                class="btn btn-soft-flow btn-flow"
+                id="logoutBtn">
+            Logout
+        </button>
+
+    </div>
+
+</header>
+
+
+<main class="flow-main">
+
+    <div class="flow-wrap narrow">
+
+        <!-- HERO -->
+
+        <div class="flow-hero">
+
+            <span class="flow-kicker">
+                Step 5 • Feedback & Rating
+            </span>
+
+            <h1>
+                How Was Your Learning Experience?
+            </h1>
+
+            <p>
+                Rate your mentor and share your
+                learning experience.
+            </p>
+
+        </div>
+
+
+        <!-- PROGRESS -->
+
+        <div class="flow-progress-wrapper">
+
+            <div class="flow-progress">
+
+                <div class="flow-step active">
+                    <div class="flow-step-number">1</div>
+                    <span>Skills</span>
+                </div>
+
+                <div class="flow-line active"></div>
+
+                <div class="flow-step active">
+                    <div class="flow-step-number">2</div>
+                    <span>Buddy</span>
+                </div>
+
+                <div class="flow-line active"></div>
+
+                <div class="flow-step active">
+                    <div class="flow-step-number">3</div>
+                    <span>Course</span>
+                </div>
+
+                <div class="flow-line active"></div>
+
+                <div class="flow-step active">
+                    <div class="flow-step-number">4</div>
+                    <span>Assessment</span>
+                </div>
+
+                <div class="flow-line active"></div>
+
+                <div class="flow-step active">
+                    <div class="flow-step-number">5</div>
+                    <span>Feedback</span>
+                </div>
+
+                <div class="flow-line"></div>
+
+                <div class="flow-step">
+                    <div class="flow-step-number">6</div>
+                    <span>Certificate</span>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- FEEDBACK -->
+
+        <section
+                class="flow-card feedback-card"
+                id="feedbackCard">
+
+            <div class="feedback-header">
+
+                <span
+                        class="skill-badge"
+                        id="skillBadge">
+                    Java
+                </span>
+
+                <div class="score-circle"
+                     id="scoreCircle">
+                    0%
+                </div>
+
+                <h2>
+                    Assessment Completed
+                </h2>
+
+                <p>
+                    Your assessment score
+                </p>
+
+            </div>
+
+
+            <!-- MENTOR -->
+
+            <div class="mentor-box">
+
+                <div
+                        class="mentor-avatar"
+                        id="mentorAvatar">
+                    SB
+                </div>
+
+                <div>
+
+                    <h3 id="mentorName">
+                        Skill Buddy Mentor
+                    </h3>
+
+                    <p id="mentorSkill">
+                        Your selected mentor
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- RATING -->
+
+            <div class="rating-section">
+
+                <h3>
+                    Rate Your Mentor
+                </h3>
+
+                <div
+                        class="stars"
+                        id="stars">
+
+                    <button
+                            type="button"
+                            class="star"
+                            data-rating="1">
+                        ★
+                    </button>
+
+                    <button
+                            type="button"
+                            class="star"
+                            data-rating="2">
+                        ★
+                    </button>
+
+                    <button
+                            type="button"
+                            class="star"
+                            data-rating="3">
+                        ★
+                    </button>
+
+                    <button
+                            type="button"
+                            class="star"
+                            data-rating="4">
+                        ★
+                    </button>
+
+                    <button
+                            type="button"
+                            class="star"
+                            data-rating="5">
+                        ★
+                    </button>
+
+                </div>
+
+                <div
+                        class="rating-text"
+                        id="ratingText">
+                    Select a rating
+                </div>
+
+            </div>
+
+
+            <!-- REVIEW -->
+
+            <div>
+
+                <label
+                        class="feedback-label"
+                        for="review">
+                    Your Feedback
+                </label>
+
+                <textarea
+                        id="review"
+                        placeholder="Tell us about your learning experience..."></textarea>
+
+            </div>
+
+
+            <div class="submit-area">
+
+                <button
+                        class="btn-flow btn-primary-flow"
+                        id="submitBtn"
+                        style="width:100%;">
+                    Submit Feedback & Continue →
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- SUCCESS -->
+
+        <section
+                class="flow-card success-box"
+                id="successBox">
+
+            <div class="success-icon">
+                🎉
+            </div>
+
+            <h2>
+                Feedback Submitted!
+            </h2>
+
+            <p>
+                Thank you for helping us improve
+                Skill Buddy.
+            </p>
+
+            <button
+                    class="btn-flow btn-primary-flow"
+                    id="certificateBtn">
+                View Certificate →
+            </button>
+
+        </section>
+
+    </div>
+
+</main>
+
+
+<!-- ❌ CHANGE 1: flow-common.js removed -->
+<!-- <script src="flow-common.js"></script> -->
+
+
+<script>
+
+    /* =====================================================
+       ✅ CHANGE 2: AUTH HELPERS (NEW)
+    ===================================================== */
+
+    function getToken() {
+        return localStorage.getItem("skillBuddyToken");
+    }
+
+    function getCurrentUser() {
+        try {
+            return JSON.parse(localStorage.getItem("skillBuddyUser") || "null");
+        } catch {
+            return null;
+        }
+    }
+
+    function authHeaders() {
+        return {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + getToken()
+        };
+    }
+
+    /* AUTH GUARD */
+    (function requireLogin() {
+        const u = getCurrentUser();
+        if (!u || !getToken()) {
+            window.location.href = "/index.html";
+        }
+    })();
+
+
+    /* =====================================================
+       STORAGE
+    ===================================================== */
+
+    function getData(key, fallback) {
+
+        try {
+
+            const value =
+                localStorage.getItem(key);
+
+            if (value === null) {
+                return fallback;
+            }
+
+            return JSON.parse(value);
+
+        } catch (error) {
+
+            return fallback;
+
+        }
+    }
+
+
+    function saveData(key, value) {
+
+        localStorage.setItem(
+            key,
+            JSON.stringify(value)
+        );
+
+    }
+
+
+    /* =====================================================
+       USER
+    ===================================================== */
+
+    const user =
+        getData(
+            "skillBuddyUser",
+            null
+        );
+
+
+    const userName =
+        user?.name ||
+        user?.username ||
+        "Learner";
+
+
+    document.getElementById(
+        "userName"
+    ).textContent =
+        userName;
+
+
+    document.getElementById(
+        "userAvatar"
+    ).textContent =
+        getInitials(userName);
+
+
+    function getInitials(name) {
+
+        return name
+            .split(" ")
+            .map(x => x[0])
+            .join("")
+            .substring(0, 2)
+            .toUpperCase();
+
+    }
+
+
+    /* =====================================================
+       CURRENT LEARNING SKILL
+    ===================================================== */
+
+    let currentSkill =
+        localStorage.getItem(
+            "skillBuddyCurrentLearningSkill"
+        );
+
+
+    if (!currentSkill) {
+
+        const skills =
+            getData(
+                "skillBuddyLearnSkills",
+                []
+            );
+
+
+        currentSkill =
+            skills[0] ||
+            "Java";
+
+    }
+
+
+    document.getElementById(
+        "skillBadge"
+    ).textContent =
+        currentSkill;
+
+
+    /* =====================================================
+       ASSESSMENT SCORE
+    ===================================================== */
+
+    const score =
+        Number(
+            localStorage.getItem(
+                "skillBuddyScore"
+            ) || 0
+        );
+
+
+    document.getElementById(
+        "scoreCircle"
+    ).textContent =
+        score + "%";
+
+
+    /* =====================================================
+       MENTOR
+    ===================================================== */
+
+    const mentor =
+        getData(
+            "skillBuddyMentor",
+            {}
+        );
+
+
+    const selectedBuddy =
+        getData(
+            "skillBuddySelectedBuddy",
+            {}
+        );
+
+
+    const mentorName =
+        mentor.name ||
+        selectedBuddy.name ||
+        "Skill Buddy Mentor";
+
+
+    document.getElementById(
+        "mentorName"
+    ).textContent =
+        mentorName;
+
+
+    document.getElementById(
+        "mentorSkill"
+    ).textContent =
+        mentor.skill ||
+        selectedBuddy.skill ||
+        currentSkill +
+        " Mentor";
+
+
+    document.getElementById(
+        "mentorAvatar"
+    ).textContent =
+        getInitials(mentorName);
+
+
+    /* =====================================================
+       RATING
+    ===================================================== */
+
+    let selectedRating = 0;
+
+
+    const stars =
+        document.querySelectorAll(
+            ".star"
+        );
+
+
+    const ratingText =
+        document.getElementById(
+            "ratingText"
+        );
+
+
+    const ratingMessages = {
+
+        1: "Very poor",
+
+        2: "Needs improvement",
+
+        3: "Good",
+
+        4: "Very good",
+
+        5: "Excellent!"
+
+    };
+
+
+    stars.forEach(
+        star => {
+
+            star.addEventListener(
+                "click",
+                function() {
+
+                    selectedRating =
+                        Number(
+                            this.dataset.rating
+                        );
+
+
+                    stars.forEach(
+                        item => {
+
+                            const rating =
+                                Number(
+                                    item.dataset.rating
+                                );
+
+
+                            item.classList.toggle(
+                                "active",
+                                rating <=
+                                selectedRating
+                            );
+
+                        }
+                    );
+
+
+                    ratingText.textContent =
+                        ratingMessages[
+                            selectedRating
+                            ];
+
+                }
+            );
+
+        }
+    );
+
+
+    /* =====================================================
+       ✅ CHANGE 3: SUBMIT FEEDBACK — Backend API
+    ===================================================== */
+
+    document
+        .getElementById("submitBtn")
+        .addEventListener(
+            "click",
+            async function() {
+
+                if (selectedRating === 0) {
+                    alert("Please select a rating.");
+                    return;
+                }
+
+
+                const review =
+                    document
+                        .getElementById("review")
+                        .value
+                        .trim();
+
+
+                if (!review) {
+                    alert("Please write your feedback.");
+                    return;
+                }
+
+
+                /* Save feedback to backend */
+
+                try {
+
+                    const res = await fetch("/api/feedback", {
+                        method: "POST",
+                        headers: authHeaders(),
+                        body: JSON.stringify({
+                            skill: currentSkill,
+                            mentorName: mentorName,
+                            rating: selectedRating,
+                            review: review,
+                            score: score
+                        })
+                    });
+
+                    const data = await res.json();
+
+                    if (!res.ok) {
+                        alert(data.message || "Failed to submit feedback.");
+                        return;
+                    }
+
+                    /* Show success */
+
+                    document.getElementById(
+                        "feedbackCard"
+                    ).style.display =
+                        "none";
+
+
+                    document.getElementById(
+                        "successBox"
+                    ).style.display =
+                        "block";
+
+                } catch (err) {
+                    console.error("submitFeedback error:", err);
+                    alert("Cannot connect to server. Try again.");
+                }
+
+            }
+        );
+
+
+    /* =====================================================
+       CERTIFICATE
+    ===================================================== */
+
+    document
+        .getElementById("certificateBtn")
+        .addEventListener(
+            "click",
+            function() {
+
+                window.location.href =
+                    "certificate.html";
+
+            }
+        );
+
+
+    /* =====================================================
+       ✅ CHANGE 4: LOGOUT — token bhi clear
+    ===================================================== */
+
+    document
+        .getElementById("logoutBtn")
+        .addEventListener(
+            "click",
+            function() {
+
+                localStorage.removeItem(
+                    "skillBuddyToken"
+                );
+
+                localStorage.removeItem(
+                    "skillBuddyUser"
+                );
+
+                window.location.href =
+                    "/index.html";
+
+            }
+        );
+
+</script>
+
+</body>
+</html>
