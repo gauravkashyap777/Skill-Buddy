@@ -18,6 +18,10 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
 
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -31,7 +35,7 @@ jobs:
           cp -r demo/src/main/resources/static/. _site/
 
           if [ ! -f _site/index.html ]; then
-            echo "index.html not found!"
+            echo "ERROR: index.html not found"
             exit 1
           fi
 
